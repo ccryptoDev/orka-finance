@@ -1,0 +1,476 @@
+<section class="content-header">
+  <!-- <h1>View Application Details</h1>---- -->
+  <ol class="breadcrumb">
+    <li>
+      <a [routerLink]="['/admin/dashboard']">
+        <i class="fa fa-dashboard"></i>
+        Dashboard
+      </a>
+    </li>
+    <li>
+      <a [routerLink]="['/admin/loan-products']">
+        <i class="fa fa-dashboard"></i>
+        Loan Product Management
+      </a>
+    </li>
+    <li class="active">Edit Loan Product</li>
+  </ol>
+</section>
+
+<div class="frameshadow">
+  <div class="mainTitle">
+    <div>Edit Loan Product</div>
+  </div>
+
+  <div class="p10">
+    <div class="mt-3">
+      <form name="form" (ngSubmit)="f.form.valid && editloanProductSubmit()" #f="ngForm" novalidate>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Product Name</label>
+              <input
+                type="text"
+                name="productName"
+                class="form-control mtop"
+                placeholder="Enter Product Name"
+                (input)="f1.productName = namedata($event)"
+                [(ngModel)]="f1.productName"
+                #productName="ngModel"
+                required [ngClass]="{ 'is-invalid': f.submitted && productName.invalid }"
+              />
+              <small *ngIf="productName.invalid && (productName.touched || f.submitted)" class="text-danger">
+                Product name is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Product Type</label>
+              <input
+                type="text"
+                name="type"
+                class="form-control mtop"
+                placeholder="Enter Product Type"
+                (input)="f1.type = namedata($event)"
+                [(ngModel)]="f1.type"
+                #type="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && type.invalid }"
+              />
+              <small *ngIf="type.invalid && (type.touched || f.submitted)" class="text-danger">
+                Product Type is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Tenor Months</label>
+              <input
+                type="text"
+                name="tenorMonths"
+                (keypress)="keyPressNumbers($event)"
+                class="form-control mtop"
+                placeholder="Enter Tenor Months"
+                (input)="f1.tenorMonths = namedata($event)"
+                [(ngModel)]="f1.tenorMonths"
+                #tenorMonths="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && tenorMonths.invalid }"
+              />
+              <small *ngIf="tenorMonths.invalid && (tenorMonths.touched || f.submitted)" class="text-danger">
+                Tenor Months is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Tenor Years</label>
+              <input
+                type="text"
+                name="tenorYears"
+                class="form-control mtop"
+                placeholder="Enter Tenor Years"
+                (input)="f1.tenorYears = namedata($event)"
+                (keypress)="keyPressNumbers($event)"
+                [(ngModel)]="f1.tenorYears"
+                #tenorYears="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && tenorYears.invalid }"
+              />
+              <small *ngIf="tenorYears.invalid && (tenorYears.touched || f.submitted)" class="text-danger">
+                Tenor Years is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Ach Discount</label>
+              <input
+                type="text"
+                name="achDiscount"
+                class="form-control mtop"
+                placeholder="Enter Ach Discount"
+                (input)="f1.achDiscount = namedata($event)"
+                (keypress)="keyPressNumbers($event)"
+                (keyup)="keyPressNumbers_math()"
+                [(ngModel)]="f1.achDiscount"
+                #achDiscount="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && achDiscount.invalid }"
+              />
+              <small *ngIf="achDiscount.invalid && (achDiscount.touched || f.submitted)" class="text-danger">
+                Ach Discount is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Interest Base Rate</label>
+              <input
+                type="text"
+                name="interestBaseRate"
+                class="form-control mtop"
+                placeholder="Enter Interest Base Rate"
+                (input)="f1.interestBaseRate = namedata($event)"
+                (keypress)="keyPressNumbers($event)"
+                (keyup)="keyPressNumbers_math()"
+                [(ngModel)]="f1.interestBaseRate"
+                #interestBaseRate="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && interestBaseRate.invalid }" 
+                [ngClass]="{'setFocus':calValid}"
+              />
+              <small *ngIf="interestBaseRate.invalid && (interestBaseRate.touched || f.submitted)" class="text-danger">
+                Interest Base Rate is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Ach DiscountInterestRate</label>
+              <input
+                type="text"
+                readonly
+                name="achDiscountInterestRate"
+                (keypress)="keyPressNumbers($event)"
+                (keyup)="keyPressNumbers_math()"
+                class="form-control mtop"
+                placeholder="Enter Ach Discount InterestRate"
+                (input)="f1.achDiscountInterestRate = namedata($event)"
+                [(ngModel)]="f1.achDiscountInterestRate"
+                #achDiscountInterestRate="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && achDiscountInterestRate.invalid }"
+              />
+              <small *ngIf="achDiscountInterestRate.invalid && (achDiscountInterestRate.touched || f.submitted)" class="text-danger">
+                Ach Discount InterestRate is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">DealerFee</label>
+              <input
+                type="text"
+                name="dealerFee"
+                class="form-control mtop"
+                placeholder="Enter DealerFee"
+                (input)="f1.dealerFee = namedata($event)"
+                (keypress)="keyPressNumbers($event)"
+                [(ngModel)]="f1.dealerFee"
+                #dealerFee="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && dealerFee.invalid }"
+              />
+              <small *ngIf="dealerFee.invalid && (dealerFee.touched || f.submitted)" class="text-danger">
+                DealerFee is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Origination Fee</label>
+              <input
+                type="text"
+                name="originationFee"
+                class="form-control mtop"
+                placeholder="Enter originationFee"
+                (input)="f1.originationFee = namedata($event)"
+                (keypress)="keyPressNumbers($event)"
+                [(ngModel)]="f1.originationFee"
+                #originationFee="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && originationFee.invalid }"
+              />
+              <small *ngIf="originationFee.invalid && (originationFee.touched || f.submitted)" class="text-danger">
+                originationFee is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Prepayment</label>
+              <input
+                type="text"
+                name="prepayment"
+                class="form-control mtop"
+                placeholder="Enter prepayment"
+                (input)="f1.prepayment = namedata($event)"
+                (keypress)="keyPressNumbers($event)"
+                [(ngModel)]="f1.prepayment"
+                #prepayment="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && prepayment.invalid }"
+              />
+              <small *ngIf="prepayment.invalid && (prepayment.touched || f.submitted)" class="text-danger">
+                prepayment is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Prepayment Month</label>
+              <input
+                type="text"
+                name="prepaymentMonth"
+                class="form-control mtop"
+                placeholder="Enter prepaymentMonth"
+                (input)="f1.prepaymentMonth = namedata($event)"
+                (keypress)="keyPressNumbers($event)"
+                [(ngModel)]="f1.prepaymentMonth"
+                #prepaymentMonth="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && prepaymentMonth.invalid }"
+              />
+              <small *ngIf="prepaymentMonth.invalid && (prepaymentMonth.touched || f.submitted)" class="text-danger">
+                prepaymentMonth is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Downpayment</label>
+              <input
+                type="text"
+                name="downpayment"
+                class="form-control mtop"
+                placeholder="Enter downpayment"
+                (input)="f1.downpayment = namedata($event)"
+                (keypress)="keyPressNumbers($event)"
+                [(ngModel)]="f1.downpayment"
+                #downpayment="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && downpayment.invalid }"
+              />
+              <small *ngIf="downpayment.invalid && (downpayment.touched || f.submitted)" class="text-danger">
+                downpayment is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Mpf Ach WItc Prepay</label>
+              <input
+                type="text"
+                name="mpfAchWItcPrepay"
+                class="form-control mtop"
+                placeholder="Enter mpfAchWItcPrepay"
+                (input)="f1.mpfAchWItcPrepay = namedata($event)"
+                (keypress)="keyPressNumbers($event)"
+                [(ngModel)]="f1.mpfAchWItcPrepay"
+                #mpfAchWItcPrepay="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && mpfAchWItcPrepay.invalid }"
+              />
+              <small *ngIf="mpfAchWItcPrepay.invalid && (mpfAchWItcPrepay.touched || f.submitted)" class="text-danger">
+                mpfAchWItcPrepay is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Mpf AchWO Prepay</label>
+              <input
+                type="text"
+                name="mpfAchWOPrepay"
+                class="form-control mtop"
+                placeholder="Enter mpfAchWOPrepay"
+                (input)="f1.mpfAchWOPrepay = namedata($event)"
+                (keypress)="keyPressNumbers($event)"
+                [(ngModel)]="f1.mpfAchWOPrepay"
+                #mpfAchWOPrepay="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && mpfAchWOPrepay.invalid }"
+              />
+              <small *ngIf="mpfAchWOPrepay.invalid && (mpfAchWOPrepay.touched || f.submitted)" class="text-danger">
+                mpfAchWOPrepay is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Mpf CheckWItc Prepay</label>
+              <input
+                type="text"
+                name="mpfCheckWItcPrepay"
+                class="form-control mtop"
+                placeholder="Enter mpfCheckWItcPrepay"
+                (input)="f1.mpfCheckWItcPrepay = namedata($event)"
+                (keypress)="keyPressNumbers($event)"
+                [(ngModel)]="f1.mpfCheckWItcPrepay"
+                #mpfCheckWItcPrepay="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && mpfCheckWItcPrepay.invalid }"
+              />
+              <small *ngIf="mpfCheckWItcPrepay.invalid && (mpfCheckWItcPrepay.touched || f.submitted)" class="text-danger">
+                mpfCheckWItcPrepay is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Mpf CheckWO Prepay</label>
+              <input
+                type="text"
+                name="mpfCheckWOPrepay"
+                class="form-control mtop"
+                placeholder="Enter mpfCheckWOPrepay"
+                (input)="f1.mpfCheckWOPrepay = namedata($event)"
+                (keypress)="keyPressNumbers($event)"
+                [(ngModel)]="f1.mpfCheckWOPrepay"
+                #mpfCheckWOPrepay="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && mpfCheckWOPrepay.invalid }"
+              />
+              <small *ngIf="mpfCheckWOPrepay.invalid && (mpfCheckWOPrepay.touched || f.submitted)" class="text-danger">
+                mpfCheckWOPrepay is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Flex Ream Prepay Amount</label>
+              <input
+                required
+                type="text"
+                name="flexReamPrepayAmount"
+                class="form-control mtop"
+                placeholder="Enter flexReamPrepayAmount"
+                (input)="f1.flexReamPrepayAmount = namedata($event)"
+                (keyup)="keyPressNumbers($event)"
+                [(ngModel)]="f1.flexReamPrepayAmount"
+                [ngClass]="{ 'is-invalid': f.submitted && flexReamPrepayAmount.invalid }"
+                #flexReamPrepayAmount="ngModel"
+              />
+                <small *ngIf="flexReamPrepayAmount.invalid && (flexReamPrepayAmount.touched || f.submitted)" class="text-danger">
+                  flexReamPrepayAmount is required
+                </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Flex Ream Prepay Percent of Principal</label>
+              <input
+                required
+                type="text"
+                name="flexReamPrepayPercentofPrincipal"
+                class="form-control mtop"
+                placeholder="Enter flexReamPrepayPercentofPrincipal"
+                (input)="f1.flexReamPrepayPercentofPrincipal = namedata($event)"
+                (keyup)="keyPressNumbers($event)"
+                [(ngModel)]="f1.flexReamPrepayPercentofPrincipal"
+                [ngClass]="{ 'is-invalid': f.submitted && flexReamPrepayPercentofPrincipal.invalid }"
+                #flexReamPrepayPercentofPrincipal="ngModel"
+              />
+              <small *ngIf="flexReamPrepayPercentofPrincipal.invalid && (flexReamPrepayPercentofPrincipal.touched || f.submitted)" class="text-danger">
+                flexReamPrepayPercentofPrincipal is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Flex Ream MaxAnnual Frequency</label>
+              <input
+                required
+                type="text"
+                name="flexReamMaxAnnualFrequency"
+                class="form-control mtop"
+                placeholder="Enter flexReamMaxAnnualFrequency"
+                (input)="f1.flexReamMaxAnnualFrequency = namedata($event)"
+                (keyup)="keyPressNumbers($event)"
+                [(ngModel)]="f1.flexReamMaxAnnualFrequency"
+                [ngClass]="{ 'is-invalid': f.submitted && flexReamMaxAnnualFrequency.invalid }"
+                #flexReamMaxAnnualFrequency="ngModel" 
+              />
+              <small *ngIf="flexReamMaxAnnualFrequency.invalid && (flexReamMaxAnnualFrequency.touched || f.submitted)" class="text-danger">
+                flexReamMaxAnnualFrequency is required
+              </small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Phase</label>
+              <input
+                type="text"
+                name="phase"
+                class="form-control mtop"
+                placeholder="Enter Phase"
+                (input)="f1.phase = namedata($event)"
+                [(ngModel)]="f1.phase"
+                #phase="ngModel" 
+              />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">Start Date</label>
+              <input
+                type="date"
+                name="startDate"
+                class="form-control mtop"
+                placeholder="Enter Start Date"
+                (input)="f1.startDate = namedata($event)"
+                [(ngModel)]="f1.startDate"
+                #startDate="ngModel" 
+              />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class='font-bold' for="ContactName">End Date</label>
+              <input
+                type="date"
+                name="endDate"
+                class="form-control mtop"
+                placeholder="End Date"
+                (input)="f1.endDate = namedata($event)"
+                [(ngModel)]="f1.endDate"
+                #endDate="ngModel" 
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group mt-5">
+          <button type="submit" class="greenbutton">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p class="headtext">Message</p>
+    <p *ngFor="let m of message">{{ m }}</p>
+  </div>
+</ng-template>

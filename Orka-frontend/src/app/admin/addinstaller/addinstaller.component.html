@@ -1,0 +1,252 @@
+<section class="content-header">
+    <!-- <h1>View Application Details</h1> -->
+    <ol class="breadcrumb">
+      <li>
+        <a [routerLink]="['/admin/dashboard']"
+          ><i class="fa fa-dashboard"></i> Dashboard</a
+        >
+      </li>
+      <li>
+        <a [routerLink]="['/admin/partner']"
+          ><i class="fa fa-dashboard"></i>Partner Management</a
+        >
+      </li>
+      <li class="active">Add Partner</li>
+    </ol>
+  </section>
+  <div class="frameshadow">
+    <div class="mainTitle">
+      <div>Add Partner</div>
+    </div>
+
+
+    <div class="p10">
+        <div class="ptop15">
+<tabset>
+    <tab heading="Add Partner">
+
+                <form name="form" (ngSubmit)="f.form.valid && installerEditSubmit()" #f="ngForm" novalidate>
+                    <div class="form-group mt-3">
+                        <label for="ContactName">Business Name</label>
+                        <input type="text" name="businessName" class="form-control" placeholder="Enter Business Name"
+                        (input)="f1.businessName = namedata($event)" [(ngModel)]="f1.businessName" #businessName="ngModel"
+                        required [ngClass]="{ 'is-invalid': f.submitted && businessName.invalid }" />
+                        <small *ngIf="businessName.invalid && (businessName.touched || f.submitted)" class="text-danger">Business
+                        name is required</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ContactName">Short Name</label>
+                        <input type="text" name="businessShortName" class="form-control" placeholder="Enter Short Name"
+                            (input)="f1.businessShortName = keyuplowercase($event)" [(ngModel)]="f1.businessShortName" #businessShortName="ngModel" required
+                            [ngClass]="{ 'is-invalid': f.submitted && businessShortName.invalid }" />
+                        <small *ngIf="businessShortName.invalid && (businessShortName.touched || f.submitted)" class="text-danger">Last name
+                            is required</small>
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <label for="ContactName">Date of Birthday</label>
+                        <input name="birthday" placeholder="mm/dd/yyyy" [(ngModel)]="f1.birthday" #birthday="bsDatepicker"
+                            [maxDate]="maxDate" class="form-control" bsDatepicker
+                            [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" required
+                            [ngClass]="{ 'is-invalid': f.submitted && !f1.birthday }" />
+                        <small *ngIf="birthday.invalid && (birthday.touched || f.submitted)" class="text-danger">Birthday is
+                            required</small>
+                    </div> -->
+                    <div class="form-group">
+                        <label for="ContactEmail">Business Email</label>
+                        <input type="email" name="businessEmail" class="form-control" placeholder="Enter Email"
+                            [(ngModel)]="f1.businessEmail" #businessEmail="ngModel" required
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                            [ngClass]="{ 'is-invalid': f.submitted && businessEmail.invalid }" />
+                        <small *ngIf="businessEmail.invalid && (businessEmail.touched || f.submitted)" class="text-danger">Email is
+                            required</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ContactName">Business Phone</label>
+                        <input
+                            type="text" name="businessPhone" class="form-control"
+                            placeholder="+1 (000) 000-0000"
+                            mask="+0 (000) 000-0000"
+                            (input)="f1.businessPhone = $event.target.value"
+                            [(ngModel)]="f1.businessPhone"
+                            #businessPhone="ngModel"
+                            required
+                            [ngClass]="{ 'is-invalid': f.submitted && businessPhone.invalid }"
+                        />
+                        <small *ngIf="businessPhone.invalid && (businessPhone.touched || f.submitted)" class="text-danger">Phone is
+                            required</small>
+                    </div>
+
+                     <div class="form-group">
+                        <label for="ContactName">First Name</label>
+                        <input type="text" name="firstName" class="form-control" placeholder="Enter FIrst Name"
+                            (input)="f1.firstName = keyuplowercase($event)" [(ngModel)]="f1.firstName" #firstName="ngModel" required
+                            [ngClass]="{ 'is-invalid': f.submitted && firstName.invalid }" />
+                        <small *ngIf="firstName.invalid && (firstName.touched || f.submitted)" class="text-danger">First name
+                            is required</small>
+                    </div>
+
+                     <div class="form-group">
+                        <label for="ContactName">Last Name</label>
+                        <input type="text" name="lastName" class="form-control" placeholder="Enter Last Name"
+                            (input)="f1.lastName = keyuplowercase($event)" [(ngModel)]="f1.lastName" #lastName="ngModel" required
+                            [ngClass]="{ 'is-invalid': f.submitted && lastName.invalid }" />
+                        <small *ngIf="lastName.invalid && (lastName.touched || f.submitted)" class="text-danger">Last name
+                            is required</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="ContactName">Business Address</label>
+                                <input type="text" name="businessAddress" class="form-control"
+                                    placeholder="Enter Installation Street Address" [(ngModel)]="f1.businessAddress"
+                                    #businessAddress="ngModel" required [ngClass]="{
+                        'is-invalid': f.submitted && businessAddress.invalid
+                      }" />
+                                <small *ngIf="businessAddress.invalid && (businessAddress.touched || f.submitted)"
+                                    class="text-danger">Street address is required</small>
+                            </div>
+                        </div>
+                        <!-- <div class="col-6">
+                            <div class="form-group">
+                                <label for="ContactName">Unit</label>
+                                <input type="text" name="unit" class="form-control" placeholder="Enter Unit"
+                                    [(ngModel)]="f1.unit" #unit="ngModel" required
+                                    [ngClass]="{ 'is-invalid': f.submitted && unit.invalid }" />
+                                <small *ngIf="unit.invalid && (unit.touched || f.submitted)" class="text-danger">Unit is
+                                    required</small>
+                            </div>
+                        </div> -->
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="ContactName">City</label>
+                                <input type="text" name="city" class="form-control" placeholder="Enter City"
+                                    [(ngModel)]="f1.city" #city="ngModel" required
+                                    [ngClass]="{ 'is-invalid': f.submitted && city.invalid }" />
+                                <small *ngIf="city.invalid && (city.touched || f.submitted)" class="text-danger">City is
+                                    required</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="ContactName">State</label>
+                                <input type="text" name="state" class="form-control" placeholder="Enter State"
+                                    [(ngModel)]="f1.state" #state="ngModel" required
+                                    [ngClass]="{ 'is-invalid': f.submitted && state.invalid }" />
+                                <small *ngIf="state.invalid && (state.touched || f.submitted)" class="text-danger">State is
+                                    required</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="ContactName">Zip Code</label>
+                                <input type="text" name="zipCode" class="form-control" placeholder="Enter Zip Code"
+                                    (input)="f1.zipCode = number($event)" [(ngModel)]="f1.zipCode" #zipCode="ngModel"
+                                    required [ngClass]="{ 'is-invalid': f.submitted && zipCode.invalid }" />
+                                <small *ngIf="zipCode.invalid && (zipCode.touched || f.submitted)" class="text-danger">Zip
+                                    code is required</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-5">
+                        <button type="submit" class="greenbutton">Save</button>
+                    </div>
+                </form>
+
+    </tab>
+    <!-- <tab heading="Add User for Existing Partner">
+        <div class="add-existing-user  p-1">
+            <form name="form" (ngSubmit)="fs.form.valid && adduserSubmit()" #fs="ngForm" novalidate>
+                <div class="form-group mt-3">
+                    <label for="ContactName">Short Name</label>
+                    <select class="form-control" (change)="onChangeShortName($event.target.value)" name="shortname" [(ngModel)]="res.businessShortName">
+                        <option value="null" disabled>Select Short Name</option>
+                        <option *ngFor="let r of res" [value]=r.businessShortName>{{r.businessShortName }}</option>
+                      </select>
+                </div>
+                <div class="form-group ">
+                    <label for="ContactName">Business Name</label>
+                    <input readonly type="text" name="businessName" class="form-control" placeholder="Enter Business Name"
+                    (input)="res.businessName = namedata($event)" [(ngModel)]="res.businessName" #businessName="ngModel"
+                   />
+                </div>
+
+
+                <div class="form-group">
+                    <label for="ContactEmail">Business Email</label>
+                    <input readonly type="email" name="businessEmail" class="form-control" placeholder="Enter Email"
+                        [(ngModel)]="res.businessEmail" #businessEmail="ngModel" required
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                       />
+                </div>
+
+                <div class="form-group">
+                    <label for="ContactEmail">User Email</label>
+                    <input  type="email" name="userEmail" class="form-control" placeholder="Enter User Email"
+                        [(ngModel)]="res.userEmail" #userEmail="ngModel" required
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                        [ngClass]="{ 'is-invalid': fs.submitted && userEmail.invalid }" />
+                    <small *ngIf="userEmail.invalid && (userEmail.touched || fs.submitted)" class="text-danger">User Email is
+                        required</small>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                <div class="form-group">
+                    <label for="ContactName">First Name</label>
+                    <input  type="text" name="firstName" class="form-control" placeholder="Enter firstName"
+                    (input)="res.firstName = namedata($event)" [(ngModel)]="res.firstName" #firstName="ngModel"
+                    required [ngClass]="{ 'is-invalid': fs.submitted && firstName.invalid }" />
+                    <small *ngIf="firstName.invalid && (firstName.touched || fs.submitted)" class="text-danger">First
+                    name is required</small>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="ContactName">Last Name</label>
+                    <input  type="text" name="lastName" class="form-control" placeholder="Enter lastName Name"
+                    (input)="res.lastName = namedata($event)" [(ngModel)]="res.lastName" #lastName="ngModel"
+                    required [ngClass]="{ 'is-invalid': fs.submitted && lastName.invalid }" />
+                    <small *ngIf="lastName.invalid && (lastName.touched || fs.submitted)" class="text-danger">lastName
+                    name is required</small>
+                </div>
+            </div>
+        </div>
+                <div class="form-group">
+                    <label for="ContactName">Role</label>
+                    <select class="form-control" name="shortname" [(ngModel)]="res.role">
+                        <option value="null">Select Role</option>
+                        <option *ngFor="let r of roleList" [value]=r.id>{{r.name}}</option>
+                      </select>
+                </div>
+                <div class="form-group mt-3">
+                    <button type="submit" class="greenbutton">Save</button>
+                </div>
+            </form>
+        </div>
+    </tab> -->
+</tabset>
+</div>
+</div>
+
+
+</div>
+
+
+<ng-template #messagebox>
+    <div class="modal-body text-center">
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <p class="headtext">Message</p>
+      <p *ngFor="let m of message">{{ m }}</p>
+    </div>
+  </ng-template>

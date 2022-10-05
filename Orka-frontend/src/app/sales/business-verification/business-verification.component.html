@@ -1,0 +1,613 @@
+<div class="containermainBlock">
+  <div class="headerDiv">
+    <div class="displayFlex spaceBetween plr50">
+      <div class="logoBlock"><img src="../../../assets/logo1.png" /></div>
+      <div>
+        <div class=" ">
+          <div class="whaleBg"></div>
+          <div class="displayFlex progressbarcontiner">
+            <div class="displayFlex" style="margin-right: 87px">
+
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -52px">
+                Part
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex" style="margin-right: 88px">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -16px">
+                1
+              </div>
+
+              <div class="blueLineSmall"></div>
+            </div>
+            <div class="displayFlex" style="margin-right: 89px">
+              <div class="step02"><img src="../../../assets/step02.svg" /></div>
+              <div class="positionAbsolute AvenirBlack textTransform pt240px activetext fs16px"
+                style="margin-left: -16px">
+                2
+              </div>
+              <div class="positionAbsolute AvenirBlack activetext fs16px"
+                style="margin-left: -225px; padding-top: 297px">
+                BUSINESS VERIFICATION
+              </div>
+              <div class="blueLineBig"></div>
+            </div>
+            <div class="displayFlex mr90" style="margin-right: 89px">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -16px">
+                3
+              </div>
+              <div class="blackline"></div>
+            </div>
+
+            <div class="displayFlex mr90">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -16px">
+                4
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex mr90" style="margin-right: 20px">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -16px">
+                5
+              </div>
+              <div class="blackline"></div>
+              <div class="infoicon"><img src="../../../assets/info.png" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mainDivsection">
+    <div class="containerBlock">
+      <div class="ptb50">
+        <div class="titleTxt">Business Verification</div>
+        <div class="mainContent">
+          To get started, we’d like to collect some general information about
+          your business. It’s the basic stuff, but all important and all
+          required
+        </div>
+      </div>
+      <form name="form"  #f="ngForm" novalidate>
+        <div class="ptb50">
+          <div class="pb50px">
+            <div class="labelTxt">Business Tax ID (EIN)</div>
+            <div>
+              <input type="text" name="taxId" class="inputField form-control" placeholder="Enter Tax ID"
+                (input)="data.taxId = namedata($event)" [(ngModel)]="data.taxId" #taxId="ngModel" required
+                mask="00-0000000" [ngClass]="{ 'is-invalid': f.submitted && taxId.invalid }" />
+              <small *ngIf="taxId.invalid && (taxId.touched || f.submitted)" class="text-danger">Tax ID is
+                required</small>
+            </div>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">BUSINESS START DATE</div>
+            <div>
+              <input type="date" id="birthday" name="startDate" class="inputField form-control"
+                style="padding-right: 10px" placeholder="Enter Start Date" (input)="data.startDate = namedata($event)"
+                [(ngModel)]="data.startDate" #startDate="ngModel" [pattern]="
+                  '(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[1357]|1[02])-31))'
+                " required [ngClass]="{ 'is-invalid': f.submitted && startDate.invalid }" />
+
+              <small *ngIf="startDate.invalid && (startDate.touched || f.submitted)" class="text-danger">
+                <span [hidden]="startDate.errors?.pattern">
+                  Start Date is required</span>
+              </small>
+              <small [hidden]="!startDate.errors?.pattern" class="text-danger">
+                Start Date is Invalid!
+              </small>
+            </div>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">Number of Employees / Contractors</div>
+            <div>
+              <select name="empContractCount" id="empContractCount" class="inputField form-control"
+                [(ngModel)]="data.empContractCount" (input)="data.empContractCount = namedata($event)"
+                #empContractCount="ngModel" [ngClass]="{
+                  'is-invalid': f.submitted && empContractCount.invalid
+                }" required>
+                <option value="null" disabled>Select range</option>
+                <option value="1-4">1-4</option>
+                <option value="5-9">5-9</option>
+                <option value="10-19">10-19</option>
+                <option value="20-49">20-49</option>
+                <option value="50-99">50-99</option>
+                <option value="100+">100+</option>
+              </select>
+            </div>
+            <i class="fas fa-caret-down addressIcon"></i>
+            <small *ngIf="
+                empContractCount.invalid &&
+                (empContractCount.touched || f.submitted)
+              " class="text-danger">Number of Employees / Contractors is required</small>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">Business phone</div>
+            <div>
+              <input type="text" name="businessPhone" class="inputField form-control" placeholder="Enter business phone"
+                (input)="data.businessPhone = namedata($event)" (keypress)="keyPressNumbers($event)" [(ngModel)]="data.businessPhone"
+                mask="(000) 000-0000"  #businessPhone="ngModel" required [ngClass]="{
+                  'is-invalid': f.submitted && businessPhone.invalid && hidedigiterr
+                }"  (keyup)="validateConfirmdigits($event,data.businessPhone)"/>
+
+              <small *ngIf="
+                  businessPhone.invalid &&
+                  (businessPhone.touched || f.submitted) && !hidedigiterr
+                " class="text-danger">
+                Business phone is required
+              </small>
+              <small *ngIf="hidedigiterr" class="text-danger">
+                Business phone 10 Digits Required!</small
+              >
+            </div>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">Business Postal Address</div>
+            <div>
+              <input type="text" ngx-google-places-autocomplete [options]="options" #placesRef="ngx-places"
+                (onAddressChange)="handleAddressChange($event)" name="businessAddress" class="inputField form-control"
+                placeholder="Enter business postal address" (input)="data.businessAddress = namedata($event)"
+                [(ngModel)]="data.businessAddress" #businessAddress="ngModel" required [ngClass]="{
+                  'is-invalid': f.submitted && businessAddress.invalid
+                }" />
+            </div>
+            <i class="fas fa-map-marker-alt addressIcon"></i>
+            <small *ngIf="
+                businessAddress.invalid &&
+                (businessAddress.touched || f.submitted)
+              " class="text-danger">Business Poastal address is required</small>
+          </div>
+          <div class="pb50px displayFlex spaceBetween addressRow">
+            <div class="addressBottom">
+              <div class="labelTxt">City</div>
+              <div>
+                <input type="text" name="city" class="inputField form-control" placeholder="Enter City"
+                  (input)="data.city = namedata($event)" [(ngModel)]="data.city" #city="ngModel" required
+                  [ngClass]="{ 'is-invalid': f.submitted && city.invalid }" />
+                <small *ngIf="city.invalid && (city.touched || f.submitted)" class="text-danger">City is
+                  required</small>
+              </div>
+            </div>
+            <div class="addressBottom">
+              <div class="labelTxt">State</div>
+              <div>
+                <input type="text" name="state" class="inputField form-control" placeholder="Enter state"
+                  (input)="data.state = namedata($event)" [(ngModel)]="data.state" #state="ngModel" required
+                  [ngClass]="{ 'is-invalid': f.submitted && state.invalid }" />
+                <small *ngIf="state.invalid && (state.touched || f.submitted)" class="text-danger">State is
+                  required</small>
+              </div>
+            </div>
+            <div class="addressBottom">
+              <div class="labelTxt">zip code</div>
+              <div>
+                <input type="text" name="zipCode" class="inputField form-control" placeholder="Enter Zip"
+                  (input)="data.zipCode = namedata($event)" [(ngModel)]="data.zipCode" #zipCode="ngModel" required
+                  maxLength="5" (keypress)="keyPressNumbers($event)"
+                  [ngClass]="{ 'is-invalid': f.submitted && zipCode.invalid }" />
+                <small *ngIf="
+                    zipCode.invalid &&
+                    (zipCode.touched || f.submitted || ziphide)
+                  " class="text-danger">Zipcode is required</small>
+              </div>
+            </div>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">Business Structure</div>
+            <div>
+              <select name="businessStructure" id="businessStructure" class="inputField form-control"
+                [(ngModel)]="data.businessStructure" (input)="data.businessStructure = namedata($event)"
+                #businessStructure="ngModel" required [ngClass]="{
+                  'is-invalid': f.submitted && businessStructure.invalid
+                }">
+                <option value="null" disabled>Select business structure</option>
+                <option value="Sole Proprietorship">Sole Proprietorship</option>
+                <option value="Partnership">Partnership</option>
+                <option value="Limited liability company (LLC)">
+                  Limited liability company (LLC)
+                </option>
+                <option value="Corporation (C corp)">
+                  Corporation (C corp)
+                </option>
+                <option value="B Corporation">B Corporation</option>
+                <option value="Close Corporation">Close Corporation</option>
+                <option value="Nonprofit/501(c)(3)">Nonprofit/501(c)(3)</option>
+                <option value="Cooperative">Cooperative</option>
+              </select>
+            </div>
+            <i class="fas fa-caret-down addressIcon"></i>
+            <small *ngIf="
+                businessStructure.invalid &&
+                (businessStructure.touched || f.submitted)
+              " class="text-danger">Business Structure is required</small>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">Business Industry</div>
+            <div>
+              <select name="businessIndustry" id="businessIndustry" class="inputField form-control"
+                [(ngModel)]="data.businessIndustry" (input)="data.businessIndustry = namedata($event)"
+                #businessIndustry="ngModel" required [ngClass]="{
+                  'is-invalid': f.submitted && businessIndustry.invalid
+                }">
+                <option value="null" disabled>
+                  Select the most appropriate business industry
+                </option>
+                <option value="Accounting">Accounting</option>
+                <option value="Administration & Office Support">
+                  Administration & Office Support
+                </option>
+                <option value="Adult Entertainment / Materials">
+                  Adult Entertainment / Materials
+                </option>
+                <option value="Advertising">Advertising</option>
+                <option value="Arts & Media">Arts & Media</option>
+                <option value="Banking & Financial Services">
+                  Banking & Financial Services
+                </option>
+                <option value="Cannabis">Cannabis</option>
+                <option value="Casino / Lottery / Raffles">
+                  Casino / Lottery / Raffles
+                </option>
+                <option value="Community Services & Development">
+                  Community Services & Development
+                </option>
+                <option value="Construction">Construction</option>
+                <option value="Consulting & Strategy">
+                  Consulting & Strategy
+                </option>
+                <option value="Design & Architecture">
+                  Design & Architecture
+                </option>
+                <option value="Education & Training">
+                  Education & Training
+                </option>
+                <option value="Energy">Energy</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Farming & Agriculture">
+                  Farming & Agriculture
+                </option>
+                <option value="Firearms">Firearms</option>
+                <option value="Government & Defence">
+                  Government & Defence
+                </option>
+                <option value="Healthcare & Medical">
+                  Healthcare & Medical
+                </option>
+                <option value="Horoscope / Fortune Telling">
+                  Horoscope / Fortune Telling
+                </option>
+                <option value="Hoospitality & Food Services">
+                  Hospitality & Food Services
+                </option>
+                <option value="Human Resources & Recruitment">
+                  Human Resources & Recruitment
+                </option>
+                <option value="Infomation & Communication Technology">
+                  Infomation & Communication Technology
+                </option>
+                <option value="Insurance & Superannuation">
+                  Insurance & Superannuation
+                </option>
+                <option value="Legal">Legal</option>
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Marketing & Communications">
+                  Marketing & Communications
+                </option>
+                <option value="Mining">Mining</option>
+                <option value="Money Services Business (MSB)">
+                  Money Services Business (MSB)
+                </option>
+                <option value="Other">Other</option>
+                <option value="Real Estate & Property">
+                  Real Estate & Property
+                </option>
+                <option value="Retail & Consumer Products">
+                  Retail & Consumer Products
+                </option>
+                <option value="Rooming & Boarding House">
+                  Rooming & Boarding House
+                </option>
+                <option value="Sales">Sales</option>
+                <option value="Science & Technology">
+                  Science & Technology
+                </option>
+                <option value="Sport & Recreation">Sport & Recreation</option>
+                <option value="Trades & Services">Trades & Services</option>
+                <option value="Transport & Logistics">
+                  Transport & Logistics
+                </option>
+              </select>
+            </div>
+            <i class="fas fa-caret-down addressIcon"></i>
+            <small *ngIf="
+                businessIndustry.invalid &&
+                (businessIndustry.touched || f.submitted)
+              " class="text-danger">Business Structure is required</small>
+          </div>
+
+          <div class="pb50px">
+            <div class="labelTxt">
+              IS YOUR ORGANIZATION A WOMEN-OWNED BUSINESS (AT LEAST 51% OWNED BY ONE OR MORE WOMEN)
+              OR A BIPOC-OWNED BUSINESS (AT LEAST 51% BIPOC-OWNED)?
+
+            </div>
+            <p class="certifyuloanText">Note: Your answer is for demographic purposes only.
+              It will NOT be used for credit decisioning.</p>
+            <div>
+              <select name="businessBipocowned" id="businessBipocowned" class="inputField form-control"
+                [(ngModel)]="data.businessBipocowned" (input)="data.businessBipocowned = namedata($event)"
+                #businessBipocowned="ngModel" required [ngClass]="{
+                'is-invalid': f.submitted && businessBipocowned.invalid && data.businessBipocowned==null
+              }">
+                <option value=null selected disabled>
+                  <p class='colorgray'>Select the most appropriate answer</p>
+                </option>
+                <option value="BIPOC-owned">BIPOC-owned</option>
+                <option value="Women-owned">Women-owned</option>
+                <option value="both-bipoc-women-owned">Both BIPOC-owned and Women-owned</option>
+                <option value="Neither">Neither</option>
+                <option value="choose-not-to-answer">Choose not to answer</option>
+              </select>
+            </div>
+            <i class="fas fa-caret-down addressIcon"></i>
+            <small *ngIf="businessBipocowned.invalid && (businessBipocowned.touched || f.submitted )"
+              class="text-danger">
+              A response is required</small>
+          </div>
+
+          <div class="pb50px">
+            <div class="labelTxt">Last year’s revenue</div>
+            <div>
+              <input type="text" name="lastYearRevenue" class="inputField form-control"
+                placeholder="Please enter last year's gross revenue in dollars"
+                (input)="data.lastYearRevenue = namedata($event)" [(ngModel)]="data.lastYearRevenue"
+                #lastYearRevenue="ngModel" required [ngClass]="{
+                  'is-invalid': f.submitted && lastYearRevenue.invalid
+                }" (keypress)="keyPressNumbers($event)" />
+              <small *ngIf="
+                  lastYearRevenue.invalid &&
+                  (lastYearRevenue.touched || f.submitted)
+                " class="text-danger">Last Year Revenue is required</small>
+            </div>
+          </div>
+
+          <div class="pb50px">
+            <div class="labelTxt">LAST TWO YEAR’S TAX RETURNS</div>
+            <p>Don’t have the last two years of tax returns readily available? No worries! You can continue through this
+              form and submit the returns later. Please note that we will need these documents before we make a final
+              credit decision.</p>
+            <ngx-file-drop class="flieUploadBlock" dropZoneLabel="Drop files here" (onFileDrop)="twoyeartax($event)"
+              (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+              <ng-template class="displayFlex flieUploadBlock alignMiddle" ngx-file-drop-content-tmp
+                let-openFileSelector="openFileSelector">
+                <div class="uploadIcon" align="center"></div>
+                <div class="tragTxt">Drag files here to upload, or</div>
+                <div
+                  class="clickHereBut"
+                  (click)="openFileSelector()"
+                  gtagEvent
+                  trackOn="click"
+                  category="Credit Application"
+                  [params]="{event_label: 'Tax Return Upload'}"
+                >
+                  Click Here
+                </div>
+              </ng-template>
+            </ngx-file-drop>
+
+            <ng-template [ngIf]="TaxPreFilesItems != null">
+              <div *ngIf="TaxPreFilesItems != null && TaxPreFilesItems.length > 0" class="header">
+                Your uploaded documents:
+              </div>
+              <div *ngFor="let e of TaxPreFilesItems" class="mt10">
+                <div>
+                  <span>{{ e.originalname }}</span>
+                </div>
+                <div class="ml5">
+                  <span class="tomatoColor">
+                    <i class="fas fa-trash cur-poi" (click)="deleteTaxPreFileSelected(e)"></i></span>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template [ngIf]="taxReturnsFileitems != null">
+              <div *ngIf="
+                  taxReturnsFileitems != null &&
+                  taxReturnsFileitems.length > 0 &&
+                  TaxPreFilesItems.length == 0
+                " class="header">
+                Your uploaded documents:
+              </div>
+              <div *ngFor="let e of taxReturnsFileitems" class="mt10">
+                <div>
+                  <span>{{ e.name }}</span>
+                </div>
+                <div class="ml5">
+                  <span class="tomatoColor">
+                    <i class="fas fa-trash cur-poi" (click)="deleteFileSelectedTax(e)"></i></span>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+
+          <!-- <div class="pb50px">
+            <div class="labelTxt">Tax exempt?</div>
+            <div>
+              <div class="displayFlex">
+                <label class="displayFlex alignItemcenter pr10">
+                  <div class="pr15">
+                    <input type="radio" name="choice-radio" value="Y" [(ngModel)]="data.taxExempt" />
+                  </div>
+                  <div class="pr25 yesText">Yes</div>
+                </label>
+                <label class="displayFlex alignItemcenter pr10">
+                  <div class="pr15">
+                    <input type="radio" name="choice-radio" value="N" [(ngModel)]="data.taxExempt" />
+                  </div>
+                  <div class="pr25 yesText">No</div>
+                </label>
+              </div>
+            </div>
+          </div>dsfs -->
+          <div class="pb50px">
+            <div class="labelTxt">Tax exempt?</div>
+            <div>
+              <div class="displayFlex optionSection">
+                <input type="radio" name="choice-radio" value="Y" [(ngModel)]="data.taxExempt" id="yes" />
+                <label for="yes">Yes</label>
+
+                <input type="radio" name="choice-radio" value="N" id="no" [(ngModel)]="data.taxExempt" />
+                <label for="no">No</label>
+
+                <!-- <label class="displayFlex alignItemcenter pr10">
+                  <div class="pr15">
+                    <input type="radio" name="choice-radio" value="Y" [(ngModel)]="data.taxExempt" />
+                  </div>
+                  <div class="pr25 yesText">Yes</div>
+                </label>
+                <label class="displayFlex alignItemcenter pr10">
+                  <div class="pr15">
+                    <input type="radio" name="choice-radio" value="N" [(ngModel)]="data.taxExempt" />
+                  </div>
+                  <div class="pr25 yesText">No</div>
+                </label> -->
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="data.taxExempt == 'Y'">
+            <div class="yesButton">
+              <div class="pb50px">
+                <div class="labelTxt">Tax Exempt Number</div>
+                <div>
+                  <input type="text" name="taxExemptNumber" class="inputField form-control"
+                    placeholder="Enter tax Exempt Number" (input)="data.taxExemptNumber = namedata($event)"
+                    (keypress)="keyPressNumbers($event)" [(ngModel)]="data.taxExemptNumber" #taxExemptNumber="ngModel"
+                    required [ngClass]="{
+                      'is-invalid': f.submitted && taxExemptNumber.invalid
+                    }" />
+                  <small *ngIf="
+                      taxExemptNumber.invalid &&
+                      (taxExemptNumber.touched || f.submitted)
+                    " class="text-danger">Tax Exempt Number is required</small>
+                </div>
+              </div>
+
+              <div class="pb50px">
+                <div class="labelTxt">Tax Exempt Certificate</div>
+                <ngx-file-drop class="flieUploadBlock" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+                  (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+                  <ng-template class="displayFlex flieUploadBlock alignMiddle" ngx-file-drop-content-tmp
+                    let-openFileSelector="openFileSelector">
+                    <div class="uploadIcon" align="center"></div>
+                    <div class="tragTxt">Drag files here to upload, or</div>
+                    <div class="clickHereBut" (click)="openFileSelector()">
+                      Click Here
+                    </div>
+                  </ng-template>
+                </ngx-file-drop>
+
+                <ng-template [ngIf]="preFilesItems != null">
+                  <div *ngIf="preFilesItems != null && preFilesItems.length > 0" class="header">
+                    Your uploaded documents:
+                  </div>
+                  <div *ngFor="let e of preFilesItems" class="mt10">
+                    <div>
+                      <span>{{ e.originalname }}</span>
+                    </div>
+                    <div class="ml5">
+                      <span class="tomatoColor">
+                        <i class="fas fa-trash cur-poi" (click)="deletePreFileSelected(e)"></i></span>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template [ngIf]="fileitems != null">
+                  <div *ngIf="
+                      fileitems != null &&
+                      fileitems.length > 0 &&
+                      preFilesItems.length == 0
+                    " class="header">
+                    Your uploaded documents:
+                  </div>
+                  <div *ngFor="let e of fileitems" class="mt10">
+                    <div>
+                      <span>{{ e.name }}</span>
+                    </div>
+                    <div class="ml5">
+                      <span class="tomatoColor">
+                        <i class="fas fa-trash cur-poi" (click)="deleteFileSelected(e)"></i></span>
+                    </div>
+                  </div>
+                </ng-template>
+                <!-- <div *ngFor="let e of fileitems" class="mt10">
+                  <div>
+                    <span>{{e.name}}</span>
+                  </div>
+                  <div class="ml5">
+                    <span class="tomatoColor">
+                      <i class="fas fa-trash cur-poi" (click)="deleteFileSelected(e)"></i></span>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="">
+            <div class="row displayFlex">
+              <div class="col-1">
+                  <input type="checkbox" class="inputField form-control certifyuloan" name="certifyuseofloan" [(ngModel)]="data.certifyuseofloan" #certifyuseofloan="ngModel" required
+                  [ngClass]="{ 'is-invalid': f.submitted && certifyuseofloan.invalid }"/>
+                  <label for="checkbox"></label>
+
+              </div>
+              <div class="col-11">
+                <p class="certifyuloanText">
+                By checking this box, I hereby certify that this solar project is for commercial use.
+                I understand that I must use my loan proceeds exclusively to finance a commercial solar project.
+                I also attest that I will not use any of my loan proceeds for personal, household or family purposes.
+                </p>
+              </div>
+            </div>
+            <small *ngIf="certifyuseofloan.invalid && (certifyuseofloan.touched || f.submitted)" class="text-danger">A Response is
+              required</small>
+          </div>
+
+          <div class="ptb50">
+            <div class="fotterbg displayFlex">
+              <div class="displayFlex letsgo">
+                <div>
+                  <button
+                    (click)="completed()"
+                    type="submit"
+                    gtagEvent
+                    trackOn="click"
+                    category="Credit Application"
+                    [params]="{event_label: 'Step 1 Completed'}"
+                  >NEXT</button>
+                </div>
+                <div [ngClass]="{
+                    safariarrowalign: OsName == 'MacOS',
+                    windowarrowalign: OsName == 'Windows'
+                  }" id="arrowalign">
+                  <img src="../../../assets/nextarrow.svg" style="width: 33px; margin-left: 5px" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <!-- <p class="headtext">Message</p> -->
+    <div *ngFor="let m of message" class="msgtext">{{ m }}</div>
+    <button type="button" class="btn submitButton" aria-label="Close" (click)="close()">
+      NO, LET ME FIX THAT
+    </button>
+    &nbsp; &nbsp;&nbsp;&nbsp;
+    <button type="button" class="btn submitButton" type="button" (click)="submitApi()">
+      YES, THAT IS CORRECT
+    </button>
+  </div>
+</ng-template>

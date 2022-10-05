@@ -1,0 +1,113 @@
+<section class="content-header">
+  <ol class="breadcrumb">
+    <li>
+      <a [routerLink]="['/admin/dashboard']"><i class="fa fa-dashboard"></i> Dashboard</a>
+    </li>
+    <li class="active">{{userName}} Users List</li>
+  </ol>
+</section>
+
+<div class="frameshadow">
+  <div class="mainTitle">
+    <div>{{userName}} Users List</div>
+    <div>
+      <button type="button" class="btn-success btn-user-control buttonSize" (click)="adduser(addusertemplate)">
+        <i class="fa fa-user" aria-hidden="true"></i> Add Admin
+      </button>
+    </div>
+  </div>
+
+
+  <div class="p10">
+    <table *ngIf="data!=null && data.length > 0" datatable class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">User ref</th>
+          <th scope="col">Email</th>
+          <!-- <th *ngIf="userName!='Admin'" scope="col">Business Name</th> -->
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of data; let i = index">
+          <th class="bold" scope="row">{{ i + 1 }}</th>
+          <td>
+            <a routerLink="/admin/users/{{ d.id }}">USR_{{ d.ref_no }}</a>
+          </td>
+          <td>{{ d.email }}</td>
+          <!-- <td *ngIf="userName!='Admin'">{{ (d.businessName!=null) ? d.businessName : '----' }}</td> -->
+          <td>{{ d.firstName }}</td>
+          <td>{{ d.lastName }}</td>
+          <td>{{ d.role_name | titlecase}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table *ngIf="data==null && data.length == 0" datatable class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">User ref</th>
+          <th scope="col">Email</th>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <!-- <th scope="col">Business Name</th> -->
+          <!-- <th scope="col">Last Name</th> -->
+          <th scope="col">Role</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p class="headtext">Message</p>
+    <p *ngFor="let m of message">{{ m }}</p>
+  </div>
+</ng-template>
+
+<ng-template #addusertemplate>
+  <div class="modal-body">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h5>Add Admin</h5>
+
+    <form id="adduserform" name="adduserform" (ngSubmit)="f.form.valid && submit(messagebox)" #f="ngForm" novalidate>
+      <div class="form-group">
+        <label for="ContactName">First Name</label>
+        <input type="text" name="firstName" class="form-control" placeholder="Enter First Name"
+          (input)="f1.firstName = namedata($event)" [(ngModel)]="f1.firstName" #firstName="ngModel" required
+          [ngClass]="{ 'is-invalid': f.submitted && firstName.invalid }">
+      </div>
+      <div class="form-group">
+        <label for="ContactName">Last name</label>
+        <input type="text" name="lastName" class="form-control" placeholder="Enter Last name"
+          (input)="f1.lastName = namedata($event)" [(ngModel)]="f1.lastName" #lastName="ngModel" required
+          [ngClass]="{ 'is-invalid': f.submitted && lastName.invalid }">
+      </div>
+      <div class="form-group">
+        <label for="ContactEmail">Email</label>
+        <input type="email" name="email" class="form-control" placeholder="Enter Email" [(ngModel)]="f1.email"
+          #email="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+          [ngClass]="{ 'is-invalid': f.submitted && email.invalid }">
+      </div>
+      <div class="form-group">
+        <label for="ContactEmail">Role</label>
+        <select name="role" [(ngModel)]="f1.role">
+          <option value="-1">Select Role</option>
+          <option *ngFor="let r of roleList" [value]=r.id>{{r.name}}</option>
+        </select>
+      </div>
+      <button type="button" class="brw-btn closebutton mr30px w200px" (click)="close()">CANCEL</button>
+      <button type="submit" class="greenbutton upperCase w200px">Add</button>
+    </form>
+  </div>
+</ng-template>

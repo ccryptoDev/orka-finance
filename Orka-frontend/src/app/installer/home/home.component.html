@@ -1,0 +1,630 @@
+<div>
+  <section class="opportunities">
+    <div class="container">
+      <div class="d-flex justify-content-between">
+        <div>
+          <h2>Opportunities</h2>
+        </div>
+        <!-- <div (click)="getDatatable()">
+                <button  class="btn2 reset_btn2">Reset all</button>
+            </div>121233 -->
+      </div>
+      <div class="d-flex justify-content-between pt_20">
+        <div class="filter">
+          <ul class="d-flex">
+            <li>
+              <h4>Filters:</h4>
+            </li>
+            <li>
+              <div
+                class="btn-group"
+                (click)="
+                  hidden = !hidden; hiddenstate = false; hiddensales = false
+                "
+              >
+                <button type="button" class="btn drop_option">
+                  {{ phaseType }}
+                </button>
+                <button
+                  type="button"
+                  class="btn drop_icon dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul
+                  class="dropdown-menu"
+                  [ngStyle]="hidden && { display: 'block' }"
+                >
+                  <li>
+                    <a (click)="getDatatablefilter('Phase', 'phase')"
+                      >Clear Phase</a
+                    >
+                  </li>
+                  <li *ngFor="let phaseRes of phasearr">
+                    <a (click)="getDatatablefilter(phaseRes.name, 'phase')">{{
+                      phaseRes.name
+                    }}</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <div
+                class="btn-group"
+                (click)="
+                  hiddenstate = !hiddenstate;
+                  hidden = false;
+                  hiddensales = false
+                "
+              >
+                <button type="button" class="btn drop_option">
+                  {{ stateType }}
+                </button>
+                <button
+                  type="button"
+                  class="btn drop_icon dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul
+                  class="dropdown-menu"
+                  [ngStyle]="hiddenstate && { display: 'block' }"
+                >
+                  <li>
+                    <a (click)="getDatatablefilter('State', 'state')"
+                      >Clear State</a
+                    >
+                  </li>
+                  <li *ngFor="let satesRes of stateres">
+                    <a (click)="getDatatablefilter(satesRes.state, 'state')">{{
+                      satesRes.state
+                    }}</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <div
+                class="btn-group"
+                (click)="
+                  hiddensales = !hiddensales;
+                  hidden = false;
+                  hiddenstate = false
+                "
+              >
+                <button type="button" class="btn drop_option">
+                  {{ salesrepType }}
+                </button>
+                <button
+                  type="button"
+                  class="btn drop_icon dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul
+                  class="dropdown-menu"
+                  [ngStyle]="hiddensales && { display: 'block' }"
+                >
+                  <li>
+                    <a (click)="getDatatablefilter('Sales Rep', 'salesrep')"
+                      >Clear Sales Rep</a
+                    >
+                  </li>
+                  <li *ngFor="let salesRepRes of salesrepres">
+                    <a
+                      (click)="
+                        getDatatablefilter(salesRepRes.salesrep, 'salesrep')
+                      "
+                      >{{ salesRepRes.salesrep }}</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- <div>
+                  <div class="custom-search">
+                      <input type="text" id="DataTables_Table_0_filter" class="search-query dataTables_filter" placeholder="Search ...">
+                      <img src="../../../assets/search.svg">
+                  </div>
+              </div> -->
+        <div (click)="getDatatable()">
+          <button class="btn2 reset_btn2">Reset all</button>
+        </div>
+      </div>
+      <div class="tableResponsive mt30 homescreenTable">
+        <table
+          datatable
+          [dtOptions]="noOrder"
+          class="table pt_20"
+          *ngIf="result != null && result.length > 0 && tablehide"
+        >
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Customer</th>
+              <th scope="col">Owner</th>
+              <th scope="col">Sales Rep</th>
+              <th scope="col">City</th>
+              <th scope="col">State</th>
+              <th scope="col">Distance</th>
+              <th scope="col">Created</th>
+              <th scope="col">Credit Days</th>
+              <th scope="col">Last Update</th>
+              <th scope="col">Phase</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!--(click)="navigate(opportunitiesData.loanid)"-->
+            <tr
+              *ngFor="let opportunitiesData of result"
+              (click)="navigate(opportunitiesData.loanid)"
+              [ngClass]="
+                opportunitiesData.phase_flag == 'Archived'
+                  ? 'archievedText rowButton'
+                  : 'rowButton'
+              "
+            >
+              <th scope="row">{{ opportunitiesData.id }}</th>
+              <td title="{{ opportunitiesData.customer }}">
+                {{
+                  opportunitiesData.customer != null &&
+                  opportunitiesData.customer.length > 12
+                    ? (opportunitiesData.customer | slice: 0:12) + ".."
+                    : opportunitiesData.customer
+                }}
+              </td>
+              <td title="{{ opportunitiesData.ownerfullname }}">
+                {{
+                  opportunitiesData.ownerfullname != null &&
+                  opportunitiesData.ownerfullname.length > 12
+                    ? (opportunitiesData.ownerfullname | slice: 0:12) + ".."
+                    : opportunitiesData.ownerfullname
+                }}
+              </td>
+              <td title="{{ opportunitiesData.salesrep }}">
+                {{
+                  opportunitiesData.salesrep != null &&
+                  opportunitiesData.salesrep.length > 12
+                    ? (opportunitiesData.salesrep | slice: 0:12) + ".."
+                    : opportunitiesData.salesrep
+                }}
+              </td>
+              <td title="{{ opportunitiesData.city }}">
+                {{
+                  opportunitiesData.city != null &&
+                  opportunitiesData.city.length > 12
+                    ? (opportunitiesData.city | slice: 0:12) + ".."
+                    : opportunitiesData.city
+                }}
+              </td>
+              <td title="{{ opportunitiesData.state }}">
+                {{
+                  opportunitiesData.state != null &&
+                  opportunitiesData.state.length > 12
+                    ? (opportunitiesData.state | slice: 0:12) + ".."
+                    : opportunitiesData.state
+                }}
+              </td>
+              <td>{{ opportunitiesData.distance }}</td>
+              <td *ngIf="opportunitiesData.cur_date == 1">Yesterday</td>
+              <td *ngIf="opportunitiesData.cur_date == 0">Today</td>
+              <td *ngIf="opportunitiesData.cur_date > 1">
+                {{ opportunitiesData.cur_date }} Days ago
+              </td>
+              <td class="credit_days">25</td>
+              <td *ngIf="opportunitiesData.up_date == 1">Yesterday</td>
+              <td *ngIf="opportunitiesData.up_date == 0">Today</td>
+              <td *ngIf="opportunitiesData.up_date > 1">
+                {{ opportunitiesData.up_date }} Days ago
+              </td>
+              <td
+                class="ins_progress"
+                *ngIf="opportunitiesData.phase_flag == 'New'"
+              >
+                <div class="ins_bar" style="width: 20%">
+                  <p>{{ opportunitiesData.phase_flag }}</p>
+                </div>
+              </td>
+              <td
+                class="ins_progress"
+                *ngIf="opportunitiesData.phase_flag == 'Underwriting'"
+              >
+                <div class="ins_bar" style="width: 40%">
+                  <p>{{ opportunitiesData.phase_flag }}</p>
+                </div>
+              </td>
+              <td
+                class="ins_progress"
+                *ngIf="opportunitiesData.phase_flag == 'Construction'"
+              >
+                <div class="ins_bar" style="width: 100%">
+                  <p>{{ opportunitiesData.phase_flag }}</p>
+                </div>
+              </td>
+              <td
+                class="ins_progress"
+                *ngIf="opportunitiesData.phase_flag == 'Project Setup'"
+              >
+                <div class="ins_bar" style="width: 60%">
+                  <p>{{ opportunitiesData.phase_flag }}</p>
+                </div>
+              </td>
+              <td
+                class="ins_progress"
+                *ngIf="opportunitiesData.phase_flag == 'Archived'"
+              >
+                <div class="ins_bar" style="width: 0%">
+                  <p>{{ opportunitiesData.phase_flag }}</p>
+                </div>
+              </td>
+              <td
+                class="ins_progress"
+                *ngIf="opportunitiesData.phase_flag == 'Contracting'"
+              >
+                <div class="ins_bar" style="width: 80%">
+                  <p>{{ opportunitiesData.phase_flag }}</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table
+          datatable
+          [dtOptions]="noOrder"
+          class="table pt_20"
+          *ngIf="result != null && result.length > 0 && !tablehide"
+        >
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Customer</th>
+              <th scope="col">Owner</th>
+              <th scope="col">Sales Rep</th>
+              <th scope="col">City</th>
+              <th scope="col">State</th>
+              <th scope="col">Distance</th>
+              <th scope="col">Created</th>
+              <th scope="col">Credit Days</th>
+              <th scope="col">Last Update</th>
+              <th scope="col">Phase</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!--(click)="navigate(opportunitiesData.loanid)"-->
+            <tr
+              *ngFor="let opportunitiesData of result"
+              (click)="navigate(opportunitiesData.loanid)"
+              [ngClass]="
+                opportunitiesData.phase_flag == 'Archived'
+                  ? 'archievedText rowButton'
+                  : 'rowButton'
+              "
+            >
+              <th scope="row">{{ opportunitiesData.id }}</th>
+              <td>{{ opportunitiesData.customer }}</td>
+              <td>{{ opportunitiesData.contact }}</td>
+              <td>{{ opportunitiesData.salesrep }}</td>
+              <td>{{ opportunitiesData.city }}</td>
+              <td>{{ opportunitiesData.state }}</td>
+              <td>{{ opportunitiesData.distance }}</td>
+              <td *ngIf="opportunitiesData.cur_date == 1">Yesterday</td>
+              <td *ngIf="opportunitiesData.cur_date == 0">Today</td>
+              <td *ngIf="opportunitiesData.cur_date > 1">
+                {{ opportunitiesData.cur_date }} Days ago
+              </td>
+              <td class="credit_days">25</td>
+              <td *ngIf="opportunitiesData.up_date == 1">Yesterday</td>
+              <td *ngIf="opportunitiesData.up_date == 0">Today</td>
+              <td *ngIf="opportunitiesData.up_date > 1">
+                {{ opportunitiesData.up_date }} Days ago
+              </td>
+              <td
+                class="ins_progress"
+                *ngIf="opportunitiesData.phase_flag == 'New'"
+              >
+                <div class="ins_bar" style="width: 20%">
+                  <p>{{ opportunitiesData.phase_flag }}</p>
+                </div>
+              </td>
+              <td
+                class="ins_progress"
+                *ngIf="opportunitiesData.phase_flag == 'Underwriting'"
+              >
+                <div class="ins_bar" style="width: 40%">
+                  <p>{{ opportunitiesData.phase_flag }}</p>
+                </div>
+              </td>
+              <td
+                class="ins_progress"
+                *ngIf="opportunitiesData.phase_flag == 'Construction'"
+              >
+                <div class="ins_bar" style="width: 100%">
+                  <p>{{ opportunitiesData.phase_flag }}</p>
+                </div>
+              </td>
+              <td
+                class="ins_progress"
+                *ngIf="opportunitiesData.phase_flag == 'Project Setup'"
+              >
+                <div class="ins_bar" style="width: 60%">
+                  <p>{{ opportunitiesData.phase_flag }}</p>
+                </div>
+              </td>
+              <td
+                class="ins_progress"
+                *ngIf="opportunitiesData.phase_flag == 'Archived'"
+              >
+                <div class="ins_bar" style="width: 0%">
+                  <p>{{ opportunitiesData.phase_flag }}</p>
+                </div>
+              </td>
+              <td
+                class="ins_progress"
+                *ngIf="opportunitiesData.phase_flag == 'Contracting'"
+              >
+                <div class="ins_bar" style="width: 80%">
+                  <p>{{ opportunitiesData.phase_flag }}</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table
+          *ngIf="result != null && result.length == 0 && tablehide"
+          datatable
+          class="table pt_20"
+        >
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Customer</th>
+              <th scope="col">Owner</th>
+              <th scope="col">Sales Rep</th>
+              <th scope="col">City</th>
+              <th scope="col">State</th>
+              <th scope="col">Distance</th>
+              <th scope="col">Created</th>
+              <th scope="col">Credit Days</th>
+              <th scope="col">Last Update</th>
+              <th scope="col">Phase</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="11" class="text-center">No Records Found!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- <div class="row tablefooter">
+              <div class="col-md-4">
+                  <h4>Viewing 14 of 14 records</h4>
+              </div>
+              <div class="col-md-4">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true"><i class="fal fa-chevron-double-left"></i></span>
+                          <span aria-hidden="true"><i class="fal fa-chevron-left"></i></span>
+                          <span class="sr-only">Previous</span>
+                        </a>
+                      </li>
+                      <li class="page-item"><a class="page-link active" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item"><a class="page-link" href="#">4</a></li>
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true"><i class="fal fa-chevron-right"></i></span>
+                          <span aria-hidden="true"><i class="fal fa-chevron-double-right"></i></span>
+                          <span class="sr-only">Next</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+              </div>
+              <div class="col-md-4">
+      <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              25 records per page
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </div>
+              </div>
+          </div> -->
+    </div>
+  </section>
+</div>
+<footer>
+  <div class="partnerFooter"></div>
+  <div class="partnerFooterbg">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <img class="footerLogo" src="../../../assets/orka_whitelogo1.png" />
+        </div>
+        <div class="col-md-3">
+          <div class="displayFlex flexDirection">
+            <div
+              class="graytext cursorpointer pr20 pb10px"
+              target="_blank"
+              (click)="privacy()"
+            >
+              Privacy Policy
+            </div>
+
+            <div
+              class="graytext cursorpointer pr20 pb10px"
+              target="_blank"
+              (click)="termscondition()"
+            >
+              Terms and Conditions
+            </div>
+
+            <div
+              class="graytext cursorpointer pb10px"
+              target="_blank"
+              (click)="securitypolicy()"
+            >
+              Security Policy
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="graytext pb10px">Need help or have questions?</div>
+
+          <div class="whiteText pb10px">
+            Don't hesitate to contact ORKA's Support Team at
+            <a href="mailto:support@orkafinance.com" class="footerlinktxt"
+              >support@orkafinance.com</a
+            >
+          </div>
+          <div class="whiteText pb10px">or by phone at (844) ORKA-POD.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<ng-template #resetPassword>
+  <div class="modal-body text-center">
+    <!--commit changes and complete-->
+    <form
+      name="form"
+      (ngSubmit)="f.form.valid && resetPasswordSubmit()"
+      #f="ngForm"
+      novalidate
+    >
+      <div class="row">
+        <div class="col-12">
+          <div class="input-group form-group">
+            <input
+              type="password"
+              [type]="fieldTextType2 ? 'text' : 'password'"
+              required
+              name="password"
+              class="form-control"
+              placeholder="Enter New Password"
+              (input)="f1.password = namedata($event)"
+              [(ngModel)]="f1.password"
+              #password="ngModel"
+              required
+              [ngClass]="{ 'is-invalid': f.submitted && password.invalid }"
+              (change)="validatePattern($event)"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i
+                  class="fa"
+                  [ngClass]="{
+                    'fa-eye-slash': !fieldTextType2,
+                    'fa-eye': fieldTextType2
+                  }"
+                  (click)="toggleFieldTextType2()"
+                ></i>
+              </span>
+            </div>
+          </div>
+          <div class="mb10px">
+            <small
+              *ngIf="password.invalid && (password.touched || f.submitted)"
+              class="text-danger"
+            >
+              New Password is required</small
+            >
+          </div>
+          <div class="input-group form-group">
+            <input
+              type="password"
+              [type]="fieldTextType1 ? 'text' : 'password'"
+              required
+              name="confirm_password"
+              class="form-control"
+              placeholder="Enter New Confirm Password"
+              (input)="f1.confirm_password = namedata($event)"
+              [(ngModel)]="f1.confirm_password"
+              #confirm_password="ngModel"
+              required
+              [ngClass]="{
+                'is-invalid': f.submitted && confirm_password.invalid
+              }"
+              (keyup)="validateConfirm($event)"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i
+                  class="fa"
+                  [ngClass]="{
+                    'fa-eye-slash': !fieldTextType1,
+                    'fa-eye': fieldTextType1
+                  }"
+                  (click)="toggleFieldTextType1()"
+                ></i>
+              </span>
+            </div>
+          </div>
+          <div class="mb30px">
+            <small
+              *ngIf="
+                confirm_password.invalid &&
+                (confirm_password.touched || f.submitted)
+              "
+              class="text-danger"
+            >
+              Confirm Password is required</small
+            >
+          </div>
+          <div class="mb30px">
+            <small *ngIf="confirmValidate" class="text-danger">
+              Passwords should match!</small
+            >
+          </div>
+          <div class="mb30px">
+            <small *ngIf="patternCheck" class="text-danger">
+              Password must contain at least 1 Upper Case, 1 Lower case, 1
+              Number, 1 Special Character and minimum length of 8 characters.
+            </small>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary" [disabled]="IsDisabled" type="submit">
+        Submit
+      </button>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p class="headtext">Message</p>
+    <p *ngFor="let m of message">{{ m }}</p>
+  </div>
+</ng-template>

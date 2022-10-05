@@ -1,0 +1,332 @@
+<div class="container section">
+    <div class="row">
+  
+      <div class="col-4">
+        <form
+        [formGroup]="reviewAddForm"
+        (ngSubmit)="approveSubmit()"
+        
+      >
+        <div class="backgroundtextdoc tableInnerDiv">
+          <h2>Milestone Checklist</h2>
+          <ul>
+            <div *ngIf="milestoneVal=='Equipment'">
+            <li>
+              <h3><b class="reviewhead">Equipment</b></h3>
+
+              <div class="displayFlex spaceBetween AlignItemCenter ml-1"  *ngFor="let c of data_res;let i =index">
+                <div (click)="clickfileview(c.filename)" class="">{{c.originalname}}</div>
+                <img
+                              *ngIf="checktype(c.originalname) == 'pdf'"
+                              src="../../../assets/pdf_icon1.png"
+                              class="pdficon"
+                              alt=""
+                            />
+                            <img
+                              *ngIf="checktype(c.originalname) == 'doc'"
+                              src="../../../assets/doc_icon.png"
+                              class="pdficon"
+                              alt=""
+                            />
+                            <img
+                              *ngIf="checktype(c.originalname) == 'png'"
+                              src="../../../assets/png_icon.png"
+                              class="pdficon"
+                              alt=""
+                            />
+                            <img
+                              *ngIf="
+                              checktype(c.originalname) == 'jpeg' ||
+                              checktype(c.originalname) == 'jpg'"
+                              src="../../../assets/jpeg_icon.png"
+                              class="pdficon"
+                              alt=""
+                            />
+                <div >
+                  <input type="checkbox"  name="{{c.originalname}}" formControlName="originalname"
+                   (change)="check($event,c.originalname,c.filename)"/>
+                  <label for="checkbox"></label>
+                </div>
+              </div>
+
+            </li>
+
+
+            <li>
+              <h3><b class="reviewhead">Permit</b></h3>
+
+              <div class="displayFlex spaceBetween AlignItemCenter ml-1" *ngFor="let c of data_permit;let i =index">
+                <div (click)="clickfileview(c.filename)" class="">{{c.originalname}}</div>
+                <img
+                              *ngIf="checktype(c.originalname) == 'pdf'"
+                              src="../../../assets/pdf_icon1.png"
+                              class="pdficon"
+                              alt=""
+                            />
+                            <img
+                              *ngIf="checktype(c.originalname) == 'doc'"
+                              src="../../../assets/doc_icon.png"
+                              class="pdficon"
+                              alt=""
+                            />
+                            <img
+                              *ngIf="checktype(c.originalname) == 'png'"
+                              src="../../../assets/png_icon.png"
+                              class="pdficon"
+                              alt=""
+                            />
+                            <img
+                              *ngIf="
+                                checktype(c.originalname) == 'jpeg' ||
+                                checktype(c.originalname) == 'jpg'
+                              "
+                              src="../../../assets/jpeg_icon.png"
+                              class="pdficon"
+                              alt=""
+                            />
+                <div >
+                  <input type="checkbox" name="{{c.originalname}}" formControlName="originalname"
+                   (change)="check($event,c.originalname,c.filename)"/>
+                  <label for="checkbox"></label>
+                </div>
+              </div>
+
+            </li>
+            </div>
+
+            <div *ngIf="milestoneVal=='Construction'">
+              <li>
+                <h3><b class="reviewhead">Construction</b></h3>
+  
+                <div class="displayFlex spaceBetween AlignItemCenter ml-1" *ngFor="let c of data_c;let i =index">
+                  <div  (click)="clickfileview(c.filename)" class="">{{c.originalname}}</div>
+                  <img
+                                *ngIf="checktype(c.originalname) == 'pdf'"
+                                src="../../../assets/pdf_icon1.png"
+                                class="pdficon"
+                                alt=""
+                              />
+                              <img
+                                *ngIf="checktype(c.originalname) == 'doc'"
+                                src="../../../assets/doc_icon.png"
+                                class="pdficon"
+                                alt=""
+                              />
+                              <img
+                                *ngIf="checktype(c.originalname) == 'png'"
+                                src="../../../assets/png_icon.png"
+                                class="pdficon"
+                                alt=""
+                              />
+                              <img
+                                *ngIf="
+                                checktype(c.originalname) == 'jpeg' ||
+                                checktype(c.originalname) == 'jpg'
+                                "
+                                src="../../../assets/jpeg_icon.png"
+                                class="pdficon"
+                                alt=""
+                              />
+                  <div >
+                    <input type="checkbox" name="{{c.originalname}}" formControlName="originalname"
+                     (change)="check($event,c.originalname,c.filename)"/>
+                    <label for="checkbox"></label>
+                  </div>
+                </div>
+  
+              </li>
+
+            </div>
+
+            <div *ngIf="milestoneVal=='PTO'">
+              <li>
+                <h3><b class="reviewhead">Commercial Operation</b></h3>
+  
+                <div class="displayFlex spaceBetween AlignItemCenter ml-1" *ngFor="let c of data_pto;let i =index">
+                  <div (click)="clickfileview(c.filename)" class="">{{c.originalname}}</div>
+                  <img
+                                *ngIf="checktype(c.originalname) == 'pdf'"
+                                src="../../../assets/pdf_icon1.png"
+                                class="pdficon"
+                                alt=""
+                              />
+                              <img
+                                *ngIf="checktype(c.originalname) == 'doc'"
+                                src="../../../assets/doc_icon.png"
+                                class="pdficon"
+                                alt=""
+                              />
+                              <img
+                                *ngIf="checktype(c.originalname) == 'png'"
+                                src="../../../assets/png_icon.png"
+                                class="pdficon"
+                                alt=""
+                              />
+                              <img
+                                *ngIf="
+                                checktype(c.originalname) == 'jpeg' ||
+                                checktype(c.originalname) == 'jpg'
+                                "
+                                src="../../../assets/jpeg_icon.png"
+                                class="pdficon"
+                                alt=""
+                              />
+                  <div >
+                    <input type="checkbox" name="{{c.originalname}}" formControlName="originalname"
+                     (change)="check($event,c.originalname,c.filename)"/>
+                    <label for="checkbox"></label>
+                  </div>
+                </div>
+  
+              </li>
+
+            </div>
+            
+  
+          
+            
+            
+          </ul>
+          <!-- [disabled]="!allChecked" -->
+          <button
+          type="submit"
+            
+            style="width: 100%"
+            [ngClass]="{'requestFalse': requesthide === false, 'requestTrue' : requesthide === true }"
+  
+            [disabled]="requesthide=== true"
+          >
+            <i aria-hidden="true" class="fa fa-thumbs-up"></i> Approve
+          </button>
+  
+          <div *ngIf="requesthide">
+          <button
+            type="button"
+            class="btn btn-secondary fs12px mt10px"
+            style="width: 100%"
+            (click)="popupform()"
+          >
+            <i class="fa fa-hand-pointer-o"></i> Request for Information
+          </button>
+        </div>
+        </div>
+      </form>
+      </div>
+     
+      <div class="col-8">
+        <div
+          style="display: flex; justify-content: flex-end; align-items: center"
+        >
+          <button class="fullscreen" (click)="view()">
+            <i class="fa fa-expand"></i> &nbsp; View Fullscreen
+          </button>
+        </div>
+        <div class="d-flex justify-content-between pt_20 mb30px mt30px">
+          <div *ngIf="ishowiframe">
+          <iframe
+            style="height: 500px;
+            width: 595px;
+            margin-top: 10px;"
+            [src]="urlSafe"
+            frameBorder="0"
+            scrolling="auto"
+            width="100%"
+          ></iframe>
+        </div>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  <div class="row mb30px">
+  
+    <div class="col-12">
+      <div class="text-center">
+        <div *ngIf="reviewlog!=null && reviewlog.length > 0" class="mainTitle">Review Log List</div>
+      </div>
+      <table *ngIf="reviewlog!=null && reviewlog.length > 0"  datatable [dtOptions]="dtOptions" class="table">
+        <thead class="thead-dark">
+          <tr class="bold">
+            <th style="width: 10px">#</th>
+            <th style="white-space: nowrap">Log Reference</th>
+            <th>Module Name</th>
+            <th>User</th>
+            <th>Updated Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of reviewlog; let i = index">
+            <td class="bold">{{ i + 1 }}</td>
+            <td>{{ d.id }}</td>
+            <td>{{ d.module }}</td>
+            <td>
+              {{ d.user_id }}
+            </td>
+            <td>{{ d.updatedAt | date:'MM-dd-yyyy' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+    </div>
+  
+      </div>
+  
+  <ng-template #requestinformation>
+    <div class="modal-body text-center chmodalpass">
+      <div class="row">
+        <div class="col-12 text-center requestinfo_text">
+            The text below will be sent to the solar installer.Please indicate why the contract was not acceptable
+            and clear directions for their resubmission. 
+        </div>
+      </div>
+      <!--commit changes and complete-->
+      <form
+        name="form"
+        (ngSubmit)="f3.form.valid && requestinfoSubmit()"
+        #f3="ngForm"
+        novalidate
+      >
+        <div class="row">
+          <div class="col-12">
+            <div class="input-group form-group">
+              <textarea class="form-control requestinfo" name="comments" [(ngModel)]="cm.comments" #comments="ngModel"
+              required [ngClass]="{ 'is-invalid': f3.submitted && comments.invalid }"></textarea>
+            </div>
+            <div class="mb30px">
+              <small
+                *ngIf="
+                comments.invalid &&
+                  (comments.touched || f3.submitted)
+                "
+                class="text-danger"
+              >
+                Request Information is required</small
+              >
+            </div>
+          </div>
+        </div>
+        <button class="btn submitButton mt10px mr10px" type="button" style="margin-right: 10px;
+        background: #f06c6c;" (click)="close()">
+          Cancel
+        </button>
+        <button class="btn submitButton mt10px mr10px" [disabled]="comments.invalid" type="submit">
+          Submit
+        </button>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template #messagebox>
+    <div class="modal-body text-center">
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <p class="headtext">Message</p>
+      <p *ngFor="let m of message">{{ m }}</p>
+    </div>
+  </ng-template>
+  

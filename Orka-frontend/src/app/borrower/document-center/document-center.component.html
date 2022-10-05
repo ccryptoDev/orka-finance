@@ -1,0 +1,317 @@
+<div class="container">
+  <div class="d-flex justify-content-between pt_20 mb30px mt30px">
+    <div class="backgroundtextdoc">
+      <div class="infoTitle pb32">Document Center</div>
+    </div>
+
+    <div class="">
+      <button class="opportunityButton1" (click)="popupform()">
+        UPLOAD DOCUMENT
+      </button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="pb200px">
+      <div
+        class="image11 row1 jus-spa"
+        (click)="hiddenloandoc = !hiddenloandoc; hidden_otherdoc = false"
+      >
+        <div class="row1">
+          <!-- EXPOSED-ARROW START  -->
+          <!-- <div class="exposedArrow"></div> -->
+          <!-- EXPOSED-ARROW END  -->
+
+          <!-- EXPANDED-ARROW START  -->
+          <div
+            [ngClass]="hiddenloandoc ? 'expandedArrow' : 'exposedArrow'"
+          ></div>
+          <!-- EXPANDED-ARROW END  -->
+          <div class="backgroundtext">LOAN DOCUMENTS</div>
+        </div>
+      </div>
+
+      <div
+        class="activityLog"
+        [ngStyle]="{ display: hiddenloandoc ? 'block' : 'none' }"
+      >
+        <!-- <div class="d-flex filter mt30">
+        <div class="btn1">
+          <button type="button" class="btn drop_option">DOCUMENT TYPE</button>
+        </div>
+        <div class="btn2 ml10">
+          <button type="button" class="btn drop_option">COMPLETED BY</button>
+        </div>
+      </div> -->
+
+        <div
+          class="tableResponsive mt30 homescreenTable mb30px"
+          style="margin-left: 30px"
+        >
+          <table datatable [dtOptions]="noOrder" class="table pt_20" *ngIf="docusignData.length > 0">
+            <thead>
+              <tr *ngIf="docusignData">
+                <th scope="col">#</th>
+                <th scope="col">Document Name</th>
+                <th scope="col">Document Type</th>
+                <th scope="col">Last Updated</th>
+                <th scope="col">Completed By</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Loan Agreement Borrower</td>
+                <td>Loan Agreement</td>
+                <td>{{docusignData.achdate | date:"MM-dd-yyyy h:mm:a"}}</td>
+                <td>{{docusignData.reviewdby}}</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Personal Guaranty</td>
+                <td>Personal Guaranty Form</td>
+                <td>{{docusignData.financingdate | date:"MM-dd-yyyy h:mm:a"}}</td>
+                <td>{{docusignData.reviewdby}}</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>ACH Authorization</td>
+                <td>ACH Authorization</td>
+                <td>{{docusignData.pgdate | date:"MM-dd-yyyy h:mm:a"}}</td>
+                <td>{{docusignData.reviewdby}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div
+        class="image13 jus-spa"
+        (click)="hidden_otherdoc = !hidden_otherdoc; hiddenloandoc = false"
+      >
+        <div class="displayFlex">
+          <!-- EXPOSED-ARROW START  -->
+          <!-- <div class="exposedArrow"></div> -->
+          <!-- EXPOSED-ARROW END  -->
+
+          <!-- EXPANDED-ARROW START  -->
+          <div
+            [ngClass]="hidden_otherdoc ? 'expandedArrow' : 'exposedArrow'"
+          ></div>
+          <!-- EXPANDED-ARROW END  -->
+          <div class="backgroundtext">OTHER DOCUMENTS</div>
+        </div>
+      </div>
+
+      <div
+        class="activityLog"
+        [ngStyle]="{ display: hidden_otherdoc ? 'block' : 'none' }"
+      >
+        <!-- <div class="d-flex filter mt30">
+        <div class="btn1">
+          <button type="button" class="btn drop_option">DOCUMENT TYPE</button>
+        </div>
+        <div class="btn2 ml10">
+          <button type="button" class="btn drop_option">COMPLETED BY</button>
+        </div>
+      </div> -->
+
+        <div class="tableResponsive mt30 homescreenTable mb30px">
+          <table
+            *ngIf="data != null && data.length > 0"
+            [dtOptions]="noOrder"
+            datatable
+            class="table pt_20"
+          >
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Document Name</th>
+                <th scope="col">Document Type</th>
+                <th scope="col">Last Updated</th>
+                <th scope="col">Completed By</th>
+                <th scope="col">View</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of data; let a = index">
+                <td>{{ a + 1 }}</td>
+                <td>{{ c.originalname }}</td>
+                <td>{{ c.documentType }}</td>
+                <td>{{ c.updatedAt | date:"MM-dd-yyyy h:mm:a" }}</td>
+                <td>--</td>
+                <td (click)="view(c.filename)">
+                  <a style="cursor: pointer">View</a>
+                  <!-- <a [href]="downloadUrl/c.filename" [download]="c.filename">
+                  <i class="fa fa-download" aria-hidden="true"></i>
+                </a> -->
+                </td>
+
+                <td>
+                  <span class="tomatoColor">
+                    <i
+                      class="fas fa-trash cur-poi"
+                      (click)="deletePreFileSelected(c.id)"
+                    ></i
+                  ></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #messagebox>
+    <div class="modal-body text-center">
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <p class="headtext">Message</p>
+      <p *ngFor="let m of message">{{ m }}</p>
+    </div>
+  </ng-template>
+
+  <ng-template #uploadDocumentForm>
+    <div class="modal-body uploadBlock uploadModal">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="displayFlex AlignItemCenter spaceBetween uploadtitletxt">
+            <div class="">UPLOAD DOCUMENT</div>
+            <div class="cursorpointer" (click)="close()">
+              <img src="../../../assets/close-icon.svg" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <form
+        name="form"
+        (ngSubmit)="f.form.valid && upoadDocuments()"
+        #f="ngForm"
+        novalidate
+      >
+        <div class=" ">
+          <div class="pb50px">
+            <div class="labelTxt">DOCUMENT TYPE</div>
+            <div>
+              <select
+                class="inputField form-control"
+                [(ngModel)]="doctype"
+                (change)="selectDocType($event)"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                >
+                <option value=null selected disabled>Select Type</option>
+                <!-- <option value="Loan Agreement">Loan Agreement</option>
+                <option value="Personal Guaranty Form">
+                  Personal Guaranty Form
+                </option>
+                <option value="ACH Authorization">
+                  ACH Authorization
+                </option> -->
+                <option value="Property Ownership">Property Ownership</option>
+                <option value="Income Verification">Income Verification</option>
+                <option value="Tax Exempt Certificate">Tax Exempt Certificate</option>
+                <option value="Tax Return">Tax Return</option>
+                <option value="Business Financials">Business Financials</option>
+                <option value="Other">Other</option>
+
+
+                </select><input hidden (keyup)="docTypeComment($event.target.value)" />
+
+              <i class="fas fa-caret-down addressIcon2"></i>
+            </div>
+          </div>
+          <!-- <select
+          class="form-control"
+          name="shortname"
+          [(ngModel)]="res.businessShortName"
+        >
+          <option value="null" disabled>Default</option>
+          <option value="1">Type 1</option>
+        </select> -->
+        </div>
+
+        <!-- <div class="input-group form-group"> -->
+        <div class="pb50px">
+          <!-- <div class="labelTxt">FILE UPLOADS</div> -->
+          <ngx-file-drop
+            class="flieUploadBlock"
+            dropZoneLabel="Drop files here"
+            (onFileDrop)="dropped($event)"
+            (onFileOver)="fileOver($event)"
+            (onFileLeave)="fileLeave($event)"
+          >
+            <ng-template
+              class="displayFlex flieUploadBlock alignMiddle"
+              ngx-file-drop-content-tmp
+              let-openFileSelector="openFileSelector"
+            >
+              <div class="uploadIcon" align="center"></div>
+              <div class="tragTxt">Drag files here to upload, or</div>
+              <div class="clickHereBut" (click)="openFileSelector()">
+                Click Here
+              </div>
+            </ng-template>
+          </ngx-file-drop>
+
+          <ng-template [ngIf]="preFilesItems != null">
+            <div
+              *ngIf="preFilesItems != null && preFilesItems.length > 0"
+              class="header"
+            >
+              Your uploaded documents:
+            </div>
+            <!-- <div *ngFor="let e of preFilesItems" class="mt10">
+              <div>
+                <span>{{ e.originalname }}</span>
+              </div>
+              <div class="ml5">
+                <span class="tomatoColor">
+                  <i
+                    class="fas fa-trash cur-poi"
+                    (click)="deletePreFileSelected(e)"
+                  ></i
+                ></span>
+              </div>
+            </div> -->
+          </ng-template>
+          <ng-template [ngIf]="fileitems != null">
+            <div
+              *ngIf="fileitems != null && fileitems.length > 0"
+              class="header"
+            >
+              Your uploaded documents:
+            </div>
+            <div *ngFor="let e of fileitems" class="mt10">
+              <div>
+                <span>{{ e.name }}</span>
+              </div>
+              <div class="ml5">
+                <span class="tomatoColor">
+                  <i
+                    class="fas fa-trash cur-poi"
+                    (click)="deleteFileSelected(e)"
+                  ></i
+                ></span>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+        <div align="center">
+          <button class="submitbtnpopup" [disabled]="!f.valid" type="submit">
+            SUBMIT
+          </button>
+        </div>
+        <!-- </div> -->
+      </form>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,75 @@
+<div class="w75per">
+  <div class="fs22px pb20">Payment Schedule</div>
+
+  <div class="grayBox mb50px">
+    <div>
+      <div class="fs16px fontWeight pb20">Remaining balance</div>
+      <div class="fs22px greenColor pb20">${{remainingBalance}}</div>
+    </div>
+
+    <div class="displayFlex spaceBetween pb20">
+      <div>Minimum amount</div>
+      <div>${{monthDue}}</div>
+    </div>
+    <div class="displayFlex spaceBetween pb20">
+      <div>Next payment due</div>
+      <div>{{datePipe.transform(nextDuedate,"MMMM dd yyyy")}}</div>
+    </div>
+    <div *ngIf="data.user_details?.autoPayment=='Y'" class="infoBlock mb20px">
+      <div class="info_icon"></div>
+      <div>
+        You have automatic payment set up and this payment will be automatically
+        deducated from your bank account due to date.
+      </div>
+    </div>
+  </div>
+
+  <div class="grayBox mb50px">
+    <div>
+      <div class="fs16px fontWeight pb20">Payment Schedule Information</div>
+    </div>
+    <table class="table">
+       <thead>
+          <tr>
+             <th style="width: 10px">#</th>
+             <th>Unpaid Principal Balance</th>
+             <th>Principal</th>
+             <th>Interest</th>
+             <th>Fees</th>
+             <th>Amount</th>
+             <th>Schedule Date</th>
+          </tr>
+       </thead>
+       <tbody *ngIf="data.paymentScheduleDetails.length > 1">
+          <tr *ngFor="let d of data.paymentScheduleDetails; let i = index;">
+             <td>{{i+1}}</td>
+             <td>
+                {{d.unpaidPrincipal | currency}}
+             </td>
+             <td>
+                {{d.principal | currency}}
+             </td>
+             <td>{{d.interest | currency}}</td>
+             <td>{{d.fees | currency}}</td>
+             <td>{{d.amount | currency}}</td>
+             <td>{{datePipe.transform(d.scheduleDate,"yyyy/MM/dd")}}</td>
+          </tr>
+       </tbody>
+    </table>
+  </div>
+
+  <div class="grayBox mb50px" >
+    <div>
+      <div class="fs16px fontWeight pb20">Previous Payments</div>
+    </div>
+
+    <div *ngFor="let pd of data.payment_details" class="displayFlex spaceBetween pb20">
+      <div class="displayFlex">
+        <div class="tick_icon"></div>
+        <div>{{datePipe.transform(pd.paidAt,"MMMM dd")}}th {{datePipe.transform(pd.paidAt,"yyyy")}}</div>
+      </div>
+      <div>${{pd.amount}}</div>
+    </div>
+    
+  </div>
+</div>

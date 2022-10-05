@@ -1,0 +1,61 @@
+<div class="containermainBlock">
+    <div class="headerDiv">
+        <div class="displayFlex spaceBetween plr50">
+            <div class="logoBlock"><img src="../../../assets/logo1.png" /></div>
+        </div>
+    </div>
+
+    <div class="mainDivsection thankyou_container">
+        <div class="containerBlock" style="margin-left: 0px;">
+            
+            <div class="ptb50" *ngIf="!deResult">Please wait...</div>
+            <div class="ptb50" *ngIf="deResult == 'PASS'">
+                <div class="titleTxt">We're pickin' up good vibrations!</div>
+                <div class="mainContent" style="text-align: center;">
+                    <!-- Your credit application has been successfully submitted and is now under review. We should have
+                    everything we need to--
+                    return a decision soon and we appreciate your patience. -->
+                    Your credit application has been successfully submitted and things are looking good! We'll let you know if anything further is needed to return a decision. We appreciate your patience.
+                    <br>Thanks again for partnering with ORKA Finance on your solar journey.
+
+                </div>
+                <!-- <div class="mainContent mt30" style="text-align: center;">
+                    If you have any questions, you can contact ORKA Support by phone at (844) 772-9289 or by email at
+                    support@orkafinance.com. Thanks again for partnering with ORKA Finance.
+                </div> -->
+            </div>
+
+            <div class="ptb50" *ngIf="deResult == 'BYPASS'">
+                <div class="titleTxt">Thanks for completing your credit application!</div>
+                <div class="mainContent" style="text-align: center;">
+                    Your credit application has been successfully submitted and is now under review. We should have everything we need to return a decision quickly and we appreciate your patience in the meantime. 
+                    <br/>Thanks again for partnering with ORKA Finance on your solar journey.
+
+
+                </div>
+            </div>
+
+            <div class="ptb50" *ngIf="deResult == 'ERROR'">
+                <div class="titleTxt">WE'RE SORRY</div>
+                <div class="mainContent" style="text-align: center;">
+                    <span *ngIf="message1">{{message1}}</span>
+                    <span *ngIf="message2">{{message2}}</span>
+                </div>
+            </div>
+
+
+            <!-- <div class="ptb50">
+                <div class="fotterbg displayFlex">
+                    <div class="displayFlex letsgo">
+                        <div>
+                            <button type="submit">LET’S MOVE ON</button>
+                        </div>
+                        <div class="safariarrowalign" id="arrowalign">
+                            <img src="../../../nextarrow.png" style="width: 33px; margin-left: 5px" />
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>

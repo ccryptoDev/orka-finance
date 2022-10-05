@@ -1,0 +1,54 @@
+<section class="content-header">
+  <ol class="breadcrumb">
+    <li>
+      <a [routerLink]="['/admin/dashboard']"><i class="fa fa-dashboard"></i> Dashboard</a>
+    </li>
+    <li class="active">Approved Application Details</li>
+  </ol>
+</section>
+
+<div class="frameshadow">
+  <div class="mainTitle">Approved Application Details</div>
+
+  <div class="p10">
+    <table *ngIf="data!=null && data.length > 0" datatable class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Loan ref</th>
+          <th scope="col">User ref</th>
+          <th scope="col">Email</th>
+          <th scope="col">Business Name</th>
+          <!-- <th scope="col">lastName</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of data; let i = index">
+          <th class="bold" scope="row">{{ i + 1 }}</th>
+          <td>
+            <a routerLink="/admin/approved/{{ d.loan_id }}">LON_{{ d.loan_ref }}</a>
+          </td>
+          <td>
+            <a routerLink="/admin/users/{{ d.user_id }}">USR_{{ d.user_ref }}</a>
+          </td>
+          <td>{{ d.email }}</td>
+          <td>{{ d.businessname }}</td>
+          <!-- <td>{{ d.lastname }}</td> -->
+        </tr>
+      </tbody>
+    </table>
+
+    <table *ngIf="data==null && data.length == 0" datatable class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Loan ref</th>
+          <th scope="col">User ref</th>
+          <th scope="col">Email</th>
+          <th scope="col">Business Name</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>

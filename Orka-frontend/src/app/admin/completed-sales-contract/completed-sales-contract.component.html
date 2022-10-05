@@ -1,0 +1,45 @@
+<section class="content-header">
+    <!-- <h1>Completed Application Details</h1> -->
+    <ol class="breadcrumb">
+      <li>
+        <a [routerLink]="['/admin/dashboard']"
+          ><i class="fa fa-dashboard"></i> Dashboard</a
+        >
+      </li>
+      <li class="active">Completed Sales Contract Details</li>
+    </ol>
+  </section>
+  
+  <div class="frameshadow">
+    <div class="mainTitle">Completed Sales Contract Details</div>
+  
+    <div class="p10">
+      <table *ngIf="result!=null && result.length > 0" datatable [dtOptions]="dtOptions" class="table">
+        <thead class="thead-dark">
+          <tr>
+            <!-- <th scope="col">#</th> -->
+            <th scope="col">App ID</th>
+            <th scope="col">Installer</th>
+            <th scope="col">Business Borrower</th>
+            <th scope="col">File Name</th>
+            <th scope="col">Date/Time Submitted</th>
+            <th scope="col">Date/Time Approved</th>
+            <th scope="col">Reviewed By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of result; let i = index">
+            <!-- <th class="bold" scope="row">{{ i + 1 }}</th> -->
+              <td> {{data.appid}} </td>
+              <td> {{data.installer}} </td>
+              <td> {{data.borrower}} </td>
+              <td> {{data.filename}} </td>
+              <td> {{data.datesubmitted | date:"MM-dd-yyyy h:mm:a"}} </td>
+              <td> {{data.dateapproved | date:"MM-dd-yyyy h:mm:a"}} </td>
+              <td> {{reviewedby}} </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

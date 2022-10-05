@@ -1,0 +1,91 @@
+<section class="content-header">
+    <!-- <h1>Pending Application Details</h1> -->
+    <ol class="breadcrumb">
+      <li>
+        <a [routerLink]="['/admin/dashboard']"><i class="fa fa-dashboard"></i> Dashboard</a>
+      </li>
+      <li class="active">Loan Product Management</li>
+    </ol>
+  </section>
+  
+  <div class="frameshadow">
+    <div class="mainTitle">
+      <div>Loan Product Management</div>
+      <div>
+        <button type="button" class="btn-success btn-user-control buttonSize" [routerLink]="['/admin/loan-products/add']">
+          <i class="fa fa-user" aria-hidden="true"></i> Add Loan Products
+        </button>
+      </div>
+    </div>
+  
+  
+    <div class="p10">
+        <table *ngIf="data.loanproducts!=null && data.loanproducts.length > 0" datatable [dtOptions]="dtOptions" class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th>Product Id</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Tenor Months</th>
+                <th>Tenor Years</th>
+                <th>Interest Rate</th>
+                <th>Flex Ream Prepay Amount</th>
+                <th>Flex Ream PrepayPercent of Principal</th>
+                <th>Flex Ream MaxAnnual Frequency</th>
+                <th>Phase</th>
+                <!-- <th>Start Date</th>
+                <th>End Date</th> -->
+                <th>Status</th>
+                <th>Edit</th>
+                <th>Activate/Deactivate</th>
+              </tr>
+            </thead>
+            <tbody>        
+              <tr *ngFor="let d of data.loanproducts; let i = index">
+                  <td>{{d.productId}}</td>
+                  <td>{{d.name}}</td>
+                  <td>{{d.type}}</td>
+                  <td>{{d.tenorMonths}}</td>
+                  <td>{{d.tenorYears}}</td>
+                  <td>{{d.interestBaseRate}}</td>
+                  <td>{{d.flexReamPrepayAmount}}</td>
+                  <td>{{d.flexReamPrepayPercentofPrincipal}}</td>
+                  <td>{{d.flexReamMaxAnnualFrequency}}</td>
+                  <td>{{d.phase}}</td>
+                  <!-- <td>{{d.startDate}}//</td>
+                  <td>{{d.endDate}}</td> -->
+                  <td>{{d.status}}</td>
+                  <td><a routerLink="/admin/loan-products/{{ d.productId }}"  style="cursor: pointer;"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>  
+                  <td>
+                      <label class="switch">
+                      <input type="checkbox" [checked]="d.status == 'ACTIVE'" (change)="updateLoanProducts(data.loanproducts[i].productId,$event)" name="onoffswitch" >
+                      <span  class="slider round"></span>
+                      </label>
+                  </td> 
+              </tr> 
+            </tbody>
+          </table>
+      <!-- <table *ngIf="data.length == 0" datatable class="table">
+          <thead class="thead-dark">
+              <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">User ref</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                </tr>
+          </thead>
+          <tbody></tbody>
+        </table> -->
+    </div>
+  </div>
+  
+  <ng-template #messagebox>
+    <div class="modal-body text-center">
+      <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <p class="headtext">Message</p>
+      <p *ngFor="let m of message">{{ m }}</p>
+    </div>
+  </ng-template>

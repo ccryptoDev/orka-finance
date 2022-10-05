@@ -1,0 +1,47 @@
+<section class="content-header">
+  <!-- <h1>Denied Application Details</h1> -->
+  <ol class="breadcrumb">
+    <li>
+      <a [routerLink]="['/admin/dashboard']"><i class="fa fa-dashboard"></i> Dashboard</a>
+    </li>
+    <li class="active">Complete Milestone Reviews</li>
+  </ol>
+</section>
+
+<div class="frameshadow ">
+  <div class="mainTitle">Complete Milestone Reviews</div>
+
+  <div class="p10">
+    <table *ngIf="data!=null && data.length > 0" datatable [dtOptions]="dtOptions" class="table">
+      <thead class="thead-dark">
+        <tr>
+          <!-- <th scope="col">#</th> -->
+          <th scope="col">App ID</th>
+          <th scope="col">Milestone ID</th>
+          <th scope="col">Installer</th>
+          <!-- <th scope="col">Sales Rep</th> -->
+          <!-- <th scope="col">Business Borrower</th> -->
+          <th scope="col">Milestone</th>
+          <th scope="col">Date/Time Submitted</th>
+          <th scope="col">Date/Time Approved</th>
+          <th scope="col">Reviewed By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of data; let i = index">
+          <!-- <th class="bold" scope="row">{{ i + 1 }}</th> -->
+          <td> {{d.appid}} </td>
+          <td> {{d.milestoneid | slice: 0:5}} </td>
+          <td> {{d.installer }} </td>
+          <td> {{(d.milestone=='PTO')?'Commercial Operation':d.milestone}} </td>
+          <!-- <td> {{d.salesrep}} </td>
+          <td> {{d.borrower}} </td> -->
+          <!-- <td> {{(d.milestone=='PTO')?'Commercial Operation':d.milestone}} </td> -->
+          <td> {{d.datesubmitted | date:"MM-dd-yyyy h:mm:a"}} </td>
+          <td> {{d.dateapproved | date:"MM-dd-yyyy h:mm:a"}} </td>
+          <td> {{reviewedby}} </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

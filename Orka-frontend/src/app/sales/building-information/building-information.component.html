@@ -1,0 +1,360 @@
+<div class="containermainBlock">
+  <div class="headerDiv">
+    <div class="displayFlex spaceBetween plr50">
+      <div class="logoBlock"><img src="../../../assets/logo1.png" /></div>
+      <div>
+        <div class=" ">
+          <div class="whaleBg"></div>
+          <div class="displayFlex progressbarcontiner">
+            <div class="displayFlex" style="margin-right: 87px">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -52px">
+                Part
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex" style="margin-right: 88px">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -16px">
+                1
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex" style="margin-right: 89px">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -16px">
+                2
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex mr90" style="margin-right: 89px">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -16px">
+                3
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex mr90">
+              <div class="step05"><img src="../../../assets/step05.svg" /></div>
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -16px">
+                4
+              </div>
+              <div class="blueLineSmall"></div>
+            </div>
+            <div class="displayFlex mr90" style="margin-right: 20px">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px activetext fs16px"
+                style="margin-left: -16px">
+                5
+              </div>
+              <div class="positionAbsolute AvenirBlack activetext fs16px"
+                style="margin-left: -230px; padding-top: 297px">
+                BUILDING INFORMATION
+              </div>
+              <div class="blueLineBig"></div>
+              <div class="infoicon"><img src="../../../assets/info.png" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mainDivsection">
+    <div class="containerBlock">
+      <div class="ptb50">
+        <div class="titleTxt">Building Info</div>
+        <div class="mainContent">
+          <!-- Next, we need to know some basics about your ownership of the
+          installation property -->
+          Finally, please provide some basic information about the business's ownership of the property where the solar project will be installed.
+        </div>
+      </div>
+      <form name="form" (ngSubmit)="next()" #f="ngForm" novalidate>
+        <div class="ptb50">
+          <div class="pb50px">
+            <div class="labelTxt">BUSINESS ADDRESS</div>
+            <div>
+              <input type="text" ngx-google-places-autocomplete [options]="options" #placesRef="ngx-places"
+                (onAddressChange)="handleAddressChange($event)" name="businessInstallAddress"
+                class="inputField form-control" placeholder="Enter business address"
+                (input)="data.businessInstallAddress = namedata($event)" [(ngModel)]="data.businessInstallAddress"
+                #businessInstallAddress="ngModel" required [ngClass]="{
+                  'is-invalid': f.submitted && businessInstallAddress.invalid
+                }" />
+              <i class="fas fa-map-marker-alt addressIcon"></i>
+              <small *ngIf="
+                  businessInstallAddress.invalid &&
+                  (businessInstallAddress.touched || f.submitted)
+                " class="text-danger valid-info">Business address is required</small>
+            </div>
+          </div>
+
+          <div class="pb50px displayFlex spaceBetween addressRow">
+            <div class="addressBottom">
+              <div class="labelTxt">City</div>
+              <div>
+                <input type="text" name="businessInstallCity" class="inputField form-control" placeholder="Enter city"
+                  (input)="data.businessInstallCity = namedata($event)" [(ngModel)]="data.businessInstallCity"
+                  #businessInstallCity="ngModel" required [ngClass]="{
+                    'is-invalid': f.submitted && businessInstallCity.invalid
+                  }" />
+                <small *ngIf="
+                    businessInstallCity.invalid &&
+                    (businessInstallCity.touched || f.submitted)
+                  " class="text-danger">City is required</small>
+              </div>
+            </div>
+            <div class="addressBottom">
+              <div class="labelTxt">State</div>
+              <div>
+                <input type="text" name="businessInstallState" class="inputField form-control" placeholder="Enter state"
+                  (input)="data.businessInstallState = namedata($event)" [(ngModel)]="data.businessInstallState"
+                  #businessInstallState="ngModel" required [ngClass]="{
+                    'is-invalid': f.submitted && businessInstallState.invalid
+                  }" />
+                <small *ngIf="
+                    businessInstallState.invalid &&
+                    (businessInstallState.touched || f.submitted)
+                  " class="text-danger">State is required</small>
+              </div>
+            </div>
+            <div class="addressBottom">
+              <div class="labelTxt">zip code</div>
+              <div>
+                <input type="text" name="businessInstallZipCode" class="inputField form-control"
+                  placeholder="5-digit number" (input)="data.businessInstallZipCode = namedata($event)"
+                  [(ngModel)]="data.businessInstallZipCode" #businessInstallZipCode="ngModel" maxLength="5"
+                  (keypress)="keyPressNumbers($event)" required [ngClass]="{
+                    'is-invalid': f.submitted && businessInstallZipCode.invalid
+                  }" />
+                <small *ngIf="
+                    businessInstallZipCode.invalid &&
+                    (businessInstallZipCode.touched || f.submitted)
+                  " class="text-danger">ZipCode is required</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="pb50px">
+            <div class="labelTxt">Estimated Property Value</div>
+            <div>
+              <select name="estimatedPropertyValue" id="estimatedPropertyValue" class="inputField form-control"
+                [(ngModel)]="data.estimatedPropertyValue" (input)="data.estimatedPropertyValue = namedata($event)"
+                #estimatedPropertyValue="ngModel" required [ngClass]="{
+                  'is-invalid': f.submitted && estimatedPropertyValue.invalid
+                }">
+                <option [ngValue]="null" [disabled]="true">Select Range</option>
+                <option value="$0 - $100,000">$0 - $100,000</option>
+                <option value="$100,000 - $250,000">$100,000 - $250,000</option>
+                <option value="$250,000 - $500,000">$250,000 - $500,000</option>
+                <option value="$500,000 - $1M">$500,000 - $1M</option>
+                <option value="$1M - $2M">$1M - $2M</option>
+                <option value="$2M+e">$2M+</option>
+              </select>
+              <i class="fas fa-caret-down addressIcon"></i>
+              <small *ngIf="
+                  estimatedPropertyValue.invalid &&
+                  (estimatedPropertyValue.touched || f.submitted)
+                " class="text-danger">Estimated Property Value is required</small>
+            </div>
+          </div>
+
+          <div class="pb50px">
+            <div class="labelTxt">Years Property Owned</div>
+            <div>
+              <select name="yearsPropertyOwned" id="yearsPropertyOwned" class="inputField form-control"
+                [(ngModel)]="data.yearsPropertyOwned" (input)="data.yearsPropertyOwned = namedata($event)"
+                #yearsPropertyOwned="ngModel" required [ngClass]="{
+                  'is-invalid': f.submitted && yearsPropertyOwned.invalid
+                }">
+                <option [ngValue]="null" [disabled]="true">Select Year</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5-10">5-10</option>
+                <option value="10-15">10-15</option>
+                <option value="15-20">15-20</option>
+                <option value="20+">20+</option>
+              </select>
+              <i class="fas fa-caret-down addressIcon"></i>
+              <small *ngIf="
+                  yearsPropertyOwned.invalid &&
+                  (yearsPropertyOwned.touched || f.submitted)
+                " class="text-danger">Years Property Owned is required</small>
+            </div>
+          </div>
+
+          <div class="pb50px">
+            <div class="labelTxt">OWNERSHIP TYPE</div>
+            <div>
+              <select name="ownershipType" id="ownershipType" class="inputField form-control"
+                [(ngModel)]="data.ownershipType" (input)="data.ownershipType = namedata($event)"
+                #ownershipType="ngModel" required [ngClass]="{
+                  'is-invalid': f.submitted && ownershipType.invalid
+                }">
+                <option [ngValue]="null" [disabled]="true">
+                  Select Ownership Type
+                </option>
+                <option value="Mortgaged">Mortgaged</option>
+                <option value="Owned Free-and-Clear">
+                  Owned Free-and-Clear
+                </option>
+                <option value="Leased">Leased</option>
+              </select>
+              <i class="fas fa-caret-down addressIcon"></i>
+              <small *ngIf="
+                  ownershipType.invalid &&
+                  (ownershipType.touched || f.submitted)
+                " class="text-danger">Ownership Type is required</small>
+            </div>
+          </div>
+          <ng-container *ngIf="data.ownershipType == 'Mortgaged'">
+            <div class="mortgage">
+              <div class="pb50px">
+                <div class="labelTxt">Mortgage start date</div>
+                <div>
+                  <input type="date" name="mortageStartDate" class="inputField form-control" style="padding-right: 10px"
+                    placeholder="Enter Mortage Start Date" (input)="data.mortageStartDate = namedata($event)"
+                    [(ngModel)]="data.mortageStartDate" #mortageStartDate="ngModel" required [ngClass]="{
+                      'is-invalid': f.submitted && mortageStartDate.invalid
+                    }" />
+                  <small *ngIf="
+                      mortageStartDate.invalid &&
+                      (mortageStartDate.touched || f.submitted)
+                    " class="text-danger">Mortage Start Date is required</small>
+                </div>
+              </div>
+
+              <div class="pb50px">
+                <div class="labelTxt">Mortgage term</div>
+                <div>
+                  <select name="mortageTerm" id="mortageTerm" class="inputField form-control"
+                    [(ngModel)]="data.mortageTerm" (input)="data.mortageTerm = namedata($event)" #mortageTerm="ngModel"
+                    required [ngClass]="{
+                      'is-invalid': f.submitted && mortageTerm.invalid
+                    }">
+                    <option [ngValue]="null" [disabled]="true">
+                      Select Mortage Term
+                    </option>
+                    <option value="1-5">1-5</option>
+                    <option value="6-10">6-10</option>
+                    <option value="11-15">11-15</option>
+                    <option value="16-20">16-20</option>
+                  </select>
+                  <i class="fas fa-caret-down addressIcon"></i>
+                  <small *ngIf="
+                      mortageTerm.invalid &&
+                      (mortageTerm.touched || f.submitted)
+                    " class="text-danger">Mortgage term is required</small>
+                </div>
+              </div>
+              <div class="ptb50">
+                <div class="labelTxt">Monthly mortgage payment</div>
+                <div>
+                  <select name="monthlyMortagePayment" id="monthlyMortagePayment" class="inputField form-control"
+                    [(ngModel)]="data.monthlyMortagePayment" (input)="data.monthlyMortagePayment = namedata($event)"
+                    #monthlyMortagePayment="ngModel" required [ngClass]="{
+                      'is-invalid': f.submitted && monthlyMortagePayment.invalid
+                    }">
+                    <option [ngValue]="null" [disabled]="true">
+                      Select Monthly mortgage payment
+                    </option>
+                    <option value="0-1000">0-1000</option>
+                    <option value="1000-2500">1000-2500</option>
+                    <option value="2500-5000">2500-5000</option>
+                    <option value="5000-7500">5000-7500</option>
+                    <option value="7500-10000">7500-10000</option>
+                    <option value="10000+">10000+</option>
+                  </select>
+                </div>
+                <i class="fas fa-caret-down addressIcon"></i>
+                <small *ngIf="
+                    monthlyMortagePayment.invalid &&
+                    (monthlyMortagePayment.touched || f.submitted)
+                  " class="text-danger">Monthly mortgage payment is required</small>
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="ptb50 credit_box">
+            <div class="titleTxt fw22">Credit Report Authorization:</div>
+            <div class="mainContent fw20">
+              By selecting “I AGREE,” you acknowledge the following: Orka
+              Finance Inc., its affiliates and unaffiliated third parties with
+              which Orka Finance Inc. (individually and collectively, “we,”
+              “our” and us) to obtain anduse a consumer credit report to verify
+              your creditworthiness inconnection with a commercial solar loan
+              transaction. By agreeing to continue, you expressly authorize use
+              to obtain your credit report from credit bureaus. After your loan
+              is made, we also may obtain your credit report from time to time
+              inconnection with the servicing, collection or enforcement of the
+              loan in addition to any other lawful reason.
+            </div>
+            <div class="mainContent fw20 mt10">
+              You further authorize us to verify information in your credit
+              report or otherwise submitted to us in connection with your loan
+              application, and you agree that we may contact third parties to
+              verify any such information. Upon request, you will be informed
+              whether a consumer report was requested, and if such report was
+              requested, the name and address of theconsumer reporting agency
+              that furnished the report. You understand credit inquiries have
+              the potential to impact your credit score negatively.
+            </div>
+            <div class="checkboxMain mt30">
+              <label class="checkboxcontainer">
+                I AGREE
+                <input type="checkbox" name="authorize" id="authorize" [(ngModel)]="data.authorize"
+                  (input)="data.authorize = namedata($event)" value="Y" #authorize="ngModel" required /><span
+                  class="checkmark"></span>
+              </label>
+            </div>
+            <!-- <small *ngIf="authorize.invalid && (authorize.touched || f.submitted)" class="text-danger">Kindly Agree to
+              Credit Report Authorization</small> -->
+          </div>
+
+          <div class="ptb50">
+            <div class="fotterbg displayFlex">
+              <div class="displayFlex letsgo">
+                <div>
+                  <button
+                    gtagEvent
+                    trackOn="click"
+                    category="Credit Application"
+                    [params]="{event_label: 'Step 4 Completed'}"
+                    type="submit"
+                  >SUBMIT</button>
+                </div>
+                <div [ngClass]="{
+                  safariarrowalign: OsName == 'MacOS',
+                  windowarrowalign: OsName == 'Windows'
+                }" id="arrowalign">
+                  <img src="../../../assets/nextarrow.svg" style="width: 33px; margin-left: 5px" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- <ng-template #messagebox>
+  <div class="modal-body text-center">
+    <p class="headtext">Message</p>
+    <p *ngFor="let m of message">{{ m }}</p>
+    <button type="button" class="btn btn-alert" aria-label="Close" (click)="close()">NO, LET ME FIX THAT</button>
+    <button type="button" class="btn btn-primary" type="button" (click)="submitApi()">YES, THAT IS CORRECT</button>
+  </div>
+</ng-template> -->
+
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <!-- <p class="headtext">Message</p> -->
+    <div *ngFor="let m of message" class="msgtext">{{ m }}</div>
+    <button type="button" class="btn submitButton" aria-label="Close" (click)="close()">
+      NO, LET ME FIX THAT
+    </button>
+    &nbsp; &nbsp;&nbsp;&nbsp;
+    <button type="button" class="btn submitButton" type="button" (click)="submitApi()">
+      YES, THAT IS CORRECT
+    </button>
+  </div>
+</ng-template>

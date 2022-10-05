@@ -1,0 +1,160 @@
+<section class="content-header">
+  <!-- <h1>View Application Details</h1> -->
+  <ol class="breadcrumb">
+    <li>
+      <a [routerLink]="['/admin/dashboard']"><i class="fa fa-dashboard"></i> Dashboard</a>
+    </li>
+    <li>
+      <a [routerLink]="['/admin/users']"><i class="fa fa-dashboard"></i>{{(data[0]['role']==1) ? 'Admin':''}} Users List</a>
+    </li>
+    <li class="active">{{(data[0]['role']==1) ? 'Admin':''}} User Details</li>
+  </ol>
+</section>
+
+<div class="frameshadow">
+  <div class="mainTitle" *ngIf="data.length > 0">
+    <div>{{(data[0]['role']==1) ? 'Admin':''}} User Details</div>
+    <div>
+      <button type="button" class="btn-success btn-user-control buttonSize" *ngIf="data[0]['active_flag']=='N'"
+        (click)="active()">
+        Active
+      </button>
+      <button type="button" class="btn-danger btn-user-control buttonSize" *ngIf="data[0]['active_flag']=='Y'"
+        (click)="deactive()">
+        Inactive
+      </button>
+      &nbsp;
+      <button type="button" class="btn-danger btn-user-control buttonSize" (click)="delete()">
+        <i class="fa fa-trash" aria-hidden="true"></i> Delete
+      </button>
+    </div>
+  </div>
+  <div class="p10">
+    <div>
+      <tabset>
+        <tab heading="{{(data[0]['role']==1) ? 'Admin':''}} User Information" *ngIf="data!=null && data.length > 0">
+          <div class="p10px">
+            <div class="displayFlex AlignItemCenter spaceBetween p10px frameshadow">
+              <div class="fs22px displayFlex AlignItemCenter spaceBetween flexDirection mr30px">
+                <!-- <div class="profilePhoto">
+                    <img src="../../../assets/profile_photo.jpg" />
+                  </div>
+                  <div class="nowrap">Arun</div>-->
+
+                <div class="profilePhoto">
+                  <i class="fa fa-user" aria-hidden="true"></i>
+                  <!-- <img src="../../../assets/profile_photo.jpg" /> -->
+                </div>
+                <div class="nowrap">{{ data[0]["firstname"] }} {{ data[0]["lastname"] }}</div>
+
+              </div>
+
+
+            </div>
+            <br /><br />
+            <form [formGroup]="form"  #f="ngForm" novalidate>
+            <div class="list">
+              <ul class="h700">
+                <li>
+                  <div class="displayFlex listdetails">
+                    <div class="fontWeight">User Reference</div>
+                    <div>
+                      USR_{{data[0]['ref_no']}}
+                    </div>
+                  </div>
+                </li>
+                <!-- <li>
+                  <div class="displayFlex listdetails" *ngIf="data[0]['role'] != 1">
+                    <div class="fontWeight">Business Name</div>
+                    <div>
+                      <input  class="width-250" formControlName="legalName" [(ngModel)]="data[0].businessName" [ngModelOptions]="{standalone: true}" />
+                      <span class="text-danger cursorpointer"><i class="fa fa-edit" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+
+                </li> -->
+                <li>
+                  <div class="displayFlex listdetails">
+                    <div class="fontWeight">First Name</div>
+                    <div>
+                      <input  class="width-250" formControlName="firstName" [(ngModel)]="data[0].firstName" [ngModelOptions]="{standalone: true}" />
+                      <!-- <span class="text-danger cursorpointer"><i class="fa fa-edit" aria-hidden="true"></i>
+                      </span> -->
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="displayFlex listdetails">
+                    <div class="fontWeight">Last Name</div>
+                    <div>
+                      <input required class="width-250" formControlName="lastName" [(ngModel)]="data[0].lastName"
+                       [ngModelOptions]="{standalone: true}"
+
+                      />
+
+
+                      <!-- <span class="text-danger cursorpointer"><i class="fa fa-edit" aria-hidden="true"></i>
+                      </span> -->
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="displayFlex listdetails">
+                    <div class="fontWeight">Email Address</div>
+                    <div>
+                      <input  class="width-250" formControlName="email" [(ngModel)]="data[0].email" [ngModelOptions]="{standalone: true}" />
+                      <!-- <i class="fa fa-bell text-danger cursorpointer" *ngIf="data[0]['emailVerify']=='N'"
+                        aria-hidden="true"></i>
+                      <i class="fa fa-bell text-success cursorpointer" *ngIf="data[0]['emailVerify']=='Y'"
+                        aria-hidden="true"></i> -->
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="displayFlex listdetails">
+                    <div class="fontWeight">Role</div>
+                    <div>
+                      {{data[0]['role_name']}}
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="displayFlex listdetails">
+                    <div class="fontWeight">Status</div>
+                    <div class="text-danger" *ngIf="data[0]['active_flag']=='N'">Inactive</div>
+                    <div class="text-success" *ngIf="data[0]['active_flag']=='Y'">Active</div>
+                  </div>
+                </li>
+                <li>
+                <div class='pull-right' style="margin-top:20px;">
+                  <button type="button" class="btn-success btn-user-control buttonSize spaceBetween"
+                    (click)="updateUser_info()">
+                    Update
+                  </button>
+                </div>
+              </li>
+              </ul>
+
+            </div>
+
+          </form>
+          </div>
+        </tab>
+
+
+
+      </tabset>
+    </div>
+  </div>
+</div>
+
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p class="headtext">Message</p>
+    <p *ngFor="let m of message">{{ m }}</p>
+  </div>
+</ng-template>

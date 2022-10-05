@@ -1,0 +1,116 @@
+<section class="content-header">
+    <!-- <h1>Pending Application Details</h1> -->
+    <ol class="breadcrumb">
+      <li>
+        <a [routerLink]="['/admin/dashboard']"
+          ><i class="fa fa-dashboard"></i> Dashboard</a
+        >
+      </li>
+      <li class="active">Pending Sales Contract Details</li>
+    </ol>
+  </section>
+  
+  <div class="frameshadow">
+    <div class="mainTitle">Pending Sales Contract Details</div>
+  
+    <div class="p10">
+      <!-- <table id="example" class="display table" style="width:100%">
+        <thead class="thead-dark">
+          <tr>
+            <th class="details-control sorting_disabled" scope="col">Review</th>
+            <th scope="col">App ID</th>
+            <th scope="col">Installer</th>
+            <th scope="col">Sales Rep</th>
+            <th scope="col">Business Borrower</th>
+            <th scope="col">Business Owner</th>
+            <th scope="col">File Name</th>
+            <th scope="col">Date/Time Submitted</th>
+          </tr>
+        </thead>
+        <tbody>
+           <tr>
+               <td class="details-control"><i class="fa fa-plus-circle" style="font-size:24px;color:green"></i></td>
+               <td>001</td>
+               <td>Tesla</td>
+               <td>Fodera</td>
+               <td>Henna Baknolova</td>
+               <td>Henna Baknolova</td>
+               <td>Henna Baknolova</td>
+               <td>09-05-2021 15:12PM</td>
+           </tr>
+           <tr>
+            <td class="details-control"><i class="fa fa-plus-circle" style="font-size:24px;color:green"></i></td>
+            <td>002</td>
+            <td>Mike</td>
+            <td>Fodera</td>
+            <td>Henna Baknolova</td>
+            <td>Henna Baknolova</td>
+            <td>Henna Baknolova</td>
+            <td>09-05-2021 15:12PM</td>
+        </tr>
+        <tr>
+          <td class="details-control"><i class="fa fa-plus-circle" style="font-size:24px;color:green"></i></td>
+          <td>003</td>
+          <td>Solor Energy</td>
+          <td>Fodera</td>
+          <td>Henna Baknolova</td>
+          <td>Henna Baknolova</td>
+          <td>Henna Baknolova</td>
+          <td>09-05-2021 15:12PM</td>
+      </tr>
+        </tbody>
+      </table> -->
+    </div>
+
+    <table  id="example"  class="display table" >
+      <thead class="thead-dark">
+           <th class="details-control sorting_disabled" scope="col">Review</th>
+            <th scope="col">App ID</th>
+            <th scope="col">Installer</th>
+            <th scope="col">Sales Rep</th>
+            <th scope="col">Business Borrower</th>
+            <th scope="col">Business Owner</th>
+            <th scope="col">File Name</th>
+            <th scope="col">Date/Time Submitted</th>
+      </thead>
+    
+      <tbody>
+    
+    <ng-container *ngFor="let data of result">
+      <tr *ngIf="result!=null && result.length > 0 && data.show=='No'" (click)="data.expanded = !data.expanded;getDataPdf(data)">
+        <td> {{ data.expanded ? '&ndash;' : '+'}}</td>
+        <td> {{data.appid}} </td>
+        <td> {{data.installer}} </td>
+        <td> {{data.salesrep}} </td>
+        <td> {{data.borrower}} </td>
+        <td> {{data.ownerfullname}} </td>
+        <td> {{data.filename}} </td>
+        <td> {{data.datesubmitted | date:"MM-dd-yyyy"}} </td>
+      </tr>
+    
+      <ng-container *ngIf="data.expanded">
+        
+        <tr>
+          <td colspan="1000">
+          <app-review-checklist>
+            [url1]="'{{data.fileloadurl}}'"
+            [appId]="'{{data.appid}}'"
+          </app-review-checklist>
+          </td>
+        </tr>
+        
+       
+        <!-- <tr *ngFor="let details of findDetails(data)">
+          <td style="padding-left: 12px"> {{details.datades.appid}} </td>
+          <td> {{details.datades.hobbies}} </td>
+          <td> {{details.datades.profession}} </td>
+        </tr> -->
+        
+      </ng-container>
+    </ng-container>
+      </tbody>
+    </table>
+
+
+    
+  </div>

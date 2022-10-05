@@ -1,0 +1,154 @@
+<div class="mtop90 borrowerblock">
+  <div class="breadcrumbs">
+    <div class="firststage">
+      <div class="mr12"><img src="../../../assets/lightBlue-arrow.svg" /></div>
+      <div class="pr16">Business Bank Account</div>
+    </div>
+    <div class="secondstage">
+      <div class="mr12"><img src="../../../assets/darkblue-arrow.svg" /></div>
+      <div class="pr16">Loan Documents</div>
+    </div>
+  </div>
+
+  <div class="w887">
+    <div class="mainborrowertitle">ADD YOUR BUSINESS BANK ACCOUNT</div>
+    <div class="borrowertxt">
+      Simply enter your Business bank account details and you will be on your
+      way to lowering your monthly payment!
+    </div>
+
+    <div class="pb50px pt30px">
+      <div class="labelTxt">BUsiness account type (check one)</div>
+      <div>
+        <div class="displayFlex optionSection">
+          <input type="radio" name="choice-radio" value="Y" id="checking" />
+          <label for="checking">Checking</label>
+
+          <input type="radio" name="choice-radio" value="N" id="savings" />
+          <label for="savings">Savings</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="pb50px">
+      <div class="labelTxt">name(s) on account</div>
+      <div>
+        <input
+          type="text"
+          name="taxId"
+          class="inputField form-control"
+          placeholder="Enter Tax ID"
+        />
+        <!-- <small class="text-danger">Tax ID is required</small> -->
+      </div>
+    </div>
+
+    <div class="pb50px">
+      <div class="labelTxt">routing number (9 digits)</div>
+      <div>
+        <input
+          type="text"
+          name="taxId"
+          class="inputField form-control"
+          placeholder="Enter aba number (9 digits)"
+        />
+        <!-- <small class="text-danger">Tax ID is required</small> -->
+      </div>
+    </div>
+
+    <div class="pb50px">
+      <div class="labelTxt">bank account number</div>
+      <div>
+        <input
+          type="text"
+          name="taxId"
+          class="inputField form-control"
+          placeholder="Enter bank name"
+        />
+        <!-- <small class="text-danger">Tax ID is required</small> -->
+      </div>
+    </div>
+
+    <div class="pb50px">
+      <div class="labelTxt">bank name</div>
+      <div>
+        <input
+          type="text"
+          name="taxId"
+          class="inputField form-control"
+          placeholder="Enter bank name"
+        />
+        <!-- <small class="text-danger">Tax ID is required</small> -->
+      </div>
+    </div>
+
+    <div class="pb50px displayFlex spaceBetween addressRow">
+      <div class="addressBottom">
+        <div class="labelTxt">City</div>
+        <div>
+          <input
+            type="text"
+            name="city"
+            class="inputField form-control"
+            placeholder="Enter City"
+          />
+          <!-- <small *ngIf="city.invalid && (city.touched || f.submitted)" class="text-danger">City is
+                  required</small> -->
+        </div>
+      </div>
+      <div class="addressBottom">
+        <div class="labelTxt">State</div>
+        <div>
+          <input
+            type="text"
+            name="state"
+            class="inputField form-control"
+            placeholder="Enter state"
+          />
+          <!-- <small *ngIf="state.invalid && (state.touched || f.submitted)" class="text-danger">State is
+                  required</small> -->
+        </div>
+      </div>
+      <div class="addressBottom">
+        <div class="labelTxt">zip code</div>
+        <div>
+          <input
+            type="text"
+            name="zipCode"
+            class="inputField form-control"
+            placeholder="Enter Zip"
+          />
+          <!-- <small *ngIf="zipCode.invalid && (zipCode.touched || f.submitted || ziphide) " class="text-danger">Zipcode is
+                  required</small> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="ptb50">
+      <div
+        class="fotterbg displayFlex cursorpointer"
+        (click)="loadloanComponent()"
+      >
+        <div class="displayFlex pt20">
+          <div class="pr16 bluestriptxt">ADD BUSINESS BANK ACCOUNT</div>
+          <div>
+            <img
+              src="../../../assets/nextarrow.svg"
+              style="width: 33px; margin-left: 5px"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <p>bank-documents works!</p>
+
+<br><br>
+<a style="cursor: pointer;" (click)="loadbankComponent()" class="blueColor"> Bank </a>
+<br><br><br>
+
+<a style="cursor: pointer;" (click)="loadsignComponent()" class="blueColor"> Sign </a>
+<br><br><br>
+<a style="cursor: pointer;" (click)="loadloanComponent()" class="blueColor"> Loan </a> -->

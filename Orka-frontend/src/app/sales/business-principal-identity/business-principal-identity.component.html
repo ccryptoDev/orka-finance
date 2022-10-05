@@ -1,0 +1,745 @@
+<div class="containermainBlock">
+  <div class="headerDiv">
+    <div class="displayFlex spaceBetween plr50">
+      <div class="logoBlock"><img src="../../../assets/logo1.png" /></div>
+      <div>
+        <div class=" ">
+          <div class="whaleBg"></div>
+          <div class="displayFlex progressbarcontiner">
+            <div class="displayFlex" style="margin-right: 87px">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -52px">
+                Part
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex" style="margin-right: 88px">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -16px">
+                1
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex" style="margin-right: 89px">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -16px">
+                2
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex mr90" style="margin-right: 89px">
+              <div class="step04"><img src="../../../assets/step04.svg" /></div>
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -16px">
+                3
+              </div>
+              <div class="blueLineSmall"></div>
+            </div>
+            <div class="displayFlex mr90">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px activetext fs16px"
+                style="margin-left: -16px">
+                4
+              </div>
+              <div class="positionAbsolute AvenirBlack activetext fs16px"
+                style="margin-left: -305px; padding-top: 297px">
+                Business Owner Info
+              </div>
+              <div class="blueLineBig"></div>
+            </div>
+            <div class="displayFlex mr90" style="margin-right: 20px">
+              <div class="positionAbsolute AvenirBlack textTransform pt240px fs16px" style="margin-left: -16px">
+                5
+              </div>
+              <div class="blackline"></div>
+              <div class="infoicon"><img src="../../../assets/info.png" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mainDivsection">
+    <div class="containerBlock">
+      <div class="ptb50">
+        <div class="titleTxt">Business Owner Info</div>
+        <div class="mainContent">
+          <!-- Now that we know a bit about your business, please tell us about
+          yourself. -->
+          Now that we know a bit about your business, please tell us about yourself.
+        </div>
+      </div>
+      <form name="form" (ngSubmit)="next()" #f="ngForm" novalidate>
+        <div class="ptb50">
+          <div class="pb50px">
+            <div class="labelTxt">Business Owner First Name</div>
+            <div>
+              <input type="text" name="ownerFirstName" class="inputField form-control"
+                placeholder="Enter business owner first name" (input)="data.ownerFirstName = namedata($event)"
+                [(ngModel)]="data.ownerFirstName" #ownerFirstName="ngModel" required [ngClass]="{
+                  'is-invalid': f.submitted && ownerFirstName.invalid
+                }" />
+              <small *ngIf="
+                  ownerFirstName.invalid &&
+                  (ownerFirstName.touched || f.submitted)
+                " class="text-danger">First Name is required</small>
+            </div>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">Business Owner Last Name</div>
+            <div>
+              <input type="text" name="ownerLastName" class="inputField form-control"
+                placeholder="Enter business owner last name" (input)="data.ownerLastName = namedata($event)"
+                [(ngModel)]="data.ownerLastName" #ownerLastName="ngModel" required [ngClass]="{
+                  'is-invalid': f.submitted && ownerLastName.invalid
+                }" />
+              <small *ngIf="
+                  ownerLastName.invalid &&
+                  (ownerLastName.touched || f.submitted)
+                " class="text-danger">Last Name is required</small>
+            </div>
+          </div>
+          <!-- <div class="pb50px">
+            <div class="labelTxt">Business Owner Personal Email Address</div>
+            <div>
+              <input
+                type="test"
+                name="ownerEmail"
+                class="inputField form-control"
+                placeholder="Enter business owner personal email address"
+                (input)="data.ownerEmail = namedata($event)"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                [(ngModel)]="data.ownerEmail"
+                #ownerEmail="ngModel"
+                required
+                [ngClass]="{ 'is-invalid': f.submitted && ownerEmail.invalid }"
+              />
+              <small
+                *ngIf="
+                  ownerEmail.invalid && (ownerEmail.touched || f.submitted)
+                "
+                class="text-danger"
+                >Email is required
+                <small
+                  [hidden]="!ownerEmail.errors?.pattern"
+                  class="text-danger"
+                >
+                  Invalid Email
+                </small>
+              </small>
+            </div>
+          </div> -->
+          <div class="pb50px">
+            <div class="labelTxt">Business Owner date of birth</div>
+            <div>
+              <input type="date" name="ownerDOB" class="inputField form-control" style="padding-right: 10px"
+                (input)="data.ownerDOB = namedata($event)" [(ngModel)]="data.ownerDOB" #ownerDOB="ngModel" [pattern]="
+                  '(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))'
+                " required [ngClass]="{ 'is-invalid': f.submitted && ownerDOB.invalid }" />
+              <small *ngIf="ownerDOB.invalid && (ownerDOB.touched || f.submitted)" class="text-danger">
+                <span [hidden]="ownerDOB.errors?.pattern">Date of birth is required</span></small>
+              <small [hidden]="!ownerDOB.errors?.pattern" class="text-danger">
+                Business Owner Date Of Birth is Invalid!
+              </small>
+            </div>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">Business Owner SSN</div>
+            <div>
+              <input type="text" name="ownerSSN" class="inputField form-control" placeholder="9-digit number"
+                (input)="data.ownerSSN = namedata($event)" [(ngModel)]="data.ownerSSN" #ownerSSN="ngModel" required
+                (keypress)="keyPressNumbers($event)" [ngClass]="{ 'is-invalid': f.submitted && ownerSSN.invalid }"
+                maxLength="9" />
+              <small *ngIf="ownerSSN.invalid && (ownerSSN.touched || f.submitted)" class="text-danger">SSN is
+                required</small>
+            </div>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">Business Owner Personal Phone</div>
+            <div>
+              <input type="text" name="ownerPhone" class="inputField form-control" placeholder="Enter phone number"
+                (input)="data.ownerPhone = namedata($event)" (keypress)="keyPressNumbers($event)" [(ngModel)]="data.ownerPhone" #ownerPhone="ngModel"
+                mask="(000) 000-0000" required [ngClass]="{ 'is-invalid': f.submitted && ownerPhone.invalid && hidedigiterr }"
+                (keyup)="validateConfirmdigits(1,data.ownerPhone)" />
+              <small *ngIf="
+                  ownerPhone.invalid && (ownerPhone.touched || f.submitted)
+                " class="text-danger">Phone Number is required</small>
+                <small *ngIf="hidedigiterr" class="text-danger">
+                  Phone Number 10 Digits Required!</small
+                >
+            </div>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">Business Owner Home Address</div>
+            <div>
+              <input type="text" name="ownerAddress" ngx-google-places-autocomplete [options]="options"
+                #placesRef="ngx-places" (onAddressChange)="handleAddressChange1($event)" class="inputField form-control"
+                placeholder="Enter business owner home address" (input)="data.ownerAddress = namedata($event)"
+                [(ngModel)]="data.ownerAddress" #ownerAddress="ngModel" required [ngClass]="{
+                  'is-invalid': f.submitted && ownerAddress.invalid
+                }" />
+            </div>
+            <i class="fas fa-map-marker-alt addressIcon"></i>
+            <small *ngIf="
+                ownerAddress.invalid && (ownerAddress.touched || f.submitted)
+              " class="text-danger">Address is required</small>
+          </div>
+          <div class="pb50px displayFlex spaceBetween addressRow">
+            <div class="addressBottom">
+              <div class="labelTxt">City</div>
+              <div>
+                <input type="text" name="ownerCity" class="inputField form-control" placeholder="Enter city"
+                  (input)="data.ownerCity = namedata($event)" [(ngModel)]="data.ownerCity" #ownerCity="ngModel" required
+                  [ngClass]="{ 'is-invalid': f.submitted && ownerCity.invalid }" />
+                <small *ngIf="
+                    ownerCity.invalid && (ownerCity.touched || f.submitted)
+                  " class="text-danger">City is required</small>
+              </div>
+            </div>
+            <div class="addressBottom">
+              <div class="labelTxt">State</div>
+              <div>
+                <input type="text" name="ownerState" class="inputField form-control" placeholder="Enter state"
+                  (input)="data.ownerState = namedata($event)" [(ngModel)]="data.ownerState" #ownerState="ngModel"
+                  required [ngClass]="{
+                    'is-invalid': f.submitted && ownerState.invalid
+                  }" />
+                <small *ngIf="
+                    ownerState.invalid && (ownerState.touched || f.submitted)
+                  " class="text-danger">State is required</small>
+              </div>
+            </div>
+            <div class="addressBottom">
+              <div class="labelTxt">zip code</div>
+              <div>
+                <input type="text" name="ownerZipCode" class="inputField form-control" placeholder="5-digit number"
+                  (input)="data.ownerZipCode = namedata($event)" [(ngModel)]="data.ownerZipCode" #ownerZipCode="ngModel"
+                  maxLength="5" (keypress)="keyPressNumbers($event)" required [ngClass]="{
+                    'is-invalid': f.submitted && ownerZipCode.invalid
+                  }" />
+                <small *ngIf="
+                    ownerZipCode.invalid &&
+                    (ownerZipCode.touched || f.submitted)
+                  " class="text-danger">ZipCode is required</small>
+              </div>
+            </div>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">Business Owner Professional Title</div>
+            <div>
+              <input type="text" name="ownerProfessionalTitle" class="inputField form-control"
+                placeholder="Enter business owner professional title"
+                (input)="data.ownerProfessionalTitle = namedata($event)" [(ngModel)]="data.ownerProfessionalTitle"
+                #ownerProfessionalTitle="ngModel" required [ngClass]="{
+                  'is-invalid': f.submitted && ownerProfessionalTitle.invalid
+                }" />
+              <small *ngIf="
+                  ownerProfessionalTitle.invalid &&
+                  (ownerProfessionalTitle.touched || f.submitted)
+                " class="text-danger">Professional title is required</small>
+            </div>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">Business Owner Annual Income</div>
+            <div>
+              <input type="text" name="ownerAnnualIncome" class="inputField form-control"
+                placeholder="Enter business owner annual income" (input)="data.ownerAnnualIncome = namedata($event)"
+                [(ngModel)]="data.ownerAnnualIncome" #ownerAnnualIncome="ngModel" (keypress)="keyPressNumbers($event)"
+                required [ngClass]="{
+                  'is-invalid': f.submitted && ownerAnnualIncome.invalid
+                }" />
+              <small *ngIf="
+                  ownerAnnualIncome.invalid &&
+                  (ownerAnnualIncome.touched || f.submitted)
+                " class="text-danger">Annual Income is required</small>
+            </div>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">Business Owner's Percentage Ownership</div>
+            <div>
+              <div class="displayFlex">
+                <label class="displayFlex alignItemcenter pr10">
+                  <div class="pr15">
+                    <input type="radio" name="owner2" class="inputField form-control"
+                      (input)="data.owner2 = namedata($event)" value="Y" [(ngModel)]="data.owner2" #owner2="ngModel"
+                      required />
+                  </div>
+                  <div class="pr25 yesText">Less than or equal to 50%</div>
+                </label>
+                <label class="displayFlex alignItemcenter pr10">
+                  <div class="pr15">
+                    <input type="radio" name="owner2" class="inputField form-control"
+                      (input)="data.owner2 = namedata($event)" value="N" [(ngModel)]="data.owner2" #owner2="ngModel"
+                      required />
+                  </div>
+                  <div class="pr25 yesText">More than 50%</div>
+                </label>
+                <small *ngIf="owner2.invalid && (owner2.touched || f.submitted)" class="text-danger">Select any
+                  one</small>
+              </div>
+            </div>
+          </div>
+
+          <ng-container *ngIf="data.owner2 == 'Y'">
+            <div class="yesButton">
+              <div class="pb50px">
+                <div class="labelTxt">Specific Percentage Ownership</div>
+                <div>
+                  <input type="text" name="ownerPercentage" class="inputField form-control"
+                    placeholder="Enter specific percentage ownership" pattern="[0-9]+([\.,][0-9]+)?"
+                    (input)="data.ownerPercentage = namedata($event)" [(ngModel)]="data.ownerPercentage"
+                    #ownerPercentage="ngModel" required [ngClass]="{
+                      'is-invalid': f.submitted && ownerPercentage.invalid
+                    }" (keyup)= "checkPercent()" />
+                  <small *ngIf="
+                      ownerPercentage.invalid &&
+                      (ownerPercentage.touched || f.submitted)
+                    " class="text-danger">Percentage of Ownership is required
+                    <small [hidden]="!ownerPercentage.errors?.pattern" class="text-danger">
+                      Invalid percentage
+                    </small></small>
+                </div>
+              </div>
+              <div class="owner2">
+                <div class="titleTxt">Business Owner #2</div>
+                <div class="pb50px">
+                  <div class="labelTxt">Business Owner First Name</div>
+                  <div>
+                    <input type="text" name="owner2FirstName" class="inputField form-control"
+                      placeholder="Enter business owner first name" (input)="data.owner2FirstName = namedata($event)"
+                      [(ngModel)]="data.owner2FirstName" #owner2FirstName="ngModel" required [ngClass]="{
+                        'is-invalid': f.submitted && owner2FirstName.invalid
+                      }" />
+                    <small *ngIf="
+                        owner2FirstName.invalid &&
+                        (owner2FirstName.touched || f.submitted)
+                      " class="text-danger">First Name is required</small>
+                  </div>
+                </div>
+                <div class="pb50px">
+                  <div class="labelTxt">Business Owner Last Name</div>
+                  <div>
+                    <input type="text" name="owner2LastName" class="inputField form-control"
+                      placeholder="Enter business owner last name" (input)="data.owner2LastName = namedata($event)"
+                      [(ngModel)]="data.owner2LastName" #owner2LastName="ngModel" required [ngClass]="{
+                        'is-invalid': f.submitted && owner2LastName.invalid
+                      }" />
+                    <small *ngIf="
+                        owner2LastName.invalid &&
+                        (owner2LastName.touched || f.submitted)
+                      " class="text-danger">Last Name is required</small>
+                  </div>
+                </div>
+                <div class="pb50px">
+                  <div class="labelTxt">
+                    Business Owner Personal Email Address
+                  </div>
+                  <div>
+                    <input type="test" name="owner2Email" class="inputField form-control"
+                      placeholder="Enter business owner personal email address"
+                      (input)="data.owner2Email = namedata($event)" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                      [(ngModel)]="data.owner2Email" #owner2Email="ngModel" required [ngClass]="{
+                        'is-invalid': f.submitted && owner2Email.invalid
+                      }" />
+                    <small *ngIf="
+                        owner2Email.invalid &&
+                        (owner2Email.touched || f.submitted)
+                      " class="text-danger">Email is required
+                      <small [hidden]="!owner2Email.errors?.pattern" class="text-danger">
+                        Invalid Email
+                      </small>
+                    </small>
+                  </div>
+                </div>
+                <div class="pb50px">
+                  <div class="labelTxt">Business Owner Personal Phone</div>
+                  <div>
+                    <input type="text" name="owner2Phone" class="inputField form-control"
+                      placeholder="Enter phone number" (input)="data.owner2Phone = namedata($event)"
+                      (keypress)="keyPressNumbers($event)"  [(ngModel)]="data.owner2Phone" #owner2Phone="ngModel" required
+                     mask="(000) 000-0000"  [ngClass]="{ 'is-invalid': f.submitted && owner2Phone.invalid  && hidedigiterr2 }"
+                     (keyup)="validateConfirmdigits(2,data.owner2Phone)"/>
+                    <small *ngIf="owner2Phone.invalid && (owner2Phone.touched || f.submitted) && hidedigiterr2" class="text-danger">Phone
+                      Number
+                      is required</small>
+                      <small *ngIf="hidedigiterr2" class="text-danger">
+                        Phone Number 10 Digits Required!</small
+                      >
+                  </div>
+                </div>
+                <div class="pb50px">
+                  <div class="labelTxt">Business Owner Home Address</div>
+                  <div>
+                    <input type="text" name="owner2Address" ngx-google-places-autocomplete [options]='options'
+                      #placesRef="ngx-places" (onAddressChange)="handleAddressChange2($event)"
+                      class="inputField form-control" placeholder="Enter business owner personal address"
+                      (input)="data.owner2Address = namedata($event)" [(ngModel)]="data.owner2Address"
+                      #owner2Address="ngModel" required
+                      [ngClass]="{ 'is-invalid': f.submitted && owner2Address.invalid }" />
+                  </div>
+                  <i class="fas fa-map-marker-alt addressIcon"></i>
+                  <small *ngIf="owner2Address.invalid && (owner2Address.touched || f.submitted)"
+                    class="text-danger">Address
+                    is required</small>
+                </div>
+                <div class="pb50px displayFlex spaceBetween addressRow">
+                  <div class="addressBottom">
+                    <div class="labelTxt">City</div>
+                    <div>
+                      <input type="text" name="owner2City" class="inputField form-control" placeholder="Enter city"
+                        (input)="data.owner2City = namedata($event)" [(ngModel)]="data.owner2City" #owner2City="ngModel"
+                        required [ngClass]="{ 'is-invalid': f.submitted && owner2City.invalid }" />
+                      <small *ngIf="owner2City.invalid && (owner2City.touched || f.submitted)" class="text-danger">City
+                        is required</small>
+                    </div>
+                  </div>
+                  <div class="addressBottom">
+                    <div class="labelTxt">State</div>
+                    <div>
+                      <input type="text" name="owner2State" class="inputField form-control" placeholder="Enter state"
+                        (input)="data.owner2State = namedata($event)" [(ngModel)]="data.owner2State"
+                        #owner2State="ngModel" required
+                        [ngClass]="{ 'is-invalid': f.submitted && owner2State.invalid }" />
+                      <small *ngIf="owner2State.invalid && (owner2State.touched || f.submitted)"
+                        class="text-danger">Sate is required</small>
+                    </div>
+                  </div>
+                  <div class="addressBottom">
+                    <div class="labelTxt">zip code</div>
+                    <div>
+                      <input type="text" name="owner2ZipCode" class="inputField form-control"
+                        placeholder="5-digit number" (input)="data.owner2ZipCode = namedata($event)"
+                        [(ngModel)]="data.owner2ZipCode" #owner2ZipCode="ngModel" required maxLength="5"
+                        (keypress)="keyPressNumbers($event)"
+                        [ngClass]="{ 'is-invalid': f.submitted && owner2ZipCode.invalid }" />
+                      <small *ngIf="owner2ZipCode.invalid && (owner2ZipCode.touched || f.submitted)"
+                        class="text-danger">ZipCode is required</small>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="pb50px">
+                  <div class="labelTxt">Business Owner date of birth</div>
+                  <div>
+                    <input type="date" name="owner2DOB" class="inputField form-control" style="padding-right: 10px;"
+                      (input)="data.owner2DOB = namedata($event)" [(ngModel)]="data.owner2DOB" #owner2DOB="ngModel"
+                      required [ngClass]="{ 'is-invalid': f.submitted && owner2DOB.invalid }" />
+                    <small *ngIf="owner2DOB.invalid && (owner2DOB.touched || f.submitted)" class="text-danger">Date of
+                      birth
+                      is required</small>
+                  </div>
+                </div> -->
+                <!-- <div class="pb50px">
+                  <div class="labelTxt">Business Owner SSN</div>
+                  <div>
+                    <input type="text" name="owner2SSN" class="inputField form-control" placeholder="9-digit number"
+                      (input)="data.owner2SSN = namedata($event)" [(ngModel)]="data.owner2SSN" #owner2SSN="ngModel"
+                      (keypress)="keyPressNumbers($event)" required
+                      [ngClass]="{ 'is-invalid': f.submitted && owner2SSN.invalid }" maxLength="9" />
+                    <small *ngIf="owner2SSN.invalid && (owner2SSN.touched || f.submitted)" class="text-danger">SSN
+                      is required</small>
+                  </div>
+                </div> -->
+                <!-- <div class="pb50px">
+                  <div class="labelTxt">Business Owner Personal Phone</div>
+                  <div>
+                    <input type="text" name="owner2Phone" class="inputField form-control"
+                      placeholder="Enter phone number" (input)="data.owner2Phone = namedata($event)"
+                      [(ngModel)]="data.owner2Phone" #owner2Phone="ngModel" required
+                      [ngClass]="{ 'is-invalid': f.submitted && owner2Phone.invalid }" />
+                    <small *ngIf="owner2Phone.invalid && (owner2Phone.touched || f.submitted)" class="text-danger">Phone
+                      Number
+                      is required</small>
+                  </div>
+                </div> -->
+                <!-- <div class="pb50px">
+                  <div class="labelTxt">Business Owner Home Address</div>
+                  <div>
+                    <input type="text" name="owner2Address" ngx-google-places-autocomplete [options]='options'
+                      #placesRef="ngx-places" (onAddressChange)="handleAddressChange2($event)"
+                      class="inputField form-control" placeholder="Enter business owner personal address"
+                      (input)="data.owner2Address = namedata($event)" [(ngModel)]="data.owner2Address"
+                      #owner2Address="ngModel" required
+                      [ngClass]="{ 'is-invalid': f.submitted && owner2Address.invalid }" />
+                  </div>
+                  <i class="fas fa-map-marker-alt addressIcon"></i>
+                  <small *ngIf="owner2Address.invalid && (owner2Address.touched || f.submitted)"
+                    class="text-danger">Address
+                    is required</small>
+                </div> -->
+                <!-- <div class="pb50px displayFlex spaceBetween addressRow">
+                  <div class="addressBottom">
+                    <div class="labelTxt">City</div>
+                    <div>
+                      <input type="text" name="owner2City" class="inputField form-control" placeholder="Enter city"
+                        (input)="data.owner2City = namedata($event)" [(ngModel)]="data.owner2City" #owner2City="ngModel"
+                        required [ngClass]="{ 'is-invalid': f.submitted && owner2City.invalid }" />
+                      <small *ngIf="owner2City.invalid && (owner2City.touched || f.submitted)" class="text-danger">City
+                        is required</small>
+                    </div>
+                  </div>
+                  <div class="addressBottom">
+                    <div class="labelTxt">State</div>
+                    <div>
+                      <input type="text" name="owner2State" class="inputField form-control" placeholder="Enter state"
+                        (input)="data.owner2State = namedata($event)" [(ngModel)]="data.owner2State"
+                        #owner2State="ngModel" required
+                        [ngClass]="{ 'is-invalid': f.submitted && owner2State.invalid }" />
+                      <small *ngIf="owner2State.invalid && (owner2State.touched || f.submitted)"
+                        class="text-danger">Sate is required</small>
+                    </div>
+                  </div>
+                  <div class="addressBottom">
+                    <div class="labelTxt">zip code</div>
+                    <div>
+                      <input type="text" name="owner2ZipCode" class="inputField form-control"
+                        placeholder="5-digit number" (input)="data.owner2ZipCode = namedata($event)"
+                        [(ngModel)]="data.owner2ZipCode" #owner2ZipCode="ngModel" required maxLength="5"
+                        (keypress)="keyPressNumbers($event)"
+                        [ngClass]="{ 'is-invalid': f.submitted && owner2ZipCode.invalid }" />
+                      <small *ngIf="owner2ZipCode.invalid && (owner2ZipCode.touched || f.submitted)"
+                        class="text-danger">ZipCode is required</small>
+                    </div>
+                  </div>
+                </div> -->
+                <!-- <div class="pb50px">
+                  <div class="labelTxt">Business Owner Professional Title</div>
+                  <div>
+                    <input type="text" name="owner2ProfessionalTitle" class="inputField form-control"
+                      placeholder="Enter business owner professional title"
+                      (input)="data.owner2ProfessionalTitle = namedata($event)"
+                      [(ngModel)]="data.owner2ProfessionalTitle" #owner2ProfessionalTitle="ngModel" required
+                      [ngClass]="{ 'is-invalid': f.submitted && owner2ProfessionalTitle.invalid }" />
+                    <small *ngIf="owner2ProfessionalTitle.invalid && (owner2ProfessionalTitle.touched || f.submitted)"
+                      class="text-danger">Professional title is required</small>
+                  </div>
+                </div> -->
+                <div class="">
+                  <!-- <div class="labelTxt">Business Owner Annual Income</div> -->
+                  <!-- <div>
+                    <input type="text" name="owner2AnnualIncome" class="inputField form-control"
+                      placeholder="Enter business owner annual income"
+                      (input)="data.owner2AnnualIncome = namedata($event)" [(ngModel)]="data.owner2AnnualIncome"
+                      #owner2AnnualIncome="ngModel" required (keypress)="keyPressNumbers($event)" [ngClass]="{
+                        'is-invalid': f.submitted && owner2AnnualIncome.invalid
+                      }" />
+                    <small *ngIf="
+                        owner2AnnualIncome.invalid &&
+                        (owner2AnnualIncome.touched || f.submitted)
+                      " class="text-danger">Annual Income is required</small>
+                  </div> -->
+                </div>
+
+
+                <!-- <div class="owner2"> -->
+                <div class="">
+
+                  <div class="labelTxt">
+                    Business Owner 2 Percentage Ownership
+                  </div>
+
+                  <div class="pb50px">
+                    <input type="text" name="owner2Percentage" class="inputField form-control"
+                      placeholder="Enter business owner 2 percentage ownership"
+                      (input)="data.owner2Percentage = namedata($event)" [(ngModel)]="data.owner2Percentage"
+                      #owner2Percentage="ngModel" required (keypress)="keyPressNumbersWithDecimal($event)"
+                      pattern="[0-9]+([\.,][0-9]+)?" [ngClass]="{
+                        'is-invalid': f.submitted && owner2Percentage.invalid
+                      }" (keyup)= "checkPercent()"/>
+                    <small *ngIf="
+                        owner2Percentage.invalid &&
+                        (owner2Percentage.touched || f.submitted)
+                      " class="text-danger">Percentage of Ownership is required
+                      <small [hidden]="!owner2Percentage.errors?.pattern" class="text-danger">
+                        Invalid percentage
+                      </small></small>
+                  </div>
+
+                </div>
+
+
+              </div>
+            </div>
+          </ng-container>
+
+
+
+          <!-- <ng-container class="owner2">
+            <div class="yesButton">
+              <div class="owner3" *ngIf="!hidePercent">
+                <div class="titleTxt">Business Owner #3</div>
+                <div class="pb50px">
+                  <div class="labelTxt">Business Owner First Name</div>
+                  <div>
+                    <input type="text" name="owner3FirstName" class="inputField form-control"
+                      placeholder="Enter business owner first name" (input)="data.owner3FirstName = namedata($event)"
+                      [(ngModel)]="data.owner3FirstName" #owner3FirstName="ngModel" required [ngClass]="{
+                        'is-invalid': f.submitted && owner3FirstName.invalid
+                      }" />
+                    <small *ngIf="
+                        owner3FirstName.invalid &&
+                        (owner3FirstName.touched || f.submitted)
+                      " class="text-danger">First Name is required</small>
+                  </div>
+                </div>
+
+                <div class="pb50px">
+                  <div class="labelTxt">Business Owner Last Name</div>
+                  <div>
+                    <input type="text" name="owner3LastName" class="inputField form-control"
+                      placeholder="Enter business owner last name" (input)="data.owner3LastName = namedata($event)"
+                      [(ngModel)]="data.owner3LastName" #owner3LastName="ngModel" required [ngClass]="{
+                        'is-invalid': f.submitted && owner3LastName.invalid
+                      }" />
+                    <small *ngIf="
+                        owner3LastName.invalid &&
+                        (owner3LastName.touched || f.submitted)
+                      " class="text-danger">Last Name is required</small>
+                  </div>
+                </div>
+
+                <div class="pb50px">
+                  <div class="labelTxt">
+                    Business Owner Personal Email Address
+                  </div>
+                  <div>
+                    <input type="test" name="owner3Email" class="inputField form-control"
+                      placeholder="Enter business owner personal email address"
+                      (input)="data.owner3Email = namedata($event)" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                      [(ngModel)]="data.owner3Email" #owner3Email="ngModel" required [ngClass]="{
+                        'is-invalid': f.submitted && owner3Email.invalid
+                      }" />
+                    <small *ngIf="
+                        owner3Email.invalid &&
+                        (owner3Email.touched || f.submitted)
+                      " class="text-danger">Email is required
+                      <small [hidden]="!owner3Email.errors?.pattern" class="text-danger">
+                        Invalid Email
+                      </small>
+                    </small>
+                  </div>
+                </div>
+
+                <div class="pb50px">
+                  <div class="labelTxt">Business Owner Personal Phone</div>
+                  <div>
+                    <input type="text" name="owner3Phone" class="inputField form-control"
+                      placeholder="Enter phone number" (input)="data.owner3Phone = namedata($event)"
+                      (keypress)="keyPressNumbers($event)"  [(ngModel)]="data.owner3Phone" #owner3Phone="ngModel" required
+                     mask="(000) 000-0000"  [ngClass]="{ 'is-invalid': f.submitted && owner3Phone.invalid  && hidedigiterr2 }"
+                     (keyup)="validateConfirmdigits(2,data.owner3Phone)"/>
+                    <small *ngIf="owner3Phone.invalid && (owner3Phone.touched || f.submitted) && hidedigiterr2" class="text-danger">Phone
+                      Number
+                      is required</small>
+                      <small *ngIf="hidedigiterr2" class="text-danger">
+                        Phone Number 10 Digits Required!</small
+                      >
+                  </div>
+                </div>
+                <div class="pb50px">
+                  <div class="labelTxt">Business Owner Home Address</div>
+                  <div>
+                    <input type="text" name="owner3Address" ngx-google-places-autocomplete [options]='options'
+                      #placesRef="ngx-places" (onAddressChange)="handleAddressChange2($event)"
+                      class="inputField form-control" placeholder="Enter business owner personal address"
+                      (input)="data.owner3Address = namedata($event)" [(ngModel)]="data.owner3Address"
+                      #owner3Address="ngModel" required
+                      [ngClass]="{ 'is-invalid': f.submitted && owner3Address.invalid }" />
+                  </div>
+                  <i class="fas fa-map-marker-alt addressIcon"></i>
+                  <small *ngIf="owner3Address.invalid && (owner3Address.touched || f.submitted)"
+                    class="text-danger">Address
+                    is required</small>
+                </div>
+                <div class="pb50px displayFlex spaceBetween addressRow">
+                  <div class="addressBottom">
+                    <div class="labelTxt">City</div>
+                    <div>
+                      <input type="text" name="owner3City" class="inputField form-control" placeholder="Enter city"
+                        (input)="data.owner3City = namedata($event)" [(ngModel)]="data.owner3City" #owner3City="ngModel"
+                        required [ngClass]="{ 'is-invalid': f.submitted && owner3City.invalid }" />
+                      <small *ngIf="owner3City.invalid && (owner3City.touched || f.submitted)" class="text-danger">City
+                        is required</small>
+                    </div>
+                  </div>
+                  <div class="addressBottom">
+                    <div class="labelTxt">State</div>
+                    <div>
+                      <input type="text" name="owner3State" class="inputField form-control" placeholder="Enter state"
+                        (input)="data.owner3State = namedata($event)" [(ngModel)]="data.owner3State"
+                        #owner3State="ngModel" required
+                        [ngClass]="{ 'is-invalid': f.submitted && owner3State.invalid }" />
+                      <small *ngIf="owner3State.invalid && (owner3State.touched || f.submitted)"
+                        class="text-danger">Sate is required</small>
+                    </div>
+                  </div>
+                  <div class="addressBottom">
+                    <div class="labelTxt">zip code</div>
+                    <div>
+                      <input type="text" name="owner3ZipCode" class="inputField form-control"
+                        placeholder="5-digit number" (input)="data.owner3ZipCode = namedata($event)"
+                        [(ngModel)]="data.owner3ZipCode" #owner3ZipCode="ngModel" required maxLength="5"
+                        (keypress)="keyPressNumbers($event)"
+                        [ngClass]="{ 'is-invalid': f.submitted && owner3ZipCode.invalid }" />
+                      <small *ngIf="owner3ZipCode.invalid && (owner3ZipCode.touched || f.submitted)"
+                        class="text-danger">ZipCode is required</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container> -->
+
+
+
+
+
+
+
+
+          <div class="ptb50">
+            <div class="fotterbg displayFlex">
+              <div class="displayFlex letsgo">
+                <div>
+                  <!-- <button [disabled]="!f.valid" type="submit">NEXT</button> -->
+                  <button
+                    gtagEvent
+                    trackOn="click"
+                    category="Credit Application"
+                    [params]="{event_label: 'Step 3 Completed'}"
+                    type="submit"
+                  >NEXT</button>
+                </div>
+                <div [ngClass]="{
+                    safariarrowalign: OsName == 'MacOS',
+                    windowarrowalign: OsName == 'Windows'
+                  }" id="arrowalign">
+                  <img src="../../../assets/nextarrow.svg" style="width: 33px; margin-left: 5px" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- <ng-template #messagebox>
+  <div class="modal-body text-center">
+    <p class="headtext">Message</p>
+    <p *ngFor="let m of message">{{ m }}</p>
+    <button type="button" class="btn btn-alert" aria-label="Close" (click)="close()">NO, LET ME FIX THAT</button>
+    <button type="button" class="btn btn-primary" type="button" (click)="submitApi()">YES, THAT IS CORRECT</button>
+  </div>
+</ng-template> -->
+
+
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <!-- <p class="headtext">Message</p> -->
+    <div *ngFor="let m of message" class="msgtext">{{ m }}</div>
+    <button type="button" class="btn submitButton" aria-label="Close" (click)="close()">
+      NO, LET ME FIX THAT
+    </button>
+    &nbsp; &nbsp;&nbsp;&nbsp;
+    <button type="button" class="btn submitButton" type="button" (click)="submitApi()">
+      YES, THAT IS CORRECT
+    </button>
+  </div>
+</ng-template>

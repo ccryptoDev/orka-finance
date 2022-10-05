@@ -1,0 +1,507 @@
+.pt50 {
+  padding-top: 50px;
+}
+
+.section1 {
+  // display: flex;
+  // padding: 2% 10%;
+  // align-items: center;
+}
+
+.section2 {
+  display: flex;
+  // padding: 2% 10%;
+  justify-content: space-between;
+  // align-items: center;
+}
+
+.section3 {
+  display: flex;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.leftheading1 {
+  font-family: "AvenirBlack";
+  font-size: 21px;
+  line-height: 20px;
+  color: #e50000;
+}
+
+.leftheading2 {
+  font-family: "AvenirBlack";
+  font-size: 31px;
+  line-height: 48px;
+  color: #242424;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.column .mt30 {
+  margin-top: 30px;
+}
+
+.column .mt30 .mb15 {
+  margin-bottom: 15px;
+}
+
+.column .ml2-5 {
+  margin-left: 2.5px;
+}
+
+.lineVertical {
+  margin-top: -50px;
+  height: 200px;
+  width: 1.5px;
+  background-color: #242424;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.lineHorizontal {
+  height: 1.5px;
+  width: 250px;
+  background-color: #d6d6d6;
+  margin-top: 30px;
+}
+
+.titleText {
+  font-family: "AvenirBlack";
+  font-size: 31px;
+  line-height: 48px;
+  color: #242424;
+  font-size: 32px;
+  padding-bottom: 50px;
+  font-weight: 700;
+  margin-left: -20px;
+}
+
+.spanText {
+  font-size: 10px;
+  font-family: "Avenir";
+  line-height: 20px;
+  color: #242424;
+  font-weight: 700;
+  margin-left: 1.5px;
+}
+
+li {
+  font-family: "Avenir";
+  font-size: 14px;
+  line-height: 30px;
+  color: #555555;
+  margin-bottom: 20px;
+}
+
+.mainContent ol {
+  list-style: decimal;
+  padding-left: 0px;
+  padding-top: 10px;
+  font-style: italic;
+  width: 50%;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 35px;
+  height: 25px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.arrowImage {
+  width: 64px;
+  height: 243px;
+}
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e1e1e1;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  width: 40px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 4px;
+  bottom: 6px;
+  background-color: #00b0c7;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #e1e1e1;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #00b0c7;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(18px);
+  -ms-transform: translateX(18px);
+  transform: translateX(18px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.paddingTop20 {
+  padding-bottom: 20px;
+}
+
+.paddingTop {
+  padding-top: 50px;
+}
+
+.radioText {
+  font-family: "Avenir";
+  font-size: 18px;
+  line-height: 20px;
+  color: #242424;
+  bottom: -20px;
+  margin-left: 10px;
+}
+
+.sideHeading {
+  font-family: "AvenirBlack";
+  font-size: 18px;
+  line-height: 0px;
+  color: #242424;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.sideHeadingSymbol {
+  font-family: "Avenir";
+  font-size: 18px;
+  line-height: 20px;
+  color: #242424;
+  font-weight: 700;
+  margin-left: 20px;
+}
+
+.sideHeadingSymbol1 {
+  font-family: "Avenir";
+  font-size: 18px;
+  line-height: 20px;
+  color: #242424;
+  font-weight: 700;
+}
+
+.blueHeading {
+  font-family: "AvenirBlack";
+  font-size: 25px;
+  line-height: 20px;
+  color: #00b0c7;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.numberHeading {
+  font-family: "AvenirBlack";
+  font-size: 35px;
+  line-height: 20px;
+  color: #000;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.inputField {
+  border: 3.5px solid #232323;
+  width: 100%;
+  font-size: 20px;
+  height: 35px;
+}
+
+.inputField1 {
+  border: 3.5px solid #232323;
+  width: 110%;
+  font-size: 20px;
+}
+
+.centered {
+  align-items: center;
+}
+
+input[type="radio"]:after {
+  width: 25px;
+  height: 25px;
+  border-radius: 15px;
+  top: -10px;
+  left: -1px;
+  position: relative;
+  background-color: white;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 3px solid black;
+}
+
+input[type="radio"]:checked:after {
+  width: 25px;
+  height: 25px;
+  border-radius: 15px;
+  top: -10px;
+  left: -1px;
+  position: relative;
+  background-color: #00b0c7;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 3px solid black;
+}
+
+.loginBtn {
+  width: 234px;
+  height: 35px;
+  margin: 20px auto;
+  border-radius: 30px;
+  -webkit-border-radius: 20px;
+  box-shadow: 0 1px 2px #5e5d5b;
+  background-color: #242424;
+
+  font-family: "AvenirBlack";
+  font-size: 18px;
+  letter-spacing: -0.2px;
+  color: #ffffff;
+  outline: none;
+  border: none;
+}
+
+.right {
+  text-align: center;
+  width: 50%;
+  float: right;
+}
+
+.left {
+  text-align: center;
+  width: 50%;
+  float: left;
+}
+
+input[type="radio"]:after {
+  width: 25px;
+  height: 25px;
+  border-radius: 15px;
+  top: 0px;
+  left: -1px;
+  position: relative;
+  background-color: white;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 3px solid black;
+}
+
+input[type="radio"]:checked:after {
+  width: 25px;
+  height: 25px;
+  border-radius: 15px;
+  top: 0px;
+  left: -1px;
+  position: relative;
+  background-color: #00b0c7;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 3px solid black;
+}
+
+.section4 {
+  margin-top: -30px;
+}
+
+@media (max-width: 1310px) {
+  .radioText {
+    font-family: "Avenir";
+    font-size: 18px;
+    line-height: 50px;
+    color: #242424;
+    bottom: -20px;
+  }
+
+  input[type="radio"]:after {
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    top: 0px;
+    left: -1px;
+    position: relative;
+    background-color: white;
+    content: "";
+    display: inline-block;
+    visibility: visible;
+    border: 3px solid black;
+    margin-bottom: 10px;
+  }
+
+  input[type="radio"]:checked:after {
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    top: 0px;
+    left: -1px;
+    position: relative;
+    background-color: #00b0c7;
+    content: "";
+    display: inline-block;
+    visibility: visible;
+    border: 3px solid black;
+    margin-bottom: 10px;
+  }
+
+  .radioStyle {
+    margin-bottom: 10px;
+  }
+
+  .inputField1 {
+    border: 3.5px solid #232323;
+    width: 140%;
+    font-size: 20px;
+    height: 35px;
+  }
+
+  .arrowIcon {
+    display: none;
+  }
+
+  .section3 {
+    margin-right: 500px;
+  }
+
+  .section4 {
+    margin-top: 40px;
+    margin-left: 300px;
+  }
+
+  .flexEnds {
+    margin-right: 340px;
+  }
+
+  .lineVertical {
+    display: none;
+  }
+
+  // .userDetails {
+  //   position: absolute;
+  //   margin-left: 350px;
+  //   margin-top: 50px;
+  // }
+}
+
+@media (max-width: 955px) {
+  .radioText {
+    font-family: "Avenir";
+    font-size: 18px;
+    line-height: 50px;
+    color: #242424;
+    bottom: -20px;
+  }
+
+  input[type="radio"]:after {
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    top: 0px;
+    left: -1px;
+    position: relative;
+    background-color: white;
+    content: "";
+    display: inline-block;
+    visibility: visible;
+    border: 3px solid black;
+    margin-bottom: 10px;
+  }
+
+  input[type="radio"]:checked:after {
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    top: 0px;
+    left: -1px;
+    position: relative;
+    background-color: #00b0c7;
+    content: "";
+    display: inline-block;
+    visibility: visible;
+    border: 3px solid black;
+    margin-bottom: 10px;
+  }
+
+  .radioStyle {
+    margin-bottom: 10px;
+  }
+
+  .inputField1 {
+    border: 3.5px solid #232323;
+    width: 140%;
+    font-size: 20px;
+    height: 35px;
+  }
+
+  .arrowIcon {
+    display: none;
+  }
+
+  .section2 {
+    margin-top: 10px;
+  }
+
+  .section3 {
+    margin-top: 30px;
+  }
+
+  .section4 {
+    margin-top: 0px;
+    margin-left: 20px;
+  }
+
+  li {
+    font-family: "Avenir";
+    font-size: 14px;
+    line-height: 30px;
+    color: #555555;
+    margin-bottom: 20px;
+  }
+
+  .flexEnds {
+    position: absolute;
+    left: 0px;
+    flex-direction: column;
+    margin-top: 100px;
+  }
+
+  .paddingBottom {
+    margin-top: 100px;
+  }
+}

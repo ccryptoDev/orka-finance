@@ -1,0 +1,53 @@
+<section class="content-header">
+    <!-- <h1>Denied Application Details</h1> -->
+    <ol class="breadcrumb">
+      <li>
+        <a [routerLink]="['/admin/dashboard']"><i class="fa fa-dashboard"></i> Dashboard</a>
+      </li>
+      <li class="active">Pending Milestone Reviews</li>
+    </ol>
+  </section>
+  
+  <div class="frameshadow ">
+    <div class="mainTitle">Pending Milestone Reviews</div>
+  
+    <div class="p10">
+      <table  id="example"  class="display table" >
+        <thead class="thead-dark">
+            <th class="details-control sorting_disabled" scope="col"></th>
+            <th scope="col">App ID</th>
+            <th scope="col">Milestone ID</th>
+            <th scope="col">Installer</th>
+            <th scope="col">Sales Rep</th>
+            <th scope="col">Business Borrower</th>
+            <th scope="col">Milestone</th>
+            <th scope="col">Date/Time Submitted</th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let d of data;let i = index">
+            <tr *ngIf="data!=null && data.length > 0 && d.milestatus!='Approved'" (click)="d.expanded = !d.expanded;getMDataPdf(d)">
+              <td> {{ d.expanded ? '&ndash;' : '+'}}</td>
+              <td> {{d.appid}} </td>
+              <td> {{d.milestoneid | slice: 0:12}} </td>
+              <td> {{d.installer }} </td>
+              <td> {{d.salesrep}} </td>
+              <td> {{d.borrower}} </td>
+              <td> {{(d.milestone=='PTO')?'Commercial Operation':d.milestone}} </td>
+              <td> {{d.datesubmitted | date:"MM-dd-yyyy h:mm:a"}} </td>
+            </tr>
+            <ng-container *ngIf="d.expanded">
+        
+              <tr>
+                <td colspan="1000">
+                <app-milestone-checklist>
+
+                </app-milestone-checklist>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

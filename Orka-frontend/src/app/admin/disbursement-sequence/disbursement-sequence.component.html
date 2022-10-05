@@ -1,0 +1,93 @@
+<section class="content-header">
+
+    <ol class="breadcrumb">
+      <li>
+        <a [routerLink]="['/admin/dashboard']"><i class="fa fa-dashboard"></i> Dashboard</a>
+      </li>
+      <li class="active">Disbursement Sequence Management</li>
+    </ol>
+  </section>
+  
+  <div class="frameshadow">
+    <div class="mainTitle">
+      <div>Disbursement Sequence Management</div>
+      <div>
+        <button type="button" class="btn-success btn-user-control buttonSize" [routerLink]="['/admin/disbursement-sequence/add']">
+          <i class="fa fa-user" aria-hidden="true"></i> Add Disbursement Sequence
+        </button>
+      </div>
+    </div>
+  
+  
+    <div class="p10">
+        <table *ngIf="data.disbursementlist!=null && data.disbursementlist.length > 0" datatable [dtOptions]="dtOptions" class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th>Disbursement Sequence Id</th>
+                <th>Name</th>
+                <th>Total Disbs</th>
+                <th>M1 Percentage</th>
+                <th>M1 Type</th>
+                <th>M2 Percentage</th>
+                <th>M2 Type</th>
+                <th>M3 Percentage</th>
+                <th>M3 Type</th>
+                <th>M4 Percentage</th>
+                <th>M4 Type</th>
+                <th>M5 Percentage</th>
+                <th>M5 Type</th>
+                <th>Status</th>
+                <th>Edit</th>
+                <th>Activate/Deactivate</th>
+              </tr>
+            </thead>
+            <tbody>        
+              <tr *ngFor="let d of data.disbursementlist; let i = index">
+                  <td>{{d.ref_no}}</td>
+                  <td>{{d.name}}</td>
+                  <td>{{d.total_disbs}}</td>
+                  <td>{{d.m1_percent}}</td>
+                  <td>{{d.m1_type}}</td>
+                  <td>{{d.m2_percent}}</td>
+                  <td>{{d.m2_type}}</td>
+                  <td>{{d.m3_percent}}</td>
+                  <td>{{d.m3_type}}</td>
+                  <td>{{d.m4_percent}}</td>
+                  <td>{{d.m4_type}}</td>
+                  <td>{{d.m5_percent}}</td>
+                  <td>{{d.m5_type}}</td>
+                  <td>{{d.status}}</td>
+                  <td><a routerLink="/admin/disbursement-sequence/{{ d.ref_no }}"  style="cursor: pointer;"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>  
+                  <td>
+                      <label class="switch">
+                      <input type="checkbox" [checked]="d.status == 'ACTIVE'" (change)="updateDisbursementSequence(data.disbursementlist[i].disbursementSequenceId,$event)" name="onoffswitch" >
+                      <span  class="slider round"></span>
+                      </label>
+                  </td> 
+              </tr>
+            </tbody>
+          </table>
+      <!-- <table *ngIf="data.length == 0" datatable class="table">
+          <thead class="thead-dark">
+              <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">User ref</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                </tr>
+          </thead>
+          <tbody></tbody>
+        </table> -->
+    </div>
+  </div>
+  
+  <ng-template #messagebox>
+    <div class="modal-body text-center">
+      <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <p class="headtext">Message</p>
+      <p *ngFor="let m of message">{{ m }}</p>
+    </div>
+  </ng-template>

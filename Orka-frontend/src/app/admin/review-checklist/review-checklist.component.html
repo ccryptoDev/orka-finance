@@ -1,0 +1,265 @@
+<div class="container section">
+  <div class="row">
+
+    <div class="col-3">
+      <form
+      [formGroup]="reviewAddForm"
+      (ngSubmit)="approveSubmit()"
+    >
+      <div class="backgroundtextdoc tableInnerDiv">
+        <h3>Review Checklist</h3>
+        <ul>
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="reviewheading">Business Borrower</div>
+              <div >
+                <input type="checkbox" name="businessborrower" formControlName="businessborrower" (change)="check($event,getPdfData.borrower)"/>
+                <label for="checkbox"></label>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="mleft-2">{{getPdfData.borrower}}</div>
+            </div>
+          </li>
+
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="reviewheading">Business Owner</div>
+              <div >
+                <input type="checkbox" [value]="getPdfData.ownerfullname" formControlName="businessowner" name="businessowner" (change)="check($event,getPdfData.ownerfullname)"   />
+                <label for="checkbox"></label>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="mleft-2">{{getPdfData.ownerfullname}}</div>
+            </div>
+          </li>
+
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="reviewheading">Project Site Address</div>
+              <div >
+                <input type="checkbox" [value]="getPdfData.businessAddress" formControlName="projectsiteaddress" name="projectsiteaddress"(change)="check($event,getPdfData.businessAddress)"   />
+                <label for="checkbox"></label>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="mleft-2">{{getPdfData.businessAddress}}</div>
+            </div>
+          </li>
+
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="reviewheading">Loan Amount</div>
+              <div >
+                <input type="checkbox" [value]="getPdfData.loanamount" formControlName="loanamount" name="loanamount" (change)="check($event,getPdfData.loanamount)"   />
+                <label for="checkbox"></label>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="mleft-2">{{getPdfData.loanamount}}</div>
+            </div>
+          </li>
+
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="reviewheading">Module Manufacturer</div>
+              <div >
+                <input type="checkbox"[value]="getPdfData.modulemanufacturer" formControlName="modulemanufacturer" name="modulemanufacturer"(change)="check($event,getPdfData.modulemanufacturer)"  />
+                <label for="checkbox"></label>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="mleft-2">{{getPdfData.loanamount}}</div>
+            </div>
+          </li>
+
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="reviewheading">Inverter Manufacturer</div>
+              <div >
+                <input type="checkbox"[value]="getPdfData.inverterManufacturer" formControlName="invertermanufacturer" name="invertermanufacturer"(change)="check($event,getPdfData.inverterManufacturer)"   />
+                <label for="checkbox"></label>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="mleft-2">{{getPdfData.inverterManufacturer}}</div>
+            </div>
+          </li>
+
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="reviewheading">Battery Manufacturer</div>
+              <div >
+                <input type="checkbox" [value]="getPdfData.batteryManufacturer" formControlName="batterymanufacturer" name="batterymanufacturer"(change)="check($event,getPdfData.batteryManufacturer)"   />
+                <label for="checkbox"></label>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="mleft-2">{{getPdfData.batteryManufacturer}}</div>
+            </div>
+          </li>
+
+
+          <li>
+            <div class="displayFlex spaceBetween AlignItemCenter">
+              <div class="reviewheading">Signature check</div>
+              <div >
+                <input type="checkbox" [value]="getPdfData.signature" formControlName="signaturecheck" name="signaturecheck"(change)="check($event,getPdfData.signature)"  />
+                <label for="checkbox"></label>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <!-- [disabled]="!allChecked" -->
+        <button
+        type="submit"
+          
+          style="width: 100%"
+          [ngClass]="{'requestFalse': requesthide === false, 'requestTrue' : requesthide === true }"
+
+          [disabled]="requesthide=== true"
+        >
+          <i aria-hidden="true" class="fa fa-thumbs-up"></i> Approve
+        </button>
+
+        <div *ngIf="requesthide">
+        <button
+          type="button"
+          class="btn btn-secondary fs12px mt10px"
+          style="width: 100%"
+          (click)="popupform()"
+        >
+          <i class="fa fa-hand-pointer-o"></i> Request for Information
+        </button>
+      </div>
+      </div>
+    </form>
+    </div>
+   
+    <div class="col-9">
+      <div
+        style="display: flex; justify-content: flex-end; align-items: center"
+      >
+        <button class="fullscreen" (click)="view()">
+          <i class="fa fa-expand"></i> &nbsp; View Fullscreen
+        </button>
+      </div>
+      <div class="d-flex justify-content-between pt_20 mb30px mt30px">
+        <iframe
+          style="height: 760px"
+          [src]="urlSafe"
+          frameBorder="0"
+          scrolling="auto"
+          width="100%"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="row mb30px">
+
+  <div class="col-12">
+    <div class="text-center">
+      <div *ngIf="reviewlog!=null && reviewlog.length > 0" class="mainTitle">Review Log List</div>
+    </div>
+    <table *ngIf="reviewlog!=null && reviewlog.length > 0"  datatable [dtOptions]="dtOptions" class="table">
+      <thead class="thead-dark">
+        <tr class="bold">
+          <th style="width: 10px">#</th>
+          <th style="white-space: nowrap">Log Reference</th>
+          <th>Module Name</th>
+          <th>User</th>
+          <th>Updated Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of reviewlog; let i = index">
+          <td class="bold">{{ i + 1 }}</td>
+          <td>{{ d.id }}</td>
+          <td>{{ d.module }}</td>
+          <td>
+            {{ d.user_id }}
+          </td>
+          <td>{{ d.updatedAt | date:'MM-dd-yyyy' }}</td>
+        </tr>
+      </tbody>
+    </table>
+    
+  </div>
+
+    </div>
+
+<ng-template #requestinformation>
+  <div class="modal-body text-center chmodalpass">
+    <div class="row">
+      <div class="col-12 text-center requestinfo_text">
+          The text below will be sent to the solar installer.Please indicate why the contract was not acceptable
+          and clear directions for their resubmission. 
+      </div>
+    </div>
+    <!--commit changes and complete-->
+    <form
+      name="form"
+      (ngSubmit)="f3.form.valid && requestinfoSubmit()"
+      #f3="ngForm"
+      novalidate
+    >
+      <div class="row">
+        <div class="col-12">
+          <div class="input-group form-group">
+            <textarea class="form-control requestinfo" name="comments" [(ngModel)]="cm.comments" #comments="ngModel"
+            required [ngClass]="{ 'is-invalid': f3.submitted && comments.invalid }"></textarea>
+          </div>
+          <div class="mb30px">
+            <small
+              *ngIf="
+              comments.invalid &&
+                (comments.touched || f3.submitted)
+              "
+              class="text-danger"
+            >
+              Request Information is required</small
+            >
+          </div>
+        </div>
+      </div>
+      <button class="btn submitButton mt10px mr10px" type="button" style="margin-right: 10px;
+      background: #f06c6c;" (click)="close()">
+        Cancel
+      </button>
+      <button class="btn submitButton mt10px mr10px" [disabled]="comments.invalid" type="submit">
+        Submit
+      </button>
+    </form>
+  </div>
+</ng-template>
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p class="headtext">Message</p>
+    <p *ngFor="let m of message">{{ m }}</p>
+  </div>
+</ng-template>

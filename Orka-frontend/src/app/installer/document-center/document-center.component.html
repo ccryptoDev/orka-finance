@@ -1,0 +1,180 @@
+<div class="container mt-5">
+  <div class="p10px">
+    <div class="mb20px">
+      <div class="frameshadow">
+        <div>
+          <div class="mainTitle">Upload Documents</div>
+        </div>
+        <div class="displayFlex AlignItemCenter spaceBetween mb50px">
+          <div
+            class="grayButton displayFlex AlignItemCenter justifycontencenter"
+          >
+            <div class="folders"></div>
+            <div>
+              <ngx-file-drop
+                dropZoneLabel="Drop files here"
+                (onFileDrop)="dropped($event)"
+                (onFileOver)="fileOver($event)"
+                (onFileLeave)="fileLeave($event)"
+              >
+                <ng-template
+                  ngx-file-drop-content-tmp
+                  let-openFileSelector="openFileSelector"
+                >
+                  <span (click)="openFileSelector()">Upload new files</span>
+                </ng-template>
+              </ngx-file-drop>
+            </div>
+          </div>
+        </div>
+
+        <div class="container1 mt-5" *ngIf="listfiles.length > 0">
+          <div
+            class="part2 p-3 mt-3"
+            *ngFor="let file of fileitems; let i = index"
+          >
+            <div class="row align-items-center">
+              <div class="col-1">
+                <div class="greenfolder"></div>
+              </div>
+              <div class="col-3">
+                {{ file.name.split(".")[0] }}
+              </div>
+              <div class="col-1">
+                <span class="bg-white p-1 rounded text-sales">{{
+                  file.name.split(".")[1] | uppercase
+                }}</span>
+              </div>
+              <div class="col-1">{{ (file.size / 1024).toFixed(2) }} KB</div>
+              <div class="col-1">
+                {{ today }}
+              </div>
+              <div class="col-2">
+                <select (change)="selectDocType(i, $event)">
+                  <option value="">Select Document Type</option>
+                  <option value="Government Issued ID">
+                    Government Issued ID
+                  </option>
+                  <option value="Paystub">Paystub</option>
+                  <option value="Income Document">Income Document</option>
+                  <option value="Driver License">Driver License</option>
+                  <option value="Bank Statement">Bank Statement</option>
+                  <option value="Other">Other</option>
+                </select>
+                <input
+                  hidden
+                  (keyup)="docTypeComment(i, $event.target.value)"
+                />
+              </div>
+              <div class="col-2 text-right">
+                <div
+                  class="delete_icon cursorpointer"
+                  (click)="deleteFileSelected(file)"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3 mt-3 text-center">
+            <button
+              type="button"
+              class="btn btn-sales"
+              (click)="upoadDocuments()"
+            >
+              Upload
+            </button>
+          </div>
+        </div>
+
+        <div class="p10px">
+          <table class="table table-bordered">
+            <tr>
+              <th style="width: 50px">#</th>
+              <th>Documents</th>
+              <!-- <th>Document Type</th> -->
+              <th>PDF,JPG,JPEG,PNG</th>
+            </tr>
+            <tbody>
+              <tr *ngFor="let d of data_res.files; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ d.originalname }}</td>
+                <!-- <td>{{ d.documentType }}</td> -->
+                <td (click)="view(d.filename)">
+                  <a style="cursor: pointer">View Document</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p class="headtext">Message</p>
+    <p *ngFor="let m of message">{{ m }}</p>
+  </div>
+</ng-template>
+
+<footer>
+  <footer>
+    <div class="partnerFooter"></div>
+    <div class="partnerFooterbg">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <img class="footerLogo" src="../../../assets/orka_whitelogo1.png" />
+          </div>
+          <div class="col-md-3">
+            <div class="displayFlex flexDirection">
+              <div
+                class="graytext cursorpointer pr20 pb10px"
+                target="_blank"
+                (click)="privacy()"
+              >
+                Privacy Policy
+              </div>
+
+              <div
+                class="graytext cursorpointer pr20 pb10px"
+                target="_blank"
+                (click)="termscondition()"
+              >
+                Terms and Conditions
+              </div>
+
+              <div
+                class="graytext cursorpointer pb10px"
+                target="_blank"
+                (click)="securitypolicy()"
+              >
+                Security Policy
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="graytext pb10px">Need help or have questions?</div>
+
+            <div class="whiteText pb10px">
+              Don't hesitate to contact ORKA's Support Team at
+              <a href="mailto:support@orkafinance.com" class="footerlinktxt"
+                >support@orkafinance.com</a
+              >
+            </div>
+            <div class="whiteText pb10px">or by phone at (844) ORKA-POD.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</footer>

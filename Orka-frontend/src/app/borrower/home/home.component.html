@@ -1,0 +1,243 @@
+<div>
+  <div class="pb24" *ngIf="hideReviewSign === true"></div>
+  <div class="notification" *ngIf="hideReviewSign === false">
+    <div class="title">SIGN YOUR LOAN DOCUMENTS </div>
+    <div class="infocontent">
+      Ready to officially go solar and finance your project through ORKA? To
+      fund your loan, the next step is to review and sign your Loan Documents.
+      <a
+        style="cursor: pointer"
+        class="blueColor"
+        (click)="loadSignComponent()"
+      >
+        Review and Sign
+      </a>
+    </div>
+  </div>
+
+  <div class="infoTitle pb32">Loan Information:</div>
+  <div
+    class="displayFlex spaceBetween pb42"
+    *ngIf="data && data['loan'] && data['loan'].length > 0"
+  >
+    <div class="w50perentage">
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">loan Application id:</div>
+        <div class="infomainsubTitle">
+          {{ loanInfo?.ref_no || "--" }}
+        </div>
+      </div>
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">Credit Application Status:</div>
+        <div class="infomainsubTitle">
+          {{ loanInfo?.status_flag || "--" | titlecase }}
+        </div>
+      </div>
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">Loan Amount ($):</div>
+        <div class="infomainsubTitle displayFlex AlignItemCenter">
+          <div>
+            ${{ loanInfo?.financingRequested || "--" }}
+          </div>
+        </div>
+      </div>
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">Interest Rate %:</div>
+        <div class="displayFlex AlignItemCenter" style="font-size: 20px; font-weight:500">
+          {{ loanInfo?.interestBaseRate ? (loanInfo.interestBaseRate + "%") : ("--") }}
+        </div>
+        <div class="ml10px mtm10">
+          <img src="../../../assets/info_icon.svg" class="cursorpointer changedirection" (mouseover)="showtool = true" (mouseleave)="showtool = false" />
+          <div class="tooltipblock" *ngIf="showtool">
+            Rates are subject to a 0.50% decrease if you enable autopay and
+            elect to make your payments by ACH
+          </div>
+        </div>
+      </div>
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">Term Length (Months):</div>
+        <div class="infomainsubTitle">{{ loanInfo?.financingTermRequested }}</div>
+      </div>
+    </div>
+    <div class="w50perentage">
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">Loan Status:</div>
+        <div class="infomainsubTitle">
+          {{ loanInfo?.status_flag || "--" | titlecase }}
+        </div>
+      </div>
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">Origination Fee %:</div>
+        <div class="infomainsubTitle">
+          {{ loanInfo?.originationFee ? (loanInfo.originationFee + "%") : ("--") }}
+        </div>
+      </div>
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">EST. Monthly Payment ($):</div>
+        <div class="infomainsubTitle displayFlex AlignItemCenter">
+          <div>--</div>
+          <div class="ml10px mtm10">
+            <img src="../../../assets/info_icon.svg" class="cursorpointer changedirection" (mouseover)="showtool1 = true" (mouseleave)="showtool1 = false"/>
+            <div class="tooltipblock" *ngIf="showtool1">
+              Your monthly payment will be finalized once your project reaches
+              commercial operation and your loan is fully funded.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">
+          Expected Prepayment by Month 18 ($):
+        </div>
+        <div class="infomainsubTitle">--</div>
+      </div>
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">Autopay by ACH Enabled ?:</div>
+        <div class="infomainsubTitle">--</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="infoTitle pb32">Borrower Information:</div>
+  <div
+    class="displayFlex spaceBetween pb42"
+    *ngIf="data && data['borrower'] && data['borrower'].length > 0"
+  >
+    <div class="w50perentage">
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle bnameWidth">Business name:</div>
+        <div class="infomainsubTitle">
+          {{
+            data["borrower"][0]["legalName"] != null
+              ? data["borrower"][0]["legalName"]
+              : "--"
+          }}
+        </div>
+      </div>
+
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">business owner first name:</div>
+        <div class="infomainsubTitle">
+          {{
+            data["borrower"][0]["ownerFirstName"] != null
+              ? data["borrower"][0]["ownerFirstName"]
+              : "--"
+          }}
+        </div>
+      </div>
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">business owner last name:</div>
+        <div class="infomainsubTitle">
+          {{
+            data["borrower"][0]["ownerLastName"] != null
+              ? data["borrower"][0]["ownerLastName"]
+              : "--"
+          }}
+        </div>
+      </div>
+    </div>
+    <div class="w50perentage">
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">business owner email:</div>
+        <div class="infomainsubTitle">
+          {{
+            data["borrower"][0]["email"] != null
+              ? data["borrower"][0]["email"]
+              : "--"
+          }}
+        </div>
+      </div>
+
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">business owner phone:</div>
+        <div class="infomainsubTitle">
+          {{
+            data["borrower"][0]["businessPhone"] != null
+              ? data["borrower"][0]["businessPhone"]
+              : "--"
+          }}
+        </div>
+      </div>
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">business address:</div>
+        <div class="infomainsubTitle">
+          {{
+            data["borrower"][0]["businessAddress"] != null
+              ? data["borrower"][0]["businessAddress"]
+              : "--"
+          }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="infoTitle pb32">Project Information:</div>
+  <div
+    class="displayFlex spaceBetween pb42"
+    *ngIf="data && data['loan'] && data['loan'].length > 0"
+  >
+    <div class="w50perentage">
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">Contractor Name:</div>
+        <div class="infomainsubTitle">{{installerInfo?.businessName}} </div>
+      </div>
+
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">Project Address:</div>
+        <div class="infomainsubTitle">
+          {{loanInfo?.businessInstallState}} , {{loanInfo?.businessInstallCity}} <br/>
+          {{loanInfo?.businessInstallAddress}}
+        </div>
+      </div>
+
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">
+          Total Installation Contract Price ($):
+        </div>
+        <div class="infomainsubTitle">${{loanInfo.totalProjectCost}}</div>
+      </div>
+    </div>
+    <div class="w50perentage">
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">PV Module Manufacturer:</div>
+        <div class="infomainsubTitle">
+          {{
+            data["loan"][0]["panelManufacturer"] != null
+              ? data["loan"][0]["panelManufacturer"]
+              : "--"
+          }}
+        </div>
+      </div>
+
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">inverter manufacturer:</div>
+        <div class="infomainsubTitle">
+          {{
+            data["loan"][0]["inverterManufacturer"] != null
+              ? data["loan"][0]["inverterManufacturer"]
+              : "--"
+          }}
+        </div>
+      </div>
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">
+          Energy Storage System Manufacturer:
+        </div>
+        <div class="infomainsubTitle">
+          {{ "--" }}
+        </div>
+      </div>
+
+      <div class="displayFlex AlignItemCenter pb24">
+        <div class="w300 infomainTitle">EV Charging System Manufacturer:</div>
+        <div class="infomainsubTitle">
+          {{
+            data["loan"][0]["batteryManufacturer"] != null
+              ? data["loan"][0]["batteryManufacturer"]
+              : "--"
+          }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

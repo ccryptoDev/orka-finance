@@ -1,0 +1,312 @@
+<div
+  class="container containermainBlock"
+  [ngClass]="{ minHeight: urlName != 'home' }"
+>
+  <nav class="tabflexDirection2">
+    <a
+      class="navbar-brand btn"
+      (click)="isSidebarShow = false"
+      [routerLinkActive]="'listBorder'"
+    >
+      <img
+        class="navbar-brand-regular image1"
+        src="../../../assets/orka-borrower-logo.svg"
+        alt="brand-logo"
+      />
+    </a>
+    <div class="nav-links mobtxtright">
+      <!--add coment-->
+      <ul>
+        <li>
+          <!-- <a [routerLink]="['client/home']" [routerLinkActive]="'listBorder'"
+            >Home</a
+          > -->
+          <a
+            class="btn"
+            [ngClass]="{ listBorder: !isSidebarShow }"
+            (click)="
+              isSidebarShow = false;
+              issignShow = false;
+              isbankShow = false;
+              isloanShow = false
+            "
+            [routerLinkActive]="'listBorder'"
+            >Home</a
+          >
+        </li>
+        <li>
+          <a
+            class="btn"
+            [ngClass]="{ listBorder: isSidebarShow }"
+            (click)="
+              isSidebarShow = true;
+              issignShow = false;
+              isbankShow = false;
+              isloanShow = false
+            "
+            [routerLinkActive]="'listBorder'"
+            >Documents Center</a
+          >
+        </li>
+        <li class="tabuser">
+          <div class="column1 textright displayFlex">
+            <div class="user_setting dropdown">
+              <a
+                href="javascript:void(0)"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <span class="logged-name row1" (click)="islogout = !islogout">
+                  <span class="username"></span>
+                  <img class="userimage" src="../../../assets/userimage.png" />
+                </span>
+              </a>
+              <div
+                class="dropdown-menu"
+                [ngStyle]="islogout && { display: 'block' }"
+              >
+                <ul>
+                  <li (click)="logout()">
+                    <a class=" "> Logout</a>
+                  </li>
+                  <li (click)="popupform()">
+                    <a class=" "> Change Password</a>
+                  </li>
+                  <li (click)="success()">
+                    <a class=" "> Success</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="companyname"></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div *ngIf="!issignShow && !isbankShow && !isloanShow && !isSuccess">
+    <app-document-center *ngIf="isSidebarShow"></app-document-center>
+
+    <app-home *ngIf="!isSidebarShow"></app-home>
+  </div>
+
+  <app-sign *ngIf="issignShow"></app-sign>
+  <app-bank-documents *ngIf="isbankShow"></app-bank-documents>
+  <app-loan-documents *ngIf="isloanShow"></app-loan-documents>
+  <app-success *ngIf="isSuccess"></app-success>
+</div>
+
+<footer>
+  <div class="partnerFooter"></div>
+  <div class="partnerFooterbg">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <img class="footerLogo" src="../../../assets/orka_whitelogo1.png" />
+        </div>
+        <div class="col-md-3">
+          <div class="displayFlex flexDirection">
+            <div
+              class="graytext cursorpointer pr20 pb10px"
+              target="_blank"
+              (click)="privacy()"
+            >
+              Privacy Policy
+            </div>
+
+            <div
+              class="graytext cursorpointer pr20 pb10px"
+              target="_blank"
+              (click)="termscondition()"
+            >
+              Terms and Conditions
+            </div>
+
+            <div
+              class="graytext cursorpointer pb10px"
+              target="_blank"
+              (click)="securitypolicy()"
+            >
+              Security Policy
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="graytext pb10px">Need help or have questions?</div>
+
+          <div class="whiteText pb10px">
+            Don't hesitate to contact ORKA's Support Team at
+            <a href="mailto:support@orkafinance.com" class="footerlinktxt"
+              >support@orkafinance.com</a
+            >
+          </div>
+          <div class="whiteText pb10px">or by phone at (844) ORKA-POD.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<ng-template #resetPassword>
+  <div class="modal-body text-center chmodalpass">
+    <!--commit changes and complete-->
+    <form
+      name="form"
+      (ngSubmit)="f.form.valid && resetPasswordSubmit()"
+      #f="ngForm"
+      novalidate
+    >
+      <div class="row">
+        <div class="col-12">
+          <div class="input-group form-group">
+            <input
+              type="password"
+              [type]="fieldTextType3 ? 'text' : 'password'"
+              required
+              name="curpassword"
+              class="form-control"
+              placeholder="Enter Current Password"
+              (input)="f1.curpassword = namedata($event)"
+              [(ngModel)]="f1.curpassword"
+              #curpassword="ngModel"
+              required
+              [ngClass]="{ 'is-invalid': f.submitted && curpassword.invalid }"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i
+                  class="fa"
+                  [ngClass]="{
+                    'fa-eye-slash': !fieldTextType3,
+                    'fa-eye': fieldTextType3
+                  }"
+                  (click)="toggleFieldTextType3()"
+                ></i>
+              </span>
+            </div>
+          </div>
+          <div class="mb10px">
+            <small
+              *ngIf="
+                curpassword.invalid && (curpassword.touched || f.submitted)
+              "
+              class="text-danger"
+            >
+              Current Password is required</small
+            >
+          </div>
+          <div class="input-group form-group">
+            <input
+              type="password"
+              [type]="fieldTextType2 ? 'text' : 'password'"
+              required
+              name="password"
+              class="form-control"
+              placeholder="Enter New Password"
+              (input)="f1.password = namedata($event)"
+              [(ngModel)]="f1.password"
+              #password="ngModel"
+              required
+              [ngClass]="{ 'is-invalid': f.submitted && password.invalid }"
+              (change)="validatePattern($event)"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i
+                  class="fa"
+                  [ngClass]="{
+                    'fa-eye-slash': !fieldTextType2,
+                    'fa-eye': fieldTextType2
+                  }"
+                  (click)="toggleFieldTextType2()"
+                ></i>
+              </span>
+            </div>
+          </div>
+          <div class="mb10px">
+            <small
+              *ngIf="password.invalid && (password.touched || f.submitted)"
+              class="text-danger"
+            >
+              New Password is required</small
+            >
+          </div>
+          <div class="input-group form-group">
+            <input
+              type="password"
+              [type]="fieldTextType1 ? 'text' : 'password'"
+              required
+              name="confirm_password"
+              class="form-control"
+              placeholder="Enter New Confirm Password"
+              (input)="f1.confirm_password = namedata($event)"
+              [(ngModel)]="f1.confirm_password"
+              #confirm_password="ngModel"
+              required
+              [ngClass]="{
+                'is-invalid': f.submitted && confirm_password.invalid
+              }"
+              (keyup)="validateConfirm($event)"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i
+                  class="fa"
+                  [ngClass]="{
+                    'fa-eye-slash': !fieldTextType1,
+                    'fa-eye': fieldTextType1
+                  }"
+                  (click)="toggleFieldTextType1()"
+                ></i>
+              </span>
+            </div>
+          </div>
+          <div class="mb30px">
+            <small
+              *ngIf="
+                confirm_password.invalid &&
+                (confirm_password.touched || f.submitted)
+              "
+              class="text-danger"
+            >
+              Confirm Password is required</small
+            >
+          </div>
+          <div class="mb30px">
+            <small *ngIf="confirmValidate" class="text-danger">
+              Passwords should match!</small
+            >
+          </div>
+          <div class="mb30px">
+            <small *ngIf="patternCheck" class="text-danger">
+              Password must contain at least 1 Upper Case, 1 Lower case, 1
+              Number, 1 Special Character and minimum length of 8 characters.
+            </small>
+          </div>
+        </div>
+      </div>
+      <button
+        class="btn submitButton mt10px mr10px"
+        [disabled]="IsDisabled || patternCheck || confirmValidate"
+        type="submit"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</ng-template>
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p class="headtext">Message</p>
+    <p *ngFor="let m of message">{{ m }}</p>
+  </div>
+</ng-template>

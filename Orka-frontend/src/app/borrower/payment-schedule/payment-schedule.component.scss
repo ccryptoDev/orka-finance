@@ -1,0 +1,44 @@
+.ps-row{
+    position: relative;
+    width: 50%;
+    height: 300px;
+    left: 7%;
+    top: 79px;
+    background: #F8F8F8;
+    border-radius: 10px;
+    margin: 40px;
+    padding: 45px 0px 0px 90px;
+}
+.ps-title{
+    position: relative;
+    left: 7%;
+    top: 25px;
+    background: #F8F8F8;
+    border-radius: 10px;
+    margin: 40px;
+}
+.amnt{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 28px;
+    color: #C5D93A;
+}
+.col-text{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    text-transform: capitalize;
+    color: #C5D93A;
+}
+.brw-notes{
+    background: rgba(197, 217, 58, 0.15);
+    padding: 15px;
+    border-radius: 15px;
+}
+.active-text{
+    color: green;
+}

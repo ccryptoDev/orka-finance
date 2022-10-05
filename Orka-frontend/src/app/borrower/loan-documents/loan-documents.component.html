@@ -1,0 +1,62 @@
+<div class="mtop90 borrowerblock">
+  <div class="breadcrumbs">
+    <div class="secondstage">
+      <div class="mr12"><img src="../../../assets/selected-check.svg" /></div>
+      <div class="pr16">Business Bank Account</div>
+    </div>
+    
+    <div class="firststage">
+      <div class="mr12"><img src="../../../assets/lightBlue-arrow.svg" /></div>
+      <div class="pr16">Loan Documents</div>
+    </div>
+  </div>
+
+  <div class="w887">
+    <div class="mainborrowertitle">
+      All set! Your Business bank account has been added. Now, let’s proceed to
+      your Loan Documents
+    </div>
+    <div class="borrowertxt">
+      Your Loan Agreement and Personal Guaranty Form are ready for you to review
+      and sign. Your Loan Agreement contains your estimated monthly payment,
+      which will be finalized once your project reaches commercial operation and
+      your loan is fully funded. A copy of the Personal Guaranty Form has been
+      emailed to all Business Owners listed in the initial Credit Application.
+      All Business Owners will need to sign this form in order to fund your
+      loan. <br />
+      <br />
+
+      Next, if you choose to enable autopay by authorizing your Business bank
+      account to pay your Solar Loan by ACH every month, you will be eligible to
+      save 0.50% on your interest rate and lower your monthly payment.
+    </div>
+    <div class="pdfBorder" style="overflow: scroll;">
+      <iframe
+        style="margin-top: 10px; height: 500px;"
+        id="docusign"
+        frameBorder="0"
+        scrolling="auto"
+        width="100%"
+        [src]="urlSafe"
+        (load)="onload($event)"
+      ></iframe>
+    </div>
+
+    <!-- <div class="ptb50">
+      <div
+        class="footerstrip3 displayFlex cursorpointer justifycontencenter"
+        (click)="loadloanComponent()"
+      >
+        <div class="displayFlex pt20">
+          <div class="pr16 bluestriptxt">ADD BUSINESS BANK ACCOUNT</div>
+          <div>
+            <img
+              src="../../../assets/nextarrow.svg"
+              style="width: 33px; margin-left: 5px"
+            />
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="center">
+<mr-ngx-plaid-link-button
+  env="sandbox"
+  [publicKey]="public_key"
+  institution=""
+  webhook="https://sandbox.plaid.com/api/v1/getPlaidTransactions"
+  [countryCodes]="['US']"
+  [product]= "['auth', 'assets','transactions']"
+  (Success)="onPlaidSuccess($event)"
+  (Exit)="onPlaidExit($event)"
+  (Event)="onPlaidEvent($event)"
+  className="launch-plaid-link-button"
+  buttonText="Connect Your Bank"
+></mr-ngx-plaid-link-button>
+</div>

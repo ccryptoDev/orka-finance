@@ -1,0 +1,143 @@
+<div class="w75per">
+  <div class="fs22px pb20">Make a Payment</div>
+
+  <div class="grayBox mb50px">
+    <div>
+      <div class="fs16px fontWeight pb20">Select Payment Method</div>
+    </div>
+
+    <tabset>
+      <tab heading="Bank Account">
+        <div class="bank_icon"></div>
+        
+        <div *ngIf="activeBankDetail.length>0">
+          <div class="displayFlex spaceBetween pb20">
+            <div>{{activeBankDetail[0].bankName}} (******{{activeBankDetail[0].accountNumber.substring(activeBankDetail[0].accountNumber.length-4)}})</div>
+            <div 
+              class="greenColor cursorpointer"
+              (click)="changeBankAcct(changeBankAcctTemp)"
+            >change</div>
+          </div>
+
+          <div class="pb20">
+            By making this payment I agree to the terms & conditions
+          </div>
+
+          <p></p>
+          <button
+            class="greenbutton width100per upperCase"
+            (click)="pay(paymentSuccess)"
+          >
+            Pay with Bank Account
+          </button>
+        </div>
+      </tab>
+      <tab heading="Debit Card">
+        <div class="withbank_icon"></div>
+
+        <div *ngIf="activeCardDetail.length>0">
+          <div class="displayFlex spaceBetween pb20">
+            <div>{{activeCardDetail[0].fullName}} (******{{activeCardDetail[0].cardNumber.substring(activeCardDetail[0].cardNumber.length-4)}})</div>
+            <div 
+              class="greenColor cursorpointer"
+              (click)="changeCard(changeCardTemp)"
+            >change</div>
+          </div>
+
+          <div class="pb20">
+            By making this payment I agree to the terms & conditions
+          </div>
+
+          <p></p>
+          <button
+            class="greenbutton width100per upperCase"
+            (click)="pay(paymentSuccess)"
+          >
+            Pay with Debit Card
+          </button>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+  <div class="grayBox mb50px">
+    <div>
+      <div class="fs16px fontWeight pb20">Remaining balance</div>
+      <div class="fs22px greenColor pb20">${{remainingBalance}}</div>
+    </div>
+
+    <div class="displayFlex spaceBetween pb20">
+      <div>Minimum payment</div>
+      <div>${{monthDue}}</div>
+    </div>
+    <div class="displayFlex spaceBetween pb20">
+      <div>6 months payoff</div>
+      <div>${{payOff | number}}</div>
+    </div>
+    <div class="displayFlex spaceBetween pb20">
+      <div>Next payment due</div>
+      <div>{{datePipe.transform(nextDuedate,"MMMM dd yyyy")}}</div>
+    </div>
+    <div class="displayFlex spaceBetween pb20">
+      <div>Custom</div>
+      <div class="greenColor">
+        Enter amount <i class="fa fa-chevron-right"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #paymentSuccess>
+  <div class="modal-body text-center">
+    <div>
+      <div class="success_icon" align="center"></div>
+      <div class="fs22px pb20">Payment Successful!</div>
+      <div class="fontWeight pb20 grayColor fs12px">Go to the main page</div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #changeBankAcctTemp>
+  <div class="modal-body">
+    <h5 class="pb20">Choose your active bank account</h5>
+    <form id="bankChooseForm" name="bankChooseForm" (ngSubmit)="f.form.valid && bankChoose()" #f="ngForm"
+    novalidate>
+      <div *ngFor="let b of data1.bankDetails" class="displayFlex AlignItemCenter spaceBetween pb20">
+        <div>{{b.bankName}} (******{{b.accountNumber.substring(b.accountNumber.length-4)}})</div>
+        <input 
+          type="radio" 
+          name="chooseBank" 
+          checked="checked" 
+          value="{{b.id}}"
+          [(ngModel)]="activeBank" 
+        />
+      </div>
+      <div class="mtb10">
+        <button type="button" class="closebutton mr30px w200px" (click)="close()">Close</button
+        ><button type="submit" class="greenbutton upperCase w200px">Apply</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #changeCardTemp>
+  <div class="modal-body">
+    <h5 class="pb20">Choose your active debit card</h5>
+    <form id="cardChooseForm" name="cardChooseForm" (ngSubmit)="f.form.valid && cardChoose()" #f="ngForm"
+    novalidate>
+      <div *ngFor="let c of data1.cardDetails" class="displayFlex AlignItemCenter spaceBetween pb20">
+        <div>{{c.fullName}} (******{{c.cardNumber.substring(c.cardNumber.length-4)}})</div>
+        <input 
+          type="radio" 
+          name="chooseCrd" 
+          checked="checked" 
+          value="{{c.id}}"
+          [(ngModel)]="activeCard" 
+        />
+      </div>
+      <div class="mtb10">
+        <button type="button" class="closebutton mr30px w200px" (click)="close()">Close</button
+        ><button type="submit" class="greenbutton upperCase w200px">Apply</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

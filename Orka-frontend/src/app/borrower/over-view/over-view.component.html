@@ -1,0 +1,131 @@
+<div class="m50px">
+  <div class="fs22px pb20">Overview</div>
+  <div *ngIf="data.user_details.length>0" class="grayBox displayFlex spaceBetween mb50px">
+    <div>
+      <div class="displayFlex ptb20 AlignItemCenter pt0">
+        <div class="iconBlock">
+          <div class="overview_profile_icon"></div>
+        </div>
+        <div>{{data.user_details[0].firstName}} {{data.user_details[0].lastName}}</div>
+      </div>
+      <div class="displayFlex ptb20 AlignItemCenter">
+        <div class="iconBlock">
+          <div class="overview_contact_icon"></div>
+        </div>
+        <div>{{data.user_details[0].phone}}</div>
+      </div>
+
+      <div class="displayFlex ptb20 AlignItemCenter">
+        <div class="iconBlock">
+          <div class="overview_mail_icon"></div>
+        </div>
+        <div>{{data.user_details[0].email}}</div>
+      </div>
+
+      <div class="displayFlex ptb20 AlignItemCenter pb0">
+        <div class="iconBlock">
+          <div class="overview_home_icon"></div>
+        </div>
+        <div>{{data.user_details[0].unit}} {{data.user_details[0].streetAddress}}, {{data.user_details[0].state}}, {{data.user_details[0].zipCode}}</div>
+      </div>
+    </div>
+
+    <div class="overviewloanblock">
+      <div>
+        <div class="fontWeight">Loan Amount</div>
+        <div>${{data.user_details[0].loanAmount}}</div>
+      </div>
+      <div>
+        <div class="fontWeight">Loan Term</div>
+        <div>Term: {{data.user_details[0].loanTerm}}, APR: {{data.user_details[0].apr}}%</div>
+      </div>
+    </div>
+    <div class="overviewloanblock">
+      <div>
+        <div class="fontWeight">Credit Expiration Date</div>
+        <div></div>
+      </div>
+      <div>
+        <div class="fontWeight">Monthly Payment</div>
+        <div class="fs22px greenColor">${{monthDue}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="displayFlex spaceBetween">
+    <div class="grayBox w48per">
+      <div>
+        <div class="fs16px fontWeight pb20">Remaining balance</div>
+        <div class="fs22px greenColor pb20">${{remainingBalance}}</div>
+      </div>
+
+      <div class="displayFlex spaceBetween pb20">
+        <div>Minimum amount</div>
+        <div>${{monthDue}}</div>
+      </div>
+      <div class="displayFlex spaceBetween pb20">
+        <div>Next payment due</div>
+        <div>{{datePipe.transform(nextDuedate,"MMMM dd yyyy")}}</div>
+      </div>
+      <div *ngIf="data.user_details[0]?.autoPayment=='Y'" class="infoBlock mb20px">
+        <div class="info_icon"></div>
+        <div>
+          You have automatic payment set up and this payment will be
+          automatically deducated from your bank account due to date.
+        </div>
+      </div>
+      <br>
+      <div *ngIf="data.payment_details.length">
+      <div class="fs16px fontWeight pb20">Previous Payments</div>
+
+      <div *ngFor="let pd of data.payment_details" class="displayFlex spaceBetween pb20">
+        <div class="displayFlex">
+          <div class="tick_icon"></div>
+          <div>{{datePipe.transform(pd.paidAt,"MMMM dd")}}th {{datePipe.transform(pd.paidAt,"yyyy")}}</div>
+        </div>
+        <div>${{pd.amount}}</div>
+      </div>
+    </div>
+
+      <div
+        class="displayFlex greenbutton AlignItemCenter spaceBetween width75per"
+        (click)="router.navigate(['client/make-payment']);"
+      >
+        <div>Make a payment</div>
+        <div class="arrow_icon"></div>
+      </div>
+    </div>
+    <div class="grayBox w48per">
+      <div class="overviewloanblock mh448">
+        <div>
+          <div class="fs16px fontWeight pb20">To-Do-List</div>
+          <div class="displayFlex AlignItemCenter pb20">
+            <input type="checkbox" class="mr30px" />
+            <div class=" ">Upload a recent mortgage statement</div>
+          </div>
+          <div class="displayFlex AlignItemCenter pb20">
+            <input type="checkbox" class="mr30px" />
+            <div class=" ">Upload proof of income</div>
+          </div>
+          <div class="displayFlex AlignItemCenter pb20">
+            <input type="checkbox" class="mr30px" />
+            <div class=" ">Verify your email address</div>
+          </div>
+          <div class="displayFlex AlignItemCenter pb20">
+            <input type="checkbox" class="mr30px" />
+            <div class=" ">Sign the loan agreement</div>
+          </div>
+        </div>
+        <div>
+          <div
+            class="displayFlex greenbutton AlignItemCenter spaceBetween width75per"
+            (click)="router.navigate(['client/todo-list']);"
+          >
+            <div>Review to-dos</div>
+            <div class="arrow_icon"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

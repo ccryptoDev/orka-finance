@@ -1,0 +1,144 @@
+.backgroundtext {
+  font-family: "AvenirBlack";
+  font-size: 15px;
+  line-height: 20px;
+  color: #ffffff;
+}
+.image11 {
+  background-image: url(../../../assets/document-centerstrip.svg);
+  background-repeat: no-repeat;
+  // width: 800px;
+  width: 1167px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+.jus-spa {
+  justify-content: space-between;
+}
+.section3 {
+  display: flex;
+  // padding: 2% 10%;
+  width: 1000px;
+}
+.expandedArrow {
+  background-image: url(../../../assets/backgroundarrow1.svg);
+  background-repeat: no-repeat;
+  width: 14px;
+  height: 14px;
+  margin: 0px 10px;
+  cursor: pointer;
+  margin-left: 17px;
+  margin-right: 10px;
+}
+.exposedArrow {
+  background-image: url(../../../assets/backgroundarrow.svg);
+  background-repeat: no-repeat;
+  width: 14px;
+  height: 14px;
+
+  cursor: pointer;
+  margin-left: 17px;
+  margin-right: 10px;
+}
+.backgroundtextdoc {
+  font-family: "AvenirBlack";
+  font-size: 21px;
+  line-height: 20px;
+}
+.mt30px {
+  margin-top: 40px;
+}
+.mb30px {
+  margin-top: 40px;
+}
+.filter .drop_option {
+  border-radius: 50px;
+
+  border: 1px solid #242424;
+  height: 35px;
+  // width:100%;
+  font-size: 15px;
+  color: #242424;
+  font-weight: bold;
+  padding: 0px 14px;
+  background: transparent !important;
+  width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.filter .drop_icon {
+  border-top-right-radius: 17.5px;
+  border-bottom-right-radius: 17.5px;
+  height: 35px;
+  width: 60px;
+  border: 1px solid #242424;
+  padding: 0px;
+  padding-right: 13px !important;
+  // background: #00B0C7;
+  background: #00b0c72b;
+  mix-blend-mode: normal;
+  // opacity: 0.09;
+  border-left: unset;
+}
+.filter .btn {
+  margin: 0px;
+}
+.btn:focus {
+  box-shadow: unset;
+}
+.filter .dropdown-toggle::after {
+  float: right;
+  color: #242424;
+  content: "▼";
+  border: unset;
+  font-size: 13px;
+}
+.ml10 {
+  margin-left: 10px;
+  margin-right: 20px;
+}
+tr {
+  line-height: 58px;
+}
+.opportunityButton1 {
+  // height: 35px;
+  background: #00b0c7;
+  border-radius: 17.5px;
+  color: #fff;
+  font-family: "AvenirBlack";
+  font-size: 13px;
+  letter-spacing: -0.2px;
+  padding: 10px 15px;
+}
+.image13 {
+  background-image: url(../../../assets/document-footerstrip.svg);
+  background-repeat: no-repeat;
+  // width: 800px;
+  width: 1167px;
+  height: 161px;
+  display: flex;
+  // align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+  padding-top: 20px;
+}
+.tomatoColor {
+  font-size: 11px !important;
+  color: Tomato;
+}
+.header {
+  margin-top: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #00b0c7 !important;
+}
+.submitbtnpopup {
+  padding: 15px 46px 15px 43px;
+  border-radius: 50px;
+  color: white;
+  background: black;
+}

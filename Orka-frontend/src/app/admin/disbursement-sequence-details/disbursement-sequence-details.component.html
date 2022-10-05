@@ -1,0 +1,235 @@
+<section class="content-header">
+    <!-- <h1>View Application Details</h1> ------>
+    <ol class="breadcrumb">
+      <li>
+        <a [routerLink]="['/admin/dashboard']"
+          ><i class="fa fa-dashboard"></i> Dashboard</a
+        >
+      </li>
+      <li>
+        <a [routerLink]="['/admin/disbursement-sequence']"
+          ><i class="fa fa-dashboard"></i>Disbursement Sequence Management</a
+        >
+      </li>
+      <li class="active">Update Disbursement Sequence</li>
+    </ol>
+  </section>
+
+  <div class="frameshadow">
+    <div class="mainTitle">
+      <div>Edit Disbursement Sequence</div>
+    </div>
+
+
+    <div class="p10">
+        <div class="mt-3">
+
+                <form name="form" (ngSubmit)="f.form.valid && adddisbursementSubmit()" #f="ngForm" novalidate>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class='font-bold' for="ContactName">Name</label>
+                                <input type="text" name="disbursementName" class="form-control mtop" placeholder="Enter Disbursement Name"
+                                (input)="f1.disbursementName = namedata($event)"  [(ngModel)]="f1.disbursementName" #disbursementName="ngModel"
+                                required [ngClass]="{ 'is-invalid': f.submitted && disbursementName.invalid }" />
+                                <small *ngIf="disbursementName.invalid && (disbursementName.touched || f.submitted)" class="text-danger">Disbursement 
+                                name is required</small>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class='font-bold' for="ContactName">Total Disbursements</label>
+                                <input type="text" name="disbursementTotal" class="form-control mtop" placeholder="Enter Disbursement Total"
+                                (input)="f1.disbursementTotal = namedata($event)"  [(ngModel)]="f1.disbursementTotal" #disbursementTotal="ngModel"
+                                required [ngClass]="{ 'is-invalid': f.submitted && disbursementTotal.invalid }" />
+                                <small *ngIf="disbursementTotal.invalid && (disbursementTotal.touched || f.submitted)" class="text-danger">Disbursement 
+                                total is required</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:15px;">
+                       
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class='font-bold' for="ContactName">M1 Percentage</label>
+                                <input type="text" name="m1percentage" class="form-control mtop" placeholder="Enter M1 Percentage"
+                                (input)="f1.m1percentage = namedata($event)"  [(ngModel)]="f1.m1percentage" #m1percentage="ngModel"
+                                required [ngClass]="{ 'is-invalid': f.submitted && m1percentage.invalid }" />
+                                <small *ngIf="m1percentage.invalid && (m1percentage.touched || f.submitted)" class="text-danger">M1 Percentage is required</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class='font-bold' for="ContactName">M1 Type</label>
+                                <select name="m1type" class="form-control" [(ngModel)]="f1.m1type" #m1type="ngModel">
+                                    <option value=null>Select Type</option>
+                                    <option value="equipment_permit">Eqiupment & Permit</option>
+                                    <option value="construction">Construction</option>
+                                    <option value="commercial_operation">Commercial Operation</option>
+                                    <option value="type4">Type 4</option>
+                                    <option value="type5">Type 5</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:15px;">
+                        <!-- <div class="col-2">
+                            <div class="form-group">
+                                <label class="switch">
+                                    <input type="checkbox" [checked]="dstatusN == 'ACTIVE'" name="m2status" (change)="updateLoanProducts($event)" name="onoffswitch" >
+                                    <span  class="slider round"></span>
+                                </label>
+                            </div>
+                        </div> -->
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class='font-bold' for="ContactName">M2 Percentage</label>
+                                <input type="text" name="m2percentage" class="form-control mtop" placeholder="Enter M2 Percentage"
+                                (input)="f1.m2percentage = namedata($event)"  [(ngModel)]="f1.m2percentage" #m2percentage="ngModel"
+                                required [ngClass]="{ 'is-invalid': f.submitted && m2percentage.invalid }" />
+                                <small *ngIf="m2percentage.invalid && (m2percentage.touched || f.submitted)" class="text-danger">M2 Percentage is required</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class='font-bold' for="ContactName">M2 Type</label>
+                                <select name="m2type" class="form-control" [(ngModel)]="f1.m2type" #m2type="ngModel">
+                                    <option value=null>Select Type</option>
+                                    <option value="equipment_permit">Eqiupment & Permit</option>
+                                    <option value="construction">Construction</option>
+                                    <option value="commercial_operation">Commercial Operation</option>
+                                    <option value="type4">Type 4</option>
+                                    <option value="type5">Type 5</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:15px;">
+                       
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class='font-bold' for="ContactName">M3 Percentage</label>
+                                <input type="text" name="m3percentage" class="form-control mtop" placeholder="Enter M3 Percentage"
+                                (input)="f1.m3percentage = namedata($event)"  [(ngModel)]="f1.m3percentage" #m3percentage="ngModel"
+                                required [ngClass]="{ 'is-invalid': f.submitted && m3percentage.invalid }" />
+                                <small *ngIf="m3percentage.invalid && (m3percentage.touched || f.submitted)" class="text-danger">M3 Percentage is required</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class='font-bold' for="ContactName">M3 Type</label>
+                                <select name="m3type" class="form-control" [(ngModel)]="f1.m3type" #m3type="ngModel">
+                                    <option value=null>Select Type</option>
+                                    <option value="equipment_permit">Eqiupment & Permit</option>
+                                    <option value="construction">Construction</option>
+                                    <option value="commercial_operation">Commercial Operation</option>
+                                    <option value="type4">Type 4</option>
+                                    <option value="type5">Type 5</option>
+                                </select>
+                                <!-- <input type="text" name="m3type" class="form-control mtop" placeholder="Enter M3 Type"
+                                (input)="f1.m3type = namedata($event)"  [(ngModel)]="f1.m3type" #m3type="ngModel"
+                                required [ngClass]="{ 'is-invalid': f.submitted && m3type.invalid }" />
+                                <small *ngIf="m3type.invalid && (m3type.touched || f.submitted)" class="text-danger">M3 Type is required</small> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:15px;">
+                        <!-- <div class="col-2">
+                            <div class="form-group">
+                                <label class="switch">
+                                    <input type="checkbox" [checked]="dstatus == 'ACTIVE'" name="m4status" (change)="updateLoanProducts($event)" name="onoffswitch" >
+                                    <span  class="slider round"></span>
+                                </label>
+                            </div>
+                        </div> -->
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class='font-bold' for="ContactName">M4 Percentage</label>
+                                <input type="text" name="m4percentage" class="form-control mtop" placeholder="Enter M4 Percentage"
+                                (input)="f1.m4percentage = namedata($event)"  [(ngModel)]="f1.m4percentage" #m4percentage="ngModel"
+                               />         </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class='font-bold' for="ContactName">M4 Type</label>
+                                <select name="m4type" class="form-control" [(ngModel)]="f1.m4type" #m4type="ngModel">
+                                    <option value=null>Select Type</option>
+                                    <option value="equipment_permit">Eqiupment & Permit</option>
+                                    <option value="construction">Construction</option>
+                                    <option value="commercial_operation">Commercial Operation</option>
+                                    <option value="type4">Type 4</option>
+                                    <option value="type5">Type 5</option>
+                                </select>
+                                <!-- <input type="text" name="m4type" class="form-control mtop" placeholder="Enter M4 Type"
+                                (input)="f1.m4type = namedata($event)"  [(ngModel)]="f1.m4type" #m4type="ngModel"
+                               />   -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:15px;">
+                        <!-- <div class="col-2">
+                            <div class="form-group">
+                                <label class="switch">
+                                    <input type="checkbox" [checked]="dstatus == 'ACTIVE'" name="m5status" (change)="updateLoanProducts($event)" name="onoffswitch" >
+                                    <span  class="slider round"></span>
+                                </label>
+                            </div>
+                        </div> -->
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class='font-bold' for="ContactName">M5 Percentage</label>
+                                <input type="text" name="m5percentage" class="form-control mtop" placeholder="Enter M5 Percentage"
+                                (input)="f1.m5percentage = namedata($event)"  [(ngModel)]="f1.m5percentage" #m5percentage="ngModel"
+                               />      </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class='font-bold' for="ContactName">M5 Type</label>
+                                <select name="m5type" class="form-control" [(ngModel)]="f1.m5type" #m5type="ngModel">
+                                    <option value=null>Select Type</option>
+                                    <option value="equipment_permit">Eqiupment & Permit</option>
+                                    <option value="construction">Construction</option>
+                                    <option value="commercial_operation">Commercial Operation</option>
+                                    <option value="type4">Type 4</option>
+                                    <option value="type5">Type 5</option>
+                                </select>
+                                <!-- <input type="text" name="m5type" class="form-control mtop" placeholder="Enter M5 Type"
+                                (input)="f1.m5type = namedata($event)"  [(ngModel)]="f1.m5type" #m5type="ngModel"
+                               />      -->
+                            </div>
+                        </div>
+                    </div>
+                        
+                    
+    
+                    <div class="form-group mt-5">
+                        <button type="submit" class="greenbutton">Save</button>
+                    </div>
+                </form>
+
+</div>
+</div>
+
+
+</div>
+
+
+<ng-template #messagebox>
+    <div class="modal-body text-center">
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <p class="headtext">Message</p>
+      <p *ngFor="let m of message">{{ m }}</p>
+    </div>
+  </ng-template>

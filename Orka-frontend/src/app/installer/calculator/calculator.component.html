@@ -1,0 +1,292 @@
+<div class=" ">
+  <div class="container">
+    <div class="section1 pt50">
+      <div>
+        <div class="leftheading2">Calculator</div>
+
+        <div class="displayFlex calcSection">
+          <div class="w250px">
+            <div class="AvenirBlack fs18px pb10px">FINANCING AMOUNT ($)</div>
+            <div class="pb16">
+              <!-- <input type="text" class="calcinputField" /> -->
+              <input
+                type="text"
+                name="financingAmount"
+                class="calcinputField"
+                (input)="financeAmount($event)"
+                (keypress)="keyPressNumbers($event)"
+                required
+              />
+            </div>
+            <div *ngIf="totalOriginationFee != 0" class="bold fs18px pb8">
+              <strong>
+                ORIGINATION FEE: <span> {{ originationFeePercentage }}% </span>
+              </strong>
+            </div>
+            <div *ngIf="totalOriginationFee != 0" class="fs22px pb16">
+              ${{ originationFeeAmount }}
+            </div>
+            <div *ngIf="totalOriginationFee != 0" class="bold fs18px pb8">
+              <strong> TOTAL AMOUNT FINANCED </strong>
+            </div>
+            <div *ngIf="totalOriginationFee != 0" class="fs22px pb24">
+              ${{ totalAmountFinanced }}
+            </div>
+
+            <div class="AvenirBlack fs18px pb10px">PAYMENT METHOD</div>
+            <div class="displayFlex paymentmethod">
+              <div>ACH</div>
+              <div>
+                <label class="switch" style="margin: 0 15px">
+                  <input
+                    type="checkbox"
+                    name="paymentMethod"
+                    (change)="toggle($event)"
+                  />
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <div>Check</div>
+            </div>
+
+            <div class="AvenirBlack fs18px pb10px">FINANCING TERM</div>
+            <div class="optionSection">
+              <form action="#" class="pb10px">
+                <ng-container *ngIf="paymentMethodStatus">
+                  <ng-container *ngFor="let d of data; let i = index">
+                    <div class="pb10px">
+                      <input
+                        gtagEvent
+                        category="Partner Activity"
+                        trackOn="click"
+                        [params]="{event_label: 'Calculator Used'}"
+                        type="radio"
+                        id="test{{ i }}"
+                        name="check"
+                        value="{{ i }}"
+                        (change)="getValue($event.target.value)"
+                        [checked]="i == index"
+                      />
+                      <label for="test{{ i }}">
+                        {{ d.tenorMonths }} months / {{ d.interestBaseRate }}% interest
+                      </label>
+                    </div>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="!paymentMethodStatus">
+                  <ng-container *ngFor="let d of data; let i = index">
+                    <div class="pb10px">
+                      <input
+                        type="radio"
+                        id="test{{ i }}"
+                        name="ach"
+                        value="{{ i }}"
+                        (change)="getValue($event.target.value)"
+                        [checked]="i == index"
+                      />
+                      <label for="test{{ i }}">
+                        {{ d.tenorMonths }} months / {{ d.achDiscountInterestRate }}% interest
+                        </label>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </form>
+            </div>
+
+            <div class="displayFlex">
+              <div class="pr20">
+                <div class="AvenirBlack fs18px pb10px">MONTH 18 PREPAYMENT</div>
+                <!-- <div class="AvenirBlack fs18px pb10px">MONTH 18 PREPAYMENT</div> -->
+                <div class="pb34">
+                  <!-- <input type="text" class="calcinputField" /> -->
+                  <input
+                    type="text"
+                    name="monthEighteenPrepayment"
+                    class="calcinputField"
+                    (input)="prepayMonthEighteen($event)"
+                    (keypress)="keyPressNumbers($event)"
+                    value="{{ monthEighteenPrepaymentDisplay }}"
+                  />
+                </div>
+              </div>
+
+              <div class="displayFlex ptop37px">
+                <div class="calcSymbolTxt">%</div>
+                <div>
+                  <label class="switch">
+                    <input
+                      type="checkbox"
+                      name="calcSymbol"
+                      (change)="toggle($event)"
+                    />
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+                <div class="calcSymbolTxt">$</div>
+              </div>
+            </div>
+
+            <div class="displayFlex">
+             <!-- <div class="pr20">
+                <div class="AvenirBlack fs18px pb10px">PREPAY EVERY MONTH</div>
+                <div class="pb34">
+                  <input type="text" class="calcinputField" />
+                </div>
+              </div> -->
+
+              <div class="displayFlex ptop37px">
+             <!--   <div class="calcSymbolTxt">%</div>
+                <div>
+                  <label class="switch">
+                    <input type="checkbox" />
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+                <div class="calcSymbolTxt">$</div> -->
+              </div>
+            </div>
+          </div>
+          <div class="calcarrow">
+            <img src="../../../assets/calculator_arrow.png" />
+          </div>
+          <div>
+            <div class="fs25px blueColor pb10px AvenirBlack">
+              First 18 months
+            </div>
+            <div class="AvenirBlack fs18px pb10px">
+              MONTHLY PAYMENT <span class="fs10px subscript">1</span>
+            </div>
+            <div class="fs40 pb38 letterspace">
+              <!-- ${{ firstMonthlyPayment | formatter }} -->
+            ${{ ( firstMonthlyPayment > 0 ) ? changeAmtVal(firstMonthlyPayment) : firstMonthlyPayment }}
+            </div>
+            <!-- <div class="fs40 pb38 letterspace">$2,001.12</div> -->
+            <div class="fs25px blueColor pb10px AvenirBlack">
+              After re-amortizaton
+            </div>
+            <div class="AvenirBlack fs18px pb10px">
+              MONTHLY PAYMENT <span class="fs10px subscript">2</span>
+            </div>
+            <div class="fs40 pb38 letterspace">
+              <!-- ${{ reAmortizetMonthlyPayment | formatter }} -->
+            ${{ (reAmortizetMonthlyPayment > 0) ? changeAmtVal(reAmortizetMonthlyPayment) : reAmortizetMonthlyPayment }}
+            </div>
+            <!-- <div class="fs40 pb38 letterspace">$2,001.12</div>  -->
+            <!-- <div class="bottomgrayLine"></div> -->
+            <!-- <div class="AvenirBlack fs18px pb10px">
+            TOTAL PAYMENTS<span class="fs10px subscript">3</span>
+          </div>
+          <div class="fs40 pb38 letterspace">
+            ${{ totalPayment || 0 | number: "1.2-2" }}
+          </div>
+           <div class="fs40 pb38 letterspace">$2,001.12</div> -->
+            <!-- <div class="AvenirBlack fs18px pb10px">
+            LOAN PAYOFF MONTH<span class="fs10px">4</span>
+          </div>
+          <div class="fs40 pb38 letterspace">99</div> -
+        </div> -->
+            <!-- <div><button class="tableButton">Show amortization table</button></div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="section2" style="padding-bottom: 50px">
+        <div class=" ">
+          <div class="mainContent">
+            <ol>
+              <li>
+                Initial monthly payment is set so that if Prepayment % = the
+                Target 26% then the monthly payment will not change when we
+                re-amortize.
+              </li>
+              <li>
+                After 18 months, we calculate a new monthly payment
+                (re-amortization). This is based on the specified prepayment
+                rate.
+              </li>
+              <!-- <li>
+            This is nominal dollars, not considering inflation or deflation.
+          </li>
+          <li>
+            Regular prepayments decrease the interest that accrues, and pay off
+            the loan early with a lower total financing cost.
+          </li> -->
+            </ol>
+          </div>
+
+          <!-- <div class="mainContent">
+            <ol>
+              <li>
+                Initial monthly payment is set so that if Prepayment % = the Target
+                26% then the monthly payment will not change when we re-amortize.
+              </li>
+              <li>
+                After 18 months, we calculate a new monthly payment
+                (re-amortization). This is based on the specified prepayment rate.
+              </li>
+              <li>
+                This is nominal dollars, not considering inflation or deflation.
+              </li>
+              <li>
+                Regular prepayments decrease the interest that accrues, and pay off
+                the loan early with a lower total financing cost.
+              </li>
+            </ol>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="partnerFooter"></div>
+    <div class="partnerFooterbg">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <img class="footerLogo" src="../../../assets/orka_whitelogo1.png" />
+          </div>
+          <div class="col-md-3">
+            <div class="displayFlex flexDirection">
+              <div
+                class="graytext cursorpointer pr20 pb10px"
+                target="_blank"
+                (click)="privacy()"
+              >
+                Privacy Policy
+              </div>
+
+              <div
+                class="graytext cursorpointer pr20 pb10px"
+                target="_blank"
+                (click)="termscondition()"
+              >
+                Terms and Conditions
+              </div>
+
+              <div
+                class="graytext cursorpointer pb10px"
+                target="_blank"
+                (click)="securitypolicy()"
+              >
+                Security Policy
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="graytext pb10px">Need help or have questions?</div>
+
+            <div class="whiteText pb10px">
+              Don't hesitate to contact ORKA's Support Team at
+              <a href="mailto:support@orkafinance.com" class="footerlinktxt"
+                >support@orkafinance.com</a
+              >
+            </div>
+            <div class="whiteText pb10px">or by phone at (844) ORKA-POD.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,133 @@
+<div class="m50px">
+    <div class="fs22px pb20 textAlignCenter">User Managment</div>
+  
+    <div class="displayFlex flexEnd">
+      <button class="greenbutton displayFlex AlignItemCenter mb20px" (click)="showAddUserModal(userAddTemp)">
+        <div class="adduser" style="margin-right: 10px"></div>
+        Add User
+      </button>
+    </div>
+  
+    <div class="displayFlex AlignItemCenter mb20px">
+      <div class="w20per textAlignCenter">Name</div>
+      <div class="w30per textAlignCenter">Email</div>
+      <div class="w20per textAlignCenter">Role</div>
+      <div class="w10per textAlignCenter">Status</div>
+      <div class="w10per textAlignCenter">Delete</div>
+    </div>
+
+    <div *ngIf="usersList.length>0">
+    <div *ngFor="let d of usersList; let i = index" class="displayFlex AlignItemCenter grayBox ptb20px mb20px">
+      <div class="w20per textAlignCenter">{{d.firstName}} {{d.lastName}}</div>
+      <div class="w30per textAlignCenter">{{d.email}}</div>
+      <div class="w20per textAlignCenter">{{d.role_name}}</div>  
+      <div class="w10per textAlignCenter">
+        <button
+          type="button"
+          class="btn btn-success btn-user-control"
+          *ngIf="d.active_flag=='Y'"
+          (click)="deactivateUser(d.id)"
+        >
+           Active
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger btn-user-control"
+          *ngIf="d.active_flag=='N'"
+          (click)="activateUser(d.id)"
+        >
+           Inactive
+        </button>
+      </div>   
+      <div class="w10per textAlignCenter">
+        <button
+          type="button"
+          class="btn btn-danger btn-user-control"
+          (click)="delete(d.id)"
+        >
+        <i class="fa fa-trash" aria-hidden="true"></i> Delete
+        </button>
+      </div>  
+    </div>
+    </div>
+    
+  </div>
+
+  <ng-template #messagebox>
+    <div class="modal-body text-center">
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <p class="headtext">Message</p>
+      <p *ngFor="let m of message">{{ m }}</p>
+    </div>
+  </ng-template>
+
+  <!-- Add User Modal -->
+<ng-template #userAddTemp>
+  <div class="modal-body">
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <form  
+      (ngSubmit)="f.form.valid && addUser()"
+      #f="ngForm" 
+      novalidate
+    >
+      <label>First Name</label><br />
+      <input type="text" name="firstName" 
+        [(ngModel)]="userForm.firstName" class="form-control" 
+        placeholder="first name" required #firstName="ngModel"
+        [class.is-invalid]="f.submitted && firstName.invalid"
+      >
+      <br /> 
+
+      <label>Last Name</label><br />
+      <input type="text" name="lastName" 
+        [(ngModel)]="userForm.lastName" class="form-control" 
+        placeholder="last name" required #lastName="ngModel"
+        [class.is-invalid]="f.submitted && lastName.invalid">
+      <br />
+
+      <label>Email</label><br />
+      <input
+        type="email"
+        class="form-control"
+        placeholder="Email Address"
+        name="email"
+        [(ngModel)]="userForm.email"
+        #email="ngModel"
+        required
+        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+        [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"
+      />
+      <br />
+
+      <label for="ContactEmail">Role</label>
+      <select
+        name="role"
+        [(ngModel)]="userForm.role"  
+        class="form-control"      
+      >
+        <option value="-1">Select Role</option>
+        <option *ngFor="let r of roleList" [value]=r.id>{{r.name}}</option>
+      </select>
+      <br />
+
+      <button type="button" class="brw-btn closebutton mr30px w200px" (click)="close()">CANCEL</button>
+      <button type="submit" class="greenbutton upperCase w200px">Save</button>
+    </form>
+  </div>
+</ng-template>
+
+  

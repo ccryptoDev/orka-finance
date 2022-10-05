@@ -1,0 +1,115 @@
+<div class="mtop90">
+  <div class="breadcrumbs">
+    <div class="firststage">
+      <div class="mr12"><img src="../../../assets/lightBlue-arrow.svg" /></div>
+      <div class="pr16">Business Bank Account</div>
+    </div>
+    <div class="secondstage">
+      <div class="mr12"><img src="../../../assets/darkblue-arrow.svg" /></div>
+      <div class="pr16">Loan Documents</div>
+    </div>
+  </div>
+
+  <div class="w887">
+    <div class="mainborrowertitle">
+      You are eligible to lower your monthly payment!
+    </div>
+    <div class="borrowertxt">
+      You are eligible for a 0.50% discount on your interest rate. To receive
+      this discount and lower your monthly payment, enable autopay by
+      authorizing your Business bank account to pay your Solar Loan by ACH every
+      month. As long as autopay is active, you will continue to receive this
+      discount.
+    </div>
+
+    <div class="mb50px">
+      <div class="ptb34 displayFlex borderbottom1px fs20px">
+        <div class="w310">Autopay Enabled?</div>
+        <div class="displayFlex w310 AlignItemCenter">
+          <div class="mr12 greeencolor fontweight800">Yes, pay by ACH</div>
+          <div><img src="../../../assets/circle-check.svg" /></div>
+        </div>
+        <div class=" ">No</div>
+      </div>
+      <div class="ptb34 displayFlex borderbottom1px fs20px">
+        <div class="w310">Monthly Payment</div>
+        <div class="displayFlex w310 AlignItemCenter">
+          <div class="mr12 greeencolor fontweight800">$646.04</div>
+          <div><img src="../../../assets/circle-check.svg" /></div>
+        </div>
+        <div class=" ">$668.71</div>
+      </div>
+
+      <div class="ptb34 displayFlex borderbottom1px fs20px">
+        <div class="w310">Interest Rate</div>
+        <div class="displayFlex w310 AlignItemCenter">
+          <div class="mr12 greeencolor fontweight800">5.99%</div>
+          <div><img src="../../../assets/circle-check.svg" /></div>
+        </div>
+        <div class=" ">6.49%</div>
+      </div>
+    </div>
+
+
+    <div
+      *ngFor="let bankAccount of bankAccounts; let i = index"
+      class="bluestrip1 displayFlex AlignItemCenter flexDirection mb20px cursorpointer"
+      (click)="selectBankAccount(bankAccount.id)"
+    >
+      <div class="displayFlex AlignItemCenter">
+        <div class="pr16 bluestriptxt">SELECT YOUR BUSINESS BANK ACCOUNT</div>
+        <div>
+          <img src="../../../assets/nextarrow.svg" style="width: 33px; margin-left: 5px" />
+        </div>
+      </div>
+
+      <div class="bluestriptxt">ENDING IN ****{{ bankAccount.accountNumber | slice:-4 }}</div>
+    </div>
+
+
+    <div
+      class="bluestrip1 displayFlex AlignItemCenter flexDirection mb20px cursorpointer"
+      (click)="connectToPlaid()"
+    >
+      <div class="displayFlex AlignItemCenter">
+        <div class="pr16 bluestriptxt">
+          ADD A NEW BUSINESS BANK ACCOUNT VIA PLAID
+        </div>
+        <div>
+          <img
+            src="../../../assets/nextarrow.svg"
+            style="width: 33px; margin-left: 5px"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- <div
+      class="footerstrip1 displayFlex AlignItemCenter flexDirection mb20px"
+      (click)="loadbankComponent()"
+    >
+      <div class="displayFlex AlignItemCenter">
+        <div class="pr16 bluestriptxt">ENTER YOUR BUSINESS BANK</div>
+        <div>
+          <img
+            src="../../../assets/nextarrow.svg"
+            style="width: 33px; margin-left: 5px"
+          />
+        </div>
+      </div>
+      <div class="bluestriptxt">ACCOUNT INFORMATION</div>
+    </div> -->
+
+    <div
+      class="displayFlex AlignItemCenter justifycontencenter mb20px"
+      (click)="loadLoanComponent()"
+    >
+      <div class="skipbutton">Skip This Step</div>
+    </div>
+
+    <div class="fs14px displayFlex AlignItemCenter justifycontencenter pb120">
+      If you elect not to enable autopay at this time, you may enable it once
+      your Solar Loan has fully funded.
+    </div>
+  </div>
+</div>

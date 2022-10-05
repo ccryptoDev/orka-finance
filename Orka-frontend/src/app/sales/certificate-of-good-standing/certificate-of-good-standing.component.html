@@ -1,0 +1,105 @@
+<div class="containermainBlock">
+  <div class="headerDiv">
+    <div class="displayFlex spaceBetween plr50">
+      <div class="logoBlock"><img src="../../../assets/logo1.png" /></div>
+      <div class="whaleLines">
+        <div class=" ">
+          <div class="whaleBg"></div>
+          <div class="displayFlex progressbarBlock">
+            <div class="displayFlex flexEnd mr90">
+              <div class="pright partAlignment">PART</div>
+              <div class="stepsection"></div>
+            </div>
+            <div class="displayFlex flexEnd mr89">
+              <div class="step01"><img src="../../../assets/step1.png" /></div>
+              <div class="pright progressbarText">1</div>
+
+              <div class="stepsection"></div>
+            </div>
+            <div class="displayFlex flexEnd mr90">
+              <div class="step02"><img src="../../../assets/step2.png" /></div>
+              <div class="pright progressbarText">2</div>
+
+              <div class="stepsection"></div>
+            </div>
+            <div class="displayFlex flexEnd mr90">
+              <div class="step031"><img src="../../../assets/step3.png" /></div>
+              <div class="pright progressbarText">3</div>
+
+              <div class="stepsection"></div>
+            </div>
+            <div class="displayFlex flexEnd mr90">
+              <div class="step04"><img src="../../../assets/step4.png" /></div>
+              <div class="pright progressbarText min2010">4</div>
+              <div class="stepsection blueline infoicon1"></div>
+            </div>
+            <div class="displayFlex flexEnd">
+              <div class="pright progressbarText activetext min20">5</div>
+              <div class="bluelineactive min10"></div>
+              <div class="activetext4">Certificate of Good Standing</div>
+              <div class="infoicon"><img src="../../../assets/info.png" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mainDivsection">
+    <div class="containerBlock">
+      <div class="ptb50">
+        <div class="titleTxt">Certificate of Good Standing</div>
+        <div class="mainContent">
+          If you have access to your Secretary of State’s Certificate of Good
+          Standing, it would go a long way. If you don’t have it handy or do not
+          have one, we can work without it.
+        </div>
+      </div>
+      <div class="ptb50">
+        <div class="pb50px">
+          <!-- <div class="labelTxt">TAX EXEMPT CERTIFICATE</div> -->
+          <div class="labelTxt">CERTIFICATE OF GOOD STANDING</div>
+          <ngx-file-drop class="flieUploadBlock" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+            (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+            <ng-template class="displayFlex flieUploadBlock alignMiddle" ngx-file-drop-content-tmp
+              let-openFileSelector="openFileSelector">
+              <div class="uploadIcon" align="center"></div>
+              <div class="tragTxt">Drag fles here to upload, or</div>
+              <div class="clickHereBut" (click)="openFileSelector()">Click Here</div>
+            </ng-template>
+          </ngx-file-drop>
+
+          <div *ngFor="let e of fileitems" class="mt10">
+            <div>
+              <span>{{e.name}}</span>
+            </div>
+            <div class="ml5">
+              <span class="tomatoColor">
+                <i class="fas fa-times cur-poi" (click)="deleteFileSelected(e)"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="infoTxt" style="display: none">
+          <span class="redTxt">*</span> fields marked with asterisk are required
+        </div>
+        <!-- <div>
+          <mr-ngx-plaid-link-button env="sandbox" [publicKey]="plaidKey" institution=""
+            webhook="https://sandbox.plaid.com/api/v1/getPlaidTransactions" [countryCodes]="['US']"
+            [product]="['auth', 'assets','transactions']" (Success)="onPlaidSuccess($event, true)"
+            (Exit)="onPlaidExit($event)" (Event)="onPlaidEvent($event)" (Click)="onPlaidClick($event)"
+            buttonText="Connect Bank" className="connectBank btn btn-primary btn-theme"></mr-ngx-plaid-link-button>
+        </div> -->
+        <div class="ptb50">
+          <div class="fotterbg displayFlex">
+            <!-- <div class="displayFlex letsgo" (click)="completed()">
+              <div style="color: #000;font-weight: 700;font-family: 'SohoStdHeavy';">Pre-qualify</div>
+            </div> -->
+            <div class="displayFlex letsgo" (click)="completed()">
+              <div><button class="salesButton" type="submit">PRE-QUALIFY</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

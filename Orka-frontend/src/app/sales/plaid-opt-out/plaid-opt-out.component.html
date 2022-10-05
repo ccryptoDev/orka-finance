@@ -1,0 +1,191 @@
+<div class="containermainBlock">
+  <div class="headerDiv">
+    <div class="displayFlex spaceBetween plr50">
+      <div class="logoBlock"><img src="../../../assets/logo1.png" /></div>
+      <div>
+        <div class=" ">
+          <div class="whaleBg"></div>
+          <div class="displayFlex progressbarcontiner">
+            <div class="displayFlex" style="margin-right: 87px">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -52px"
+              >
+                Part
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex" style="margin-right: 88px">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -16px"
+              >
+                1
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex" style="margin-right: 89px">
+              <div class="step02"><img src="../../../assets/step02.svg" /></div>
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -16px"
+              >
+                2
+              </div>
+              <div class="blueLineSmall"></div>
+            </div>
+            <div class="displayFlex mr90" style="margin-right: 89px">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px activetext fs16px"
+                style="margin-left: -16px"
+              >
+                3
+              </div>
+              <div
+                class="positionAbsolute AvenirBlack activetext fs16px"
+                style="margin-left: -180px; padding-top: 297px"
+              >
+                BANK STATEMENTS
+              </div>
+              <div class="blueLineBig"></div>
+            </div>
+            <div class="displayFlex mr90">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -16px"
+              >
+                4
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex mr90" style="margin-right: 20px">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -16px"
+              >
+                5
+              </div>
+              <div class="blackline"></div>
+              <div class="infoicon"><img src="../../../assets/info.png" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mainDivsection">
+    <div class="containerBlock">
+      <div class="ptb50">
+        <div class="blackarrow_container">
+          <div class="black_arrow"></div>
+          <div class="titleTxt">Plaid opt-out</div>
+        </div>
+        <div class="mainContent">
+          Please upload 24 recent and consecutive bank statements. The Orka team
+          will review and record data from each month’s ending balance to derive
+          your 24 month average account balance. Please allow 24-48 hours for
+          our team to process.
+        </div>
+        <div class="mainContent mt30">
+          If you would like to return to the Plaid experience to securely log
+          into your bank accounts and allow your bank to automatically pass Orka
+          your 24-month average, click
+          <span style="color: #00b0c7; cursor: pointer" (click)="previous()"
+            >back to Plaid intro.</span
+          >
+        </div>
+      </div>
+      <div class="ptb50">
+        <div class="pb50px">
+          <div class="labelTxt">BANK STATEMENTS</div>
+          <ngx-file-drop
+            class="flieUploadBlock"
+            dropZoneLabel="Drop files here"
+            (onFileDrop)="dropped($event)"
+            (onFileOver)="fileOver($event)"
+            (onFileLeave)="fileLeave($event)"
+          >
+            <ng-template
+              class="displayFlex flieUploadBlock alignMiddle"
+              ngx-file-drop-content-tmp
+              let-openFileSelector="openFileSelector"
+            >
+              <div class="uploadIcon" align="center"></div>
+              <div class="tragTxt">Drag fles here to upload, or</div>
+              <div class="clickHereBut" (click)="openFileSelector()">
+                Click Here
+              </div>
+            </ng-template>
+          </ngx-file-drop>
+          <ng-template [ngIf]="preFilesItems != null">
+            <div *ngFor="let e of preFilesItems" class="mt10">
+              <div>
+                <span>{{ e.originalname }}</span>
+              </div>
+              <div class="ml5">
+                <span class="tomatoColor">
+                  <i
+                    class="fas fa-times cur-poi"
+                    (click)="deletePreFileSelected(e)"
+                  ></i
+                ></span>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template [ngIf]="fileitems != null">
+            <div *ngFor="let e of fileitems" class="mt10">
+              <div>
+                <span>{{ e.name }}</span>
+              </div>
+              <div class="ml5">
+                <span class="tomatoColor">
+                  <i
+                    class="fas fa-times cur-poi"
+                    (click)="deleteFileSelected(e)"
+                  ></i
+                ></span>
+              </div>
+            </div>
+          </ng-template>
+          <!-- <div *ngFor="let e of fileitems" class="mt10">
+                        <div>
+                            <span *ngIf="e.name != null; else elseBlock">{{e.name}}</span>
+                            <ng-template #elseBlock>
+                                {{e.originalname}}
+                            </ng-template>
+                        </div>
+                        <div class="ml5">
+                            <span class="tomatoColor">
+                                <i class="fas fa-times cur-poi" (click)="deleteFileSelected(e)"></i></span>
+                        </div>
+                    </div> -->
+        </div>
+        <div class="infoTxt" style="display: none">
+          <span class="redTxt">*</span> fields marked with asterisk are required
+        </div>
+        <div class="ptb50">
+          <div class="fotterbg displayFlex">
+            <div class="displayFlex letsgo" (click)="next()">
+              <div>
+                <button type="submit">Next</button>
+              </div>
+              <div
+                [ngClass]="{
+                  safariarrowalign: OsName == 'MacOS',
+                  windowarrowalign: OsName == 'Windows'
+                }"
+                id="arrowalign"
+              >
+                <img
+                  src="../../../assets/nextarrow.svg"
+                  style="width: 33px; margin-left: 5px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

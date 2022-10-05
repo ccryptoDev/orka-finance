@@ -1,0 +1,97 @@
+<section class="content-header">
+    <!-- <h1>Denied Application Details</h1> -->
+    <ol class="breadcrumb">
+      <li>
+        <a [routerLink]="['/admin/dashboard']"><i class="fa fa-dashboard"></i> Dashboard</a>
+      </li>
+      <li class="active">Milestone Commercial Operation Details</li>
+    </ol>
+  </section>
+  
+  <div class="frameshadow ">
+    <div class="mainTitle">Milestone Commercial Operation Details Table</div>
+  
+    <div class="p10">
+      <table *ngIf="data!=null && data.length > 0" datatable [dtOptions]="dtOptions" class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Milestone</th>
+            <th scope="col">File Name</th>
+            <!-- <th scope="col">Updated Date</th> -->
+            <!-- <th scope="col">document Type</th> -->
+            <th scope="col">Approve</th>
+            <th scope="col">Disbursed</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of data; let i = index">
+            <!-- {{i+1}} -->
+            <th class="bold" scope="row">{{ i + 1 }}</th>
+            <td>{{ d.services }}</td>
+            <td (click)="view(d.filename)">
+              <a style="cursor: pointer">{{ d.originalname }}</a>
+            </td>
+            <!-- <td>{{ d.updatedAt | date:'MM-dd-YYYY' }}</td> -->
+            <!-- <td>{{ (d.documentType==null)? '--': d.documentType }}</td> -->
+            <td>
+              <!-- [checked]="d.partnerStatus == 'Y'" -->
+              <label class="switch">
+                <input
+                  type="checkbox"
+                 
+                  (change)="
+                    updateApprove(
+                      d.link_id,
+                      $event
+                    )
+                  "
+                  name="onoffswitch"
+                />
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td>
+              <!-- [checked]="d.partnerStatus == 'Y'" -->
+              <label class="switch">
+                <input
+                  type="checkbox"
+                 
+                  (change)="
+                    updateDisbrused(
+                      d.link_id,
+                      $event
+                    )
+                  "
+                  name="onoffswitch"
+                />
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td>
+              <select class="form-control selcls" id="status" name="status">
+                <option value="">Select Status</option>
+                <option value="1">Complete</option>
+                <option value="2">Need Additional</option>
+                <option value="3">Confirmed</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table *ngIf="data==null && data.length == 0" datatable class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Milestone</th>
+            <th scope="col">File Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">document Type</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  

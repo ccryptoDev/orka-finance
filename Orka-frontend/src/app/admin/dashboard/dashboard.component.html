@@ -1,0 +1,35 @@
+<div class="p20 displayFlex flexwrap">
+  <div class="dasboardBox bg-primary-gradient" (click)="goapproved()" *ngIf="tabs['Approved Application']">
+    <div class="mr30px">Approved Applications</div>
+    <div class="noCircle">{{ data.approved_application }}</div>
+    <div><img src="../../../assets/blobs.png" class="blobs" /></div>
+  </div>
+  <div class="dasboardBox bg-danger-gradient" (click)="goPendings()" *ngIf="tabs['Pending Application']">
+    <div class="mr30px">Pending Applications</div>
+    <div class="noCircle">{{ data.waiting_application }}</div>
+    <div><img src="../../../assets/blobs.png" class="blobs" /></div>
+  </div>
+  <div class="dasboardBox bg-success-gradient" (click)="goincomplete()" *ngIf="tabs['Incomplete Application']">
+    <div class="mr30px">Incomplete Applications</div>
+    <div class="noCircle">{{ data.incomplete_application }}</div>
+    <div><img src="../../../assets/blobs.png" class="blobs" /></div>
+  </div>
+  <div class="dasboardBox bg-warning-gradient" (click)="godenied()" *ngIf="tabs['Denied Application']">
+    <div class="mr30px">Denied Applications</div>
+    <div class="noCircle">{{ data.canceled_application }}</div>
+    <div><img src="../../../assets/blobs.png" class="blobs" /></div>
+  </div>
+  <div class="dasboardBox adminUserBg" *ngIf="tabs['Admin Users']">
+    <div class="mr30px">Admin Users</div>
+
+    <div><img src="../../../assets/blobs.png" class="blobs" /></div>
+  </div>
+  <div class="dasboardBox creditReportbg" *ngIf="tabs['Credit Reports']">
+    <div class="mr30px">Credit Reports</div>
+
+    <div><img src="../../../assets/blobs.png" class="blobs" /></div>
+  </div>
+  <!-- <div class="dasboardBox">
+    <div class="fs20px mr30px">Create Application</div>
+  </div> -->
+</div>

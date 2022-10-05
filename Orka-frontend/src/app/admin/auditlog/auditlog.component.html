@@ -1,0 +1,55 @@
+<section class="content-header">
+  <!-- <h1>Pending Application Details</h1> -->
+  <ol class="breadcrumb">
+    <li>
+      <a [routerLink]="['/admin/dashboard']"
+        ><i class="fa fa-dashboard"></i> Dashboard</a
+      >
+    </li>
+    <li class="active">Audit Log</li>
+  </ol>
+</section>
+
+<div class="frameshadow">
+  <div class="mainTitle">Audit Log</div>
+
+  <div class="p10">
+    <table *ngIf="data.length > 0" datatable class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th style="width: 10px">#</th>
+          <th style="white-space: nowrap">Log Reference</th>
+          <th>Loan Reference</th>
+          <th>Module Name</th>
+          <th>User</th>
+          <th>Created Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of data; let i = index">
+          <td class="bold">{{ i + 1 }}</td>
+          <td>{{ d.id }}</td>
+          <td>{{ d.loan_id }}</td>
+          <td>{{ d.module }}</td>
+          <td>
+            {{ d.user }}
+          </td>
+          <td>{{ d.createdat }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table *ngIf="data.length == 0" datatable class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Loan ref</th>
+          <th scope="col">User ref</th>
+          <th scope="col">Email</th>
+          <th scope="col">First Name</th>
+          <th scope="col">lastName</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>

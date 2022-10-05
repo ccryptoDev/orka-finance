@@ -1,0 +1,94 @@
+<div class="m50px">
+  <div class="fs22px pb20">Documents Managment</div>
+  <div class="displayFlex AlignItemCenter spaceBetween mb50px">
+    <div class="grayButton displayFlex AlignItemCenter justifycontencenter">
+      <div class="folders"></div>
+      <div>
+        <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)"
+          (onFileLeave)="fileLeave($event)">
+          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+            <span (click)="openFileSelector()">Upload new files</span>
+          </ng-template>
+        </ngx-file-drop>
+      </div>
+    </div>
+    <div class="grayButton">Uploaded</div>
+    <div class="grayButton">Consents</div>
+    <div class="grayButton">Contracts signed</div>
+  </div>
+  <!-- <div class="fs22px pb20">All</div> -->
+
+
+  <div *ngIf="listfiles.length>0">
+    <div class="grayBoxcolor displayFlex AlignItemCenter spaceBetween mb20px" *ngFor="let file of fileitems;let i = index">
+      <div class="displayFlex AlignItemCenter w48per">
+        <div class="greenfolder"></div>
+        <div>{{file.name.split('.')[0]}}</div>
+      </div>
+
+      <div class="extenType">{{file.name.split('.')[1] | uppercase }}</div>
+      <div>{{(file.size / 1024).toFixed(2)}} KB</div>
+      <div>{{today}}</div>
+      <div>
+        <select 
+            (change)="selectDocType(i, $event)"
+        >
+            <option value="">Select Document Type</option>
+            <option value="Government Issued ID">
+                Government Issued ID
+            </option>
+            <option value="Paystub">Paystub</option>
+            <option value="Income Document">Income Document</option>
+            <option value="Driver License">Driver License</option>
+            <option value="Bank Statement">Bank Statement</option>
+            <option value="Other">Other</option>
+        </select>
+        <input 
+            hidden
+            (keyup)="docTypeComment(i, $event.target.value)"
+        />
+      </div> 
+      <!-- <div class="displayFlex AlignItemCenter">
+        <div class="upload_icon"></div>
+        <div class="delete_icon"></div>
+        <div class="edit_icon"></div>
+      </div> -->
+    </div>
+
+    <div class="p-3 mt-3 text-center">
+      <button type="button" class="btn btn-sales" (click)="completed()">Upload</button>
+  </div>
+
+    <!-- <div class="grayBoxcolor displayFlex AlignItemCenter spaceBetween mb20px">
+      <div class="displayFlex AlignItemCenter w48per">
+        <div class="greenfolder"></div>
+        <div>Doc_</div>
+      </div>
+
+      <div class="extenType">PDF</div>
+      <div>0,7 MB</div>
+      <div>11.05.2021</div>
+      <div class="displayFlex AlignItemCenter">
+        <div class="upload_icon"></div>
+        <div class="delete_icon"></div>
+        <div class="edit_icon"></div>
+      </div>
+    </div> -->
+  </div>
+
+</div>
+
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p class="headtext">Message</p>
+    <p *ngFor="let m of message">{{ m }}</p>
+  </div>
+</ng-template>

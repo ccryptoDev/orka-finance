@@ -1,0 +1,81 @@
+<div class="" style="margin: 0 !important; padding: 0 !important">
+  <div
+    class="col-12"
+    *ngIf="!installersidebar && !adminsidebar && !borrowerSidebar"
+    style="margin: 0 !important; padding: 0 !important"
+  >
+    <router-outlet (activate)="changeOfRoutes()"></router-outlet>
+  </div>
+
+  <div class="backgroundBg" *ngIf="installersidebar">
+    <div *ngIf="installersidebar" class="leftMenu">
+      <app-installersidebar></app-installersidebar>
+    </div>
+    <div *ngIf="installersidebar" class="mainContent">
+      <router-outlet (activate)="changeOfRoutes()"></router-outlet>
+    </div>
+  </div>
+
+  <div class="">
+    <div *ngIf="borrowerSidebar" class="leftMenu">
+      <app-borrower-sidebar></app-borrower-sidebar>
+    </div>
+    <!-- <div *ngIf="borrowerSidebar" class="mainContent">
+      <router-outlet (activate)="changeOfRoutes()"></router-outlet>
+    </div> -->
+  </div>
+
+  <!-- <div
+    class="col-2"
+    *ngIf="installersidebar"
+    style="margin: 0 !important; padding: 0 !important"
+  >
+    <app-installersidebar></app-installersidebar>
+  </div>
+  <div
+    class="col-10"
+    *ngIf="installersidebar"
+    style="margin: 0 !important; padding: 0 !important"
+  >
+    <router-outlet (activate)="changeOfRoutes()"></router-outlet>
+  </div> -->
+  <!--borrower side bar-->
+  <!-- <div
+    class="col-2"
+    *ngIf="borrowerSidebar"
+    style="margin: 0 !important; padding: 0 !important"
+  >
+    <app-borrower-sidebar></app-borrower-sidebar>
+  </div>
+
+  <div
+    class="col-10"
+    *ngIf="borrowerSidebar"
+    style="margin: 0 !important; padding: 0 !important"
+  >
+    <router-outlet (activate)="changeOfRoutes()"></router-outlet>
+  </div> -->
+  <!--borrower side bar-->
+
+  <div
+    class="col-12"
+    *ngIf="adminsidebar"
+    style="margin: 0 !important; padding: 0 !important"
+  >
+    <admin-sidebar>
+      <div
+        class="fixed-nav sticky-footer"
+        [class.sidenav-toggled]="sidenavtoggled"
+        id="page-top"
+      >
+        <app-adminsidebar></app-adminsidebar>
+        <div class="content-wrapper">
+          <div class="container-fluid">
+            <router-outlet (activate)="changeOfRoutes()"></router-outlet>
+          </div>
+        </div>
+      </div>
+    </admin-sidebar>
+  </div>
+</div>
+<ngx-spinner></ngx-spinner>

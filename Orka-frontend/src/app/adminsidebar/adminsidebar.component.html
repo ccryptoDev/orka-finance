@@ -1,0 +1,450 @@
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+  <a class="navbar-brand" [routerLink]="['/admin/dashboard']">
+    <div class="solarLogo2" style="margin-bottom: 0px"></div>
+  </a>
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+    data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+    aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div (click)="switchsidenavtoggled()">
+    <div id="sidenavToggler " class="cursorpointer displayNone">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+  </div>
+
+  <div class="collapse navbar-collapse" id="navbarResponsive">
+    <ul class="navbar-nav navbar-sidenav sidenav-overflow" id="exampleAccordion">
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard"
+        [routerLink]="['/admin/dashboard']" *ngIf="pages['Dashboard']">
+        <a class="nav-link" [routerLinkActive]="['active']">
+          <i class="fa fa-fw fa-dashboard"></i>
+          <span class="nav-link-text">Dashboard</span>
+        </a>
+      </li>
+
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Credit Applications">
+        <a class="nav-link nav-link-collapse collapsed" [routerLinkActive]="['active']" (click)="creditAppSettings()"
+        [class.collapsed]="!Creditapp" data-toggle="collapse" data-parent="#exampleAccordion">
+              <i class="fa fa-credit-card"></i>
+              <span class="nav-link-text">Credit Applications</span>
+            </a>
+      </li>
+      <ul class="sidenav-second-level collapse" [class.show]="Creditapp" id="collapseComponents">
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Approved Applications"
+          [routerLink]="['/admin/approved']" *ngIf="pages['Approved Application']">
+          <a class="nav-link list-padding" [routerLinkActive]="['active']">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="nav-link-text">Approved Applications</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Pending Applications"
+          [routerLink]="['/admin/pendings']" *ngIf="pages['Pending Application']">
+          <a class="nav-link list-padding" [routerLinkActive]="['active']">
+            <i class="far fa-hourglass"></i>
+            <span class="nav-link-text">Pending Applications</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Incomplete Applications"
+          [routerLink]="['/admin/incomplete']" *ngIf="pages['Incomplete Application']">
+          <a class="nav-link list-padding" [routerLinkActive]="['active']">
+            <i class="fal fa-clipboard-list"></i>
+            <span class="nav-link-text">Incomplete Applications</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Denied Applications"
+          [routerLink]="['/admin/denied']" *ngIf="pages['Denied Application']">
+          <a class="nav-link list-padding" [routerLinkActive]="['active']">
+            <i class="fal fa-times-circle"></i>
+            <span class="nav-link-text">Denied Applications</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Funded Contracts"
+          [routerLink]="['/admin/funded-contracts']" *ngIf="pages['Funded Contracts']">
+          <a class="nav-link list-padding" [routerLinkActive]="['active']">
+            <i class="fal fa-file-signature"></i>
+            <span class="nav-link-text">Funded Contracts</span>
+          </a>
+        </li>
+
+      </ul>
+
+       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Docs Review">
+        <a class="nav-link nav-link-collapse collapsed" [routerLinkActive]="['active']" (click)="docsReviewSettings()"
+        [class.collapsed]="!docsReview" data-toggle="collapse" data-parent="#exampleAccordion">
+            <i class="fa fa-file-archive-o"></i>
+            <span class="nav-link-text">Contract Review</span></a
+          >
+        </li>
+        <ul class="sidenav-second-level collapse" [class.show]="docsReview" id="collapseComponents">
+
+              <li [routerLink]="['/admin/pending-sales-contracts']"  class="nav-item" data-toggle="tooltip" data-placement="right" title="Sales Contract">
+                <a  class="nav-link list-padding" [routerLinkActive]="['active']">
+                  <i class="fa fa-gears"></i>
+                  <span class="nav-link-text">Pending Sales Contracts</span>
+                </a>
+            </li>
+            <li [routerLink]="['/admin/completed-sales-contracts']"  class="nav-item" data-toggle="tooltip" data-placement="right" title="Finance Contract">
+              <a  class="nav-link list-padding" [routerLinkActive]="['active']">
+                <i class="fa fa-gavel"></i>
+                <span class="nav-link-text">Completed Sales Contracts</span>
+              </a>
+          </li>
+        </ul>
+
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Milestone"
+        >
+          <a class="nav-link nav-link-collapse collapsed" [routerLinkActive]="['active']" (click)="milestioneSettings()"
+        [class.collapsed]="!milestione" data-toggle="collapse" data-parent="#exampleAccordion">
+            <i class="fas fa-history"></i>
+            <span class="nav-link-text">Milestone Review</span></a
+          >
+        </li>
+          <ul class="sidenav-second-level collapse" [class.show]="milestione" id="collapseComponents">
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Equipment"
+                [routerLink]="['/admin/pending-milestone-reviews']">
+                  <a class="nav-link list-padding" [routerLinkActive]="['active']">
+                    <i class="fa fa-gears"></i>
+                    <span class="nav-link-text">Pending Milestone Reviews</span>
+                  </a>
+              </li>
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Construction"
+              [routerLink]="['/admin/complete-milestone-reviews']">
+                <a class="nav-link list-padding" [routerLinkActive]="['active']">
+                  <i class="fa fa-gavel"></i>
+                  <span class="nav-link-text">Completed Milestone Reviews</span>
+                </a>
+              </li>
+
+          </ul>
+
+
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Milestone"
+          >
+            <a class="nav-link nav-link-collapse collapsed" [routerLinkActive]="['active']" (click)="counterSignatureSettings()"
+          [class.collapsed]="!counterSignature" data-toggle="collapse" data-parent="#exampleAccordion">
+              <i class="fas fa-history"></i>
+              <span class="nav-link-text">Countersignature</span></a
+            >
+          </li>
+            <ul class="sidenav-second-level collapse" [class.show]="counterSignature" id="collapseComponents">
+                  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Equipment"
+                  [routerLink]="['/admin/pending-counter-signature']">
+                    <a class="nav-link list-padding" [routerLinkActive]="['active']">
+                      <i class="fa fa-gears"></i>
+                      <span class="nav-link-text">Pending Countersignature</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Construction"
+                [routerLink]="['/admin/completed-counter-signature']">
+                  <a class="nav-link list-padding" [routerLinkActive]="['active']">
+                    <i class="fa fa-gavel"></i>
+                    <span class="nav-link-text">Completed Countersignature</span>
+                  </a>
+                </li>
+
+            </ul>
+
+
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Archived Open Applications"
+        *ngIf="pages['Archived Open Applications']">
+        <a class="nav-link">
+          <i class="far fa-browser"></i>
+          <span class="nav-link-text">Archived Open Applications</span>
+        </a>
+      </li>
+
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components" *ngIf="pages['Settings']">
+        <a class="nav-link nav-link-collapse collapsed" [routerLinkActive]="['active']" (click)="switchSettings()"
+          [class.collapsed]="!Settings" data-toggle="collapse" data-parent="#exampleAccordion">
+          <i class="fas fa-cog"></i>
+          <span class="nav-link-text">Settings</span>
+        </a>
+      </li>
+      <ul class="sidenav-second-level collapse" [class.show]="Settings" id="collapseComponents">
+        <li class="nav-item" [routerLink]="['/admin/settings/auditlog']" *ngIf="tabs['Audit Log']">
+          <a class="nav-link">
+            <i class="fa fa-fw fa-history"></i>
+            <span class="nav-link-text">Audit Log</span></a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link">
+            <i class="fa fa-fw fa-user"></i>
+            <span class="nav-link-text">Admin Manage Users</span></a
+          >
+        </li> -->
+        <!-- <li class="nav-item" [routerLink]="['/admin/settings/questions']" *ngIf="tabs['Questions']">
+          <a class="nav-link" [routerLinkActive]="['active']">
+            <i class="fa fa-fw fa-question-circle"></i>
+            <span class="nav-link-text">Questions</span></a>
+        </li> -->
+        <li class="nav-item" [routerLink]="['/admin/settings/changepw']" *ngIf="tabs['Change Password']">
+          <a class="nav-link" [routerLinkActive]="['active']">
+            <i class="fa fa-fw fa-unlock-alt"></i>
+            <span class="nav-link-text">Change Password</span></a>
+        </li>
+        <li class="nav-item" [routerLink]="['/admin/settings/roles']" *ngIf="tabs['Roles']">
+          <a class="nav-link" [routerLinkActive]="['active']">
+            <i class="fa fa-fw fa-unlock-alt"></i>
+            <span class="nav-link-text">Roles</span></a>
+        </li>
+        <li class="nav-item" [routerLink]="['/admin/loan-products']">
+          <a class="nav-link" [routerLinkActive]="['active']">
+            <i class="fa fa-fw fa-university"></i>
+            <span class="nav-link-text">Loan Products</span></a>
+        </li>
+        <li class="nav-item" [routerLink]="['/admin/disbursement-sequence']">
+          <a class="nav-link" [routerLinkActive]="['active']">
+            <i class="fa fa-fw fa-gavel"></i>
+            <span class="nav-link-text">Disbursement Sequence</span></a>
+        </li>
+      </ul>
+      <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="All Patients">
+            <a class="nav-link" >
+              <i class="fa fa-fw fa-folder"></i>
+              <span class="nav-link-text">All Patients</span>
+            </a>
+          </li> -->
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Partner management"
+        [routerLink]="['/admin/partner']" *ngIf="pages['Installer Management']">
+        <a class="nav-link" [routerLinkActive]="['active']">
+          <i class="fa fa-fw fa-folder"></i>
+          <span class="nav-link-text">Partner Management</span>
+        </a>
+      </li>
+      <li class="nav-item" [routerLink]="['/admin/users/admin']" *ngIf="pages['Users']">
+        <a class="nav-link" [routerLinkActive]="['active']">
+          <i class="fas fa-users"></i>
+          <span class="nav-link-text">Admin Users</span>
+        </a>
+      </li>
+      <li class="nav-item" [routerLink]="['/admin/users']" *ngIf="pages['Users']">
+        <a class="nav-link" [routerLinkActive]="['active']">
+          <i class="fas fa-users"></i>
+          <span class="nav-link-text">All Users</span>
+        </a>
+      </li>
+
+      <!-- <li
+        class="nav-item"
+        data-toggle="tooltip"
+        data-placement="right"
+        title="Create Application"
+      >
+        <a class="nav-link">
+          <i class="fa fa-fw fa-folder"></i>
+          <span class="nav-link-text">Create Application</span>
+        </a>
+      </li> -->
+    </ul>
+    <!-- <ul class="navbar-nav sidenav-toggler" (click)="switchsidenavtoggled()">
+      <li class="nav-item">
+        <a class="nav-link text-center" id="sidenavToggler">
+          <i class="fa fa-fw fa-angle-left"></i>
+        </a>
+      </li>
+    </ul> -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown" [class.show]="Messages" (click)="switchmessages()">
+        <a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          <i class="fa fa-fw fa-envelope" style="color: black;"></i>
+          <span class="d-lg-none">Messages
+            <span class="badge badge-pill badge-primary">12 New</span>
+          </span>
+          <span class="indicator text-primary d-none d-lg-block">
+            <i class="fa fa-fw fa-circle"></i>
+          </span>
+        </a>
+        <div class="dropdown-menu" [class.show]="Messages" aria-labelledby="messagesDropdown">
+          <h6 class="dropdown-header">New Messages:</h6>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item">
+            <strong>David Miller</strong>
+            <span class="small float-right text-muted">11:21 AM</span>
+            <div class="dropdown-message small">
+              Hey there! This new version of SB Admin is pretty awesome! These
+              messages clip off when they reach the end of the box so they don't
+              overflow over to the sides!
+            </div>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item">
+            <strong>Jane Smith</strong>
+            <span class="small float-right text-muted">11:21 AM</span>
+            <div class="dropdown-message small">
+              I was wondering if you could meet for an appointment at 3:00
+              instead of 4:00. Thanks!
+            </div>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item">
+            <strong>John Doe</strong>
+            <span class="small float-right text-muted">11:21 AM</span>
+            <div class="dropdown-message small">
+              I've sent the final files over to you for review. When you're able
+              to sign off of them let me know and we can discuss distribution.
+            </div>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item small">View all messages</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown" [class.show]="Alert" (click)="switchalert()">
+        <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          <i class="fa fa-fw fa-bell" style="color: black;"></i>
+          <span class="d-lg-none">Alerts
+            <span class="badge badge-pill badge-warning">6 New</span>
+          </span>
+          <span class="indicator text-warning d-none d-lg-block">
+            <i class="fa fa-fw fa-circle" *ngIf="notification.length > 0"></i>
+          </span>
+        </a>
+        <div *ngIf="notification.length > 0" class="dropdown-menu" [class.show]="Alert"
+          aria-labelledby="alertsDropdown">
+          <h6 class="dropdown-header">New Alerts:</h6>
+
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" [routerLink]="['/admin/notification']">
+            <span class="text-success">
+              <strong>
+                <i class="fa fa-usd fa-fw"></i>{{ notification[0].title }}</strong>
+            </span>
+            <span class="small float-right text-muted">{{
+              notification[0].createdAt
+              }}</span>
+            <div class="dropdown-message small">
+              {{ notification[0].message }}
+            </div>
+          </a>
+
+          <div class="dropdown-divider" *ngIf="notification.length > 1"></div>
+          <a class="dropdown-item" [routerLink]="['/admin/notification']" *ngIf="notification.length > 1">
+            <span class="text-success">
+              <strong>
+                <i class="fa fa-usd fa-fw"></i>{{ notification[1].title }}</strong>
+            </span>
+            <span class="small float-right text-muted">{{
+              notification[1].createdAt
+              }}</span>
+            <div class="dropdown-message small">
+              {{ notification[1].message }}
+            </div>
+          </a>
+
+          <div class="dropdown-divider" *ngIf="notification.length > 2"></div>
+          <a class="dropdown-item" [routerLink]="['/admin/notification']" *ngIf="notification.length > 2">
+            <span class="text-success">
+              <strong>
+                <i class="fa fa-usd fa-fw"></i>{{ notification[2].title }}</strong>
+            </span>
+            <span class="small float-right text-muted">{{
+              notification[2].createdAt
+              }}</span>
+            <div class="dropdown-message small">
+              {{ notification[2].message }}
+            </div>
+          </a>
+
+          <div class="dropdown-divider" *ngIf="notification.length > 3"></div>
+          <a class="dropdown-item" [routerLink]="['/admin/notification']" *ngIf="notification.length > 3">
+            <span class="text-success">
+              <strong>
+                <i class="fa fa-usd fa-fw"></i>{{ notification[3].title }}</strong>
+            </span>
+            <span class="small float-right text-muted">{{
+              notification[3].createdAt
+              }}</span>
+            <div class="dropdown-message small">
+              {{ notification[3].message }}
+            </div>
+          </a>
+
+          <div class="dropdown-divider" *ngIf="notification.length > 4"></div>
+          <a class="dropdown-item" [routerLink]="['/admin/notification']" *ngIf="notification.length > 4">
+            <span class="text-success">
+              <strong>
+                <i class="fa fa-usd fa-fw"></i>{{ notification[4].title }}</strong>
+            </span>
+            <span class="small float-right text-muted">{{
+              notification[4].createdAt
+              }}</span>
+            <div class="dropdown-message small">
+              {{ notification[4].message }}
+            </div>
+          </a>
+
+          <!-- <div class="dropdown-divider"></div>
+          <a class="dropdown-item">
+            <span class="text-success">
+              <strong>
+                <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong
+              >
+            </span>
+            <span class="small float-right text-muted">11:21 AM</span>
+            <div class="dropdown-message small">
+              This is an automated server response message. All systems are
+              online.
+            </div>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item">
+            <span class="text-danger">
+              <strong>
+                <i class="fa fa-long-arrow-down fa-fw"></i>Status Update</strong
+              >
+            </span>
+            <span class="small float-right text-muted">11:21 AM</span>
+            <div class="dropdown-message small">
+              This is an automated server response message. All systems are
+              online.
+            </div>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item">
+            <span class="text-success">
+              <strong>
+                <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong
+              >
+            </span>
+            <span class="small float-right text-muted">11:21 AM</span>
+            <div class="dropdown-message small">
+              This is an automated server response message. All systems are
+              online.
+            </div>
+          </a> -->
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item small" [routerLink]="['/admin/notification']">View all alerts</a>
+        </div>
+      </li>
+      <!-- <li class="nav-item">
+        <form class="form-inline my-2 my-lg-0 mr-lg-2">
+          <div class="input-group">
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Search for..."
+            />
+            <span class="input-group-append">
+              <button class="btn btn-primary" type="button">
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+          </div>
+        </form>
+      </li> -->
+      <li class="nav-item">
+        <a class="nav-link" style="color: black;" data-toggle="modal" data-target="#exampleModal" (click)="logout()">
+          <i class="far fa-power-off" style="margin-right:10px;"></i>Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>

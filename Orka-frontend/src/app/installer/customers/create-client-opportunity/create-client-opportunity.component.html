@@ -1,0 +1,111 @@
+<section class="content-header">
+    <!-- <h1>View Application Details</h1> -->
+    <ol class="breadcrumb">
+      <li>
+        <a [routerLink]="['/partner/main']"
+          ><i class="fa fa-dashboard"></i> Main</a
+        >
+      </li>
+      <li>
+        <a [routerLink]="['/partner/customers']"
+          ><i class="fa fa-dashboard"></i>Customers</a
+        >
+      </li>
+      <li class="active">Add Create Client Opportunity</li>
+    </ol>
+  </section>
+
+  <div class="container-fluid frameshadow">
+    <div class="mainTitle" style="width: 1039px;
+    margin-left: -15px;">
+      <div>Add Create Client Opportunity</div>
+    </div>
+    <div class="p10">
+        <div class="pendingTab">
+            <div class="ptop15">
+                <form name="form" (ngSubmit)="f.form.valid && clientOpportunitySubmit()" #f="ngForm" novalidate>
+                    <div class="row">
+                        <div class="col-6">
+                    <div class="form-group">
+                        <label for="ContactName">Business Legal Name*</label>
+                        <input type="text" required name="businessLegalName" class="form-control" 
+                        placeholder="Enter Business Legal Name"
+                        (input)="f1.businessLegalName = namedata($event)" [(ngModel)]="f1.businessLegalName" #businessLegalName="ngModel"
+                            required [ngClass]="{ 'is-invalid': f.submitted && businessLegalName.invalid }"/>
+                            <small *ngIf="businessLegalName.invalid && (businessLegalName.touched || f.submitted)" class="text-danger">
+                                Business Legal Name is required</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ContactName">Business Email Address*</label>
+                        <input type="email" name="businessEmail" class="form-control" placeholder="Enter Business Email"
+                            [(ngModel)]="f1.businessEmail" #businessEmail="ngModel" required
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                            [ngClass]="{ 'is-invalid': f.submitted && businessEmail.invalid }" />
+                        <small *ngIf="businessEmail.invalid && (businessEmail.touched || f.submitted)" class="text-danger">Business Email is
+                            required</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="ContactName">Business Phone</label>
+                        
+                        <input 
+                            type="text" name="businessPhone" class="form-control" 
+                            placeholder="+1 (000) 000-0000" 
+                            mask="+0 (000) 000-0000"
+                            (input)="f1.businessPhone = $event.target.value" 
+                            [(ngModel)]="f1.businessPhone" 
+                            #businessPhone="ngModel" 
+                            [ngClass]="{ 'is-invalid': f.submitted && businessPhone.invalid }" 
+                        />
+                    </div>
+                </div>
+            
+           
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="ContactName">Business City</label>
+                        <input type="text" name="businessCity" class="form-control" 
+                        placeholder="Enter Business  City"
+                        [(ngModel)]="f1.businessCity" #businessCity="ngModel"
+                                    [ngClass]="{ 'is-invalid': f.submitted && businessCity.invalid }" />
+                       
+                    </div>
+                    <div class="form-group">
+                        <label for="ContactName">Business State</label>
+                        <input type="text" name="businessState" class="form-control" 
+                        placeholder="Enter Business  State"
+                        [(ngModel)]="f1.businessState" #businessState="ngModel"
+                        [ngClass]="{ 'is-invalid': f.submitted && businessState.invalid }" />
+                    </div>
+                    <div class="form-group">
+                        <label for="ContactName">Business Zip</label>
+                        <input type="text" name="businessZip" class="form-control" 
+                        placeholder="Enter Business  Zip"
+                        [(ngModel)]="f1.businessZip" #businessZip="ngModel"
+                        [ngClass]="{ 'is-invalid': f.submitted && businessZip.invalid }" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mt-5">
+                <button type="submit" class="greenbutton">Save</button>
+            </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #messagebox>
+    <div class="modal-body text-center">
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <p class="headtext">Message</p>
+      <p *ngFor="let m of message">{{ m }}</p>
+    </div>
+  </ng-template>

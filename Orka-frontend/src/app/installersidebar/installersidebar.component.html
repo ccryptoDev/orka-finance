@@ -1,0 +1,239 @@
+<!-- <div class="header">
+    <nav>
+        <a class="navbar-brand" href="index.html">
+            <img class="navbar-brand-regular image1" src="../../../assets/orkaa_logo.svg" alt="brand-logo">
+        </a>
+        <div class="nav-links">
+            <ul>//
+                <li class="listBorder">
+                    <a href="partner/home">Opportunities</a>
+                </li>
+                <li class="listBorder">
+                    <a href="partner/calculator">Calculator</a>
+                </li>
+                <li>
+                    <a href="partner/createClientOpportunity" target="" class="btn ml-lg-auto btn-bordered-white"><i
+                            class=" contact-icon mr-md-2"></i>Add
+                        new opportunity</a>
+                </li>
+                <li>
+                    <div class="verticalline"></div>
+                </li>
+                <li>
+                    <div class="column1 textright displayFlex">
+                        <div class="row1">
+                            <div class="username">Name</div>
+                            <div><img class="userimage" src="../../../assets/userimage.png"></div>
+                        </div>
+                        <div class="companyname">Company name or logo</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div> -->
+
+<!-- <div class="header"> -->
+<div class="container">
+  <nav class="tabflexDirection2">
+    <a class="navbar-brand" [routerLink]="['partner/opportunity']">
+      <img
+        class="navbar-brand-regular image1"
+        src="../../../assets/orkaa_logo.svg"
+        alt="brand-logo"
+      />
+    </a>
+    <div class="nav-links mobtxtright">
+      <!--add coment-->
+      <ul>
+        <li>
+          <a
+            [routerLink]="['partner/opportunity']"
+            [routerLinkActive]="'listBorder'"
+            >Opportunities</a
+          >
+        </li>
+        <li>
+          <a
+            [routerLink]="['partner/calculator']"
+            [routerLinkActive]="'listBorder'"
+            gtagEvent
+            trackOn="click"
+            category="Partner Activity"
+            [params]="{event_label: 'Calculator Engaged'}"
+            >Calculator</a
+          >
+        </li>
+        <li>
+          <button class="opportunityButton" (click)="popupform()">
+            Add new opportunity
+          </button>
+        </li>
+        <li>
+          <div class="verticalline"></div>
+        </li>
+        <li class="tabuser">
+          <div class="column1 textright displayFlex">
+            <div class="user_setting dropdown">
+              <a
+                href="javascript:void(0)"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <span class="logged-name row1" (click)="islogout = !islogout">
+                  <span class="username">{{ installer_loginName }}</span>
+                  <img class="userimage" src="../../../assets/userimage.png" />
+                </span>
+              </a>
+              <div
+                class="dropdown-menu"
+                [ngStyle]="islogout && { display: 'block' }"
+              >
+                <ul>
+                  <li (click)="logout()">
+                    <a class=" "> Logout</a>
+                  </li>
+                  <li (click)="navigatedocument()">
+                    <a class=" "> Document Center</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="companyname">{{ businessName }}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<ng-template #createOpportunityform>
+  <div class="modal-body text-center">
+    <form
+      name="form"
+      (ngSubmit)="f.form.valid && createOpportunitySubmit()"
+      #f="ngForm"
+      novalidate
+    >
+      <div class="row">
+        <div class="col-12">
+          <div class="input-group form-group">
+            <input
+              type="text"
+              name="businessLegalName"
+              class="inputField form-control"
+              placeholder="Enter Customer Business Name"
+              (input)="data.businessLegalName = namedata($event)"
+              [(ngModel)]="data.businessLegalName"
+              #businessLegalName="ngModel"
+              required
+              [ngClass]="{
+                'is-invalid': f.submitted && businessLegalName.invalid
+              }"
+            />
+          </div>
+          <div class="mb10px">
+            <small
+              *ngIf="
+                businessLegalName.invalid &&
+                (businessLegalName.touched || f.submitted)
+              "
+              class="text-danger"
+              >Customer Business is required</small
+            >
+          </div>
+          <div class="input-group form-group">
+            <input
+              type="text"
+              name="applicantFirstName"
+              class="inputField form-control"
+              placeholder="Enter Business owner first name"
+              (input)="data.applicantFirstName = namedata($event)"
+              [(ngModel)]="data.applicantFirstName"
+              #applicantFirstName="ngModel"
+              required
+              [ngClass]="{
+                'is-invalid': f.submitted && applicantFirstName.invalid
+              }"
+            />
+          </div>
+          <div class="mb10px">
+            <small
+              *ngIf="
+              applicantFirstName.invalid &&
+                (applicantFirstName.touched || f.submitted)
+              "
+              class="text-danger"
+              >Business Owner First Name is required</small
+            >
+          </div>
+
+          <div class="input-group form-group">
+            <input
+              type="text"
+              name="applicantLastName"
+              class="inputField form-control"
+              placeholder="Enter Business owner last name"
+              (input)="data.applicantLastName = namedata($event)"
+              [(ngModel)]="data.applicantLastName"
+              #applicantLastName="ngModel"
+              required
+              [ngClass]="{
+                'is-invalid': f.submitted && applicantLastName.invalid
+              }"
+            />
+          </div>
+          <div class="mb10px">
+            <small
+              *ngIf="
+              applicantLastName.invalid &&
+                (applicantLastName.touched || f.submitted)
+              "
+              class="text-danger"
+              >Business Owner Last Name is required</small
+            >
+          </div>
+
+
+          <div class="input-group form-group">
+            <input
+              type="text"
+              name="businessEmail"
+              class="inputField form-control"
+              placeholder="Enter Business owner email"
+              (input)="data.businessEmail = namedata($event)"
+              [(ngModel)]="data.businessEmail"
+              #businessEmail="ngModel"
+              required
+              [ngClass]="{ 'is-invalid': f.submitted && businessEmail.invalid }"
+            />
+            <!-- pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" -->
+          </div>
+          <div class="mb10px">
+            <small
+              *ngIf="
+                businessEmail.invalid && (businessEmail.touched || f.submitted)
+              "
+              class="text-danger"
+            >
+              <div
+                *ngIf="businessEmail.errors && businessEmail.errors.required"
+              >
+                Business Owner Email is required
+              </div>
+              <!-- <div  *ngIf="businessEmail.errors && businessEmail.errors.pattern">
+                                      Business Owner Email is invalid
+                                  </div> -->
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn submitButton mt10px mr10px" type="submit">
+        Submit
+      </button>
+      <button class="btn cancleButton mt10px" type="button" (click)="close()">
+        Cancel
+      </button>
+    </form>
+  </div>
+</ng-template>

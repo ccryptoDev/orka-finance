@@ -1,0 +1,326 @@
+<div class="containermainBlock">
+  <div class="headerDiv">
+    <div class="displayFlex spaceBetween plr50">
+      <div class="logoBlock"><img src="../../../assets/logo1.png" /></div>
+      <div>
+        <div>
+          <div class="whaleBg"></div>
+          <div class="displayFlex progressbarcontiner">
+            <div class="displayFlex" style="margin-right: 87px">
+              <div class="step01"><img src="../../../assets/step01.svg" /></div>
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -52px"
+              >
+                Part
+              </div>
+              <div class="blueLineSmall"></div>
+            </div>
+            <div class="displayFlex" style="margin-right: 88px">
+
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px activetext fs16px"
+                style="margin-left: -16px"
+              >
+                1
+              </div>
+              <div
+                class="positionAbsolute AvenirBlack activetext fs16px"
+                style="margin-left: -60px; padding-top: 297px"
+              >
+                START
+              </div>
+              <div class="blueLineBig"></div>
+            </div>
+            <div class="displayFlex" style="margin-right: 89px">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -16px"
+              >
+                2
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex mr90" style="margin-right: 89px">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -16px"
+              >
+                3
+              </div>
+              <div class="blackline"></div>
+            </div>
+
+            <div class="displayFlex mr90">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -16px"
+              >
+                4
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex mr90" style="margin-right: 20px">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -16px"
+              >
+                5
+              </div>
+              <div class="blackline"></div>
+              <div class="infoicon"><img src="../../../assets/info.png" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mainDivsection">
+    <div class="containerBlock">
+      <div class="ptb50">
+        <div class="titleTxt">You Made It!</div>
+        <div class="mainContent">
+          Welcome to ORKA’s credit application. Now that you’re here, you are one giant step closer to
+          saving money by switching to solar energy. After you complete the credit application,
+          our innovative and secure system will go through your answers to reach a rapid credit decision.
+           If we run into any roadblocks, one of our underwriters will carefully review your application
+           and contact you for additional information.
+          <!-- <ol class="orderList">
+            <li>
+              You provide some basic information about yourself and your
+              business
+            </li>
+            <li>You authorize or upload supporting documentation</li>
+            <li>
+              ORKA determines if our loan is a good fit for your business and
+              returns what should be an instant credit decision. If we require
+              additional information, we'll let you know.
+            </li>
+          </ol> -->
+          <!-- You’ll find more information on each page and we’re here to answer
+          questions along the way. Thanks in advance for partnering with us on
+          your journey. -->
+          <br>
+          You’ll find helpful info at the top of each page of the application, but if you need more support,
+           feel free to reach out to us directly.We’re looking forward to partnering with you on your solar journey.
+        </div>
+      </div>
+      <form
+        name="form"
+        (ngSubmit)="f.form.valid && next()"
+        #f="ngForm"
+        novalidate
+      >
+        <div class="ptb50">
+          <div class="pb50px">
+            <div class="labelTxt">Business Owner Email Address</div>
+            <div>
+              <input
+                type="text"
+                name="businessEmail"
+                class="inputField form-control"
+                placeholder="Enter business owner email address"
+                (input)="data.businessEmail = namedata($event)"
+                [(ngModel)]="data.businessEmail"
+                #businessEmail="ngModel"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                required
+                [ngClass]="{
+                  'is-invalid': f.submitted && businessEmail.invalid
+                }"
+              />
+              <small
+                *ngIf="
+                  businessEmail.invalid &&
+                  (businessEmail.touched || f.submitted)
+                "
+                class="text-danger"
+                >Business Email is required</small
+              >
+            </div>
+          </div>
+          <div class="pb50px">
+            <div class="labelTxt">Legal name of Business</div>
+            <div>
+              <input
+                type="text"
+                name="businessLegalName"
+                class="inputField form-control"
+                placeholder="Enter legal name of business"
+                (input)="data.businessLegalName = namedata($event)"
+                [(ngModel)]="data.businessLegalName"
+                #businessLegalName="ngModel"
+                required
+                [ngClass]="{
+                  'is-invalid': f.submitted && businessLegalName.invalid
+                }"
+              />
+              <small
+                *ngIf="
+                  businessLegalName.invalid &&
+                  (businessLegalName.touched || f.submitted)
+                "
+                class="text-danger"
+                >LegalName is required</small
+              >
+            </div>
+          </div>
+          <div class="ptb50">
+            <div class="fotterbg displayFlex">
+              <div class="displayFlex letsgo">
+                <div>
+                  <button
+                    type="submit"
+                    gtagEvent
+                    trackOn="click"
+                    category="Credit Application"
+                    [params]="{event_label: 'Start the Process'}"
+                  >LET’S GET STARTED</button>
+                </div>
+                <div
+                  [ngClass]="{
+                    safariarrowalign: OsName == 'MacOS',
+                    windowarrowalign: OsName == 'Windows'
+                  }"
+                  id="arrowalign"
+                >
+                  <img
+                    src="../../../assets/nextarrow.svg"
+                    style="width: 33px; margin-left: 5px"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #resetPassword>
+  <div class="modal-body text-center">
+    <!--commit changes and complete-->
+    <form
+      name="form"
+      (ngSubmit)="f.form.valid && resetPasswordSubmit()"
+      #f="ngForm"
+      novalidate
+    >
+      <div class="row">
+        <div class="col-12">
+          <div class="input-group form-group">
+            <input
+              type="password"
+              [type]="fieldTextType2 ? 'text' : 'password'"
+              required
+              name="password"
+              class="form-control"
+              placeholder="Enter New Password"
+              (input)="f1.password = namedata($event)"
+              [(ngModel)]="f1.password"
+              #password="ngModel"
+              required
+              [ngClass]="{ 'is-invalid': f.submitted && password.invalid }"
+              (change)="validatePattern($event)"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i
+                  class="fa"
+                  [ngClass]="{
+                    'fa-eye-slash': !fieldTextType2,
+                    'fa-eye': fieldTextType2
+                  }"
+                  (click)="toggleFieldTextType2()"
+                ></i>
+              </span>
+            </div>
+          </div>
+          <div class="mb10px">
+            <small
+              *ngIf="password.invalid && (password.touched || f.submitted)"
+              class="text-danger"
+            >
+              New Password is required</small
+            >
+          </div>
+          <div class="input-group form-group">
+            <input
+              type="password"
+              [type]="fieldTextType1 ? 'text' : 'password'"
+              required
+              name="confirm_password"
+              class="form-control"
+              placeholder="Enter New Confirm Password"
+              (input)="f1.confirm_password = namedata($event)"
+              [(ngModel)]="f1.confirm_password"
+              #confirm_password="ngModel"
+              required
+              [ngClass]="{
+                'is-invalid': f.submitted && confirm_password.invalid
+              }"
+              (keyup)="validateConfirm($event)"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i
+                  class="fa"
+                  [ngClass]="{
+                    'fa-eye-slash': !fieldTextType1,
+                    'fa-eye': fieldTextType1
+                  }"
+                  (click)="toggleFieldTextType1()"
+                ></i>
+              </span>
+            </div>
+          </div>
+          <div class="mb30px">
+            <small
+              *ngIf="
+                confirm_password.invalid &&
+                (confirm_password.touched || f.submitted)
+              "
+              class="text-danger"
+            >
+              Confirm Password is required</small
+            >
+          </div>
+          <div class="mb30px">
+            <small *ngIf="confirmValidate" class="text-danger">
+              Passwords should match!</small
+            >
+          </div>
+          <div class="mb30px">
+            <small *ngIf="patternCheck" class="text-danger">
+              Password must contain at least 1 Upper Case, 1 Lower case, 1
+              Number, 1 Special Character and minimum length of 8 characters.
+            </small>
+          </div>
+        </div>
+      </div>
+      <!-- <button class="btn submitButton mt10px mr10px" [disabled]="IsDisabled" type="submit">
+        Submit
+      </button> -->
+      <button class="btn submitButton mt10px mr10px" [disabled]="IsDisabled" type="submit">
+        Submit
+      </button>
+    </form>
+  </div>
+</ng-template>
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p class="headtext">Message</p>
+    <p *ngFor="let m of message">{{ m }}</p>
+  </div>
+</ng-template>

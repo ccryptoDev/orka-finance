@@ -1,0 +1,1794 @@
+<section class="content-header">
+    <ol class="breadcrumb">
+      <li>
+        <a [routerLink]="['/admin/dashboard']"
+          ><i class="fa fa-dashboard"></i> Dashboard</a
+        >
+      </li>
+      <li>
+        <a [routerLink]="['/admin/funded-contracts']"
+          ><i class="fa fa-dashboard"></i> Funded Contracts List</a
+        >
+      </li>
+      <li class="active">Funded Contracts Details</li>
+    </ol>
+  </section>
+
+  <div class="frameshadow">
+    <div class="mainTitle">
+      <div>View Application Details
+        <span *ngIf="data.customerDetails!=null">
+          &nbsp;<a routerLink="/admin/approved/{{ data.customerDetails.loan_id }}">
+            APP_{{data.customerDetails.ref_no}}
+          </a>
+        </span>
+      </div>
+    </div>
+    <div class="p10">
+        <div class="pendingTab">
+            <tabset #staticTabs>
+              <tab
+          heading="Underwriting Process"
+
+        >
+        <accordion class="p10">
+          <accordion-group heading="Financing Requested">
+
+            <div class="">Development in Progress</div>
+
+          </accordion-group>
+          <accordion-group heading="Lending Limit">
+            <div class="">Development in Progress</div>
+          </accordion-group>
+          <accordion-group heading="KYC- Equifax">
+            <div class="">Development in Progress</div>
+          </accordion-group>
+          <accordion-group heading="KYC- Comply Advantage">
+            <div class="p10px">
+              <table class="table table-bordered">
+                <tr>
+                  <th colspan="3">KYC- Comply Advantage
+                    <a style="margin-left: 35px; color: blue; cursor: pointer;" (click)="selectTab(1)">Comply Advantage
+                    </a>
+                  </th>
+                </tr>
+                <tr class="bold">
+                  <th>Rule</th>
+                  <th>Response</th>
+                  <th>Rule Status(Pass/Fail)</th>
+                </tr>
+                <tbody>
+                  <tr>
+                    <td>Adverse Media returns a hit</td>
+
+                    <td *ngIf="complyadvantageAdverseMedia;else media_false_content">Yes</td>
+                    <ng-template #media_false_content><td>No</td></ng-template>
+
+                    <td *ngIf="complyadvantageAdverseMedia;else media_false_content_two">Fail</td>
+                    <ng-template #media_false_content_two><td>Pass</td></ng-template>
+                  </tr>
+                  <tr>
+                    <td>AML check flags applicant</td>
+                    
+                    <td *ngIf="amlTypes;else aml_false_content">Yes</td>
+                    <ng-template #aml_false_content><td>No</td></ng-template>
+
+                    <td *ngIf="amlTypes;else aml_false_content_two">Fail</td>
+                    <ng-template #aml_false_content_two><td>Pass</td></ng-template>
+                  </tr>
+                  <tr>
+                    <td>OFAC check returns a hit</td>
+                    
+                    <td *ngIf="ofacSdnList;else ofac_false_content">Yes</td>
+                    <ng-template #ofac_false_content><td>No</td></ng-template>
+
+                    <td *ngIf="ofacSdnList;else ofac_false_content_two">Fail</td>
+                    <ng-template #ofac_false_content_two><td>Pass</td></ng-template>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </accordion-group>
+          <accordion-group heading="KYB- Equifax">
+            <div class="">Development in Progress</div>
+          </accordion-group>
+          <accordion-group heading="KYB- Middesk">
+            <div class="p10px">
+              <table class="table table-bordered">
+                <tr class="bold">
+                  <th>S.No</th>
+                  <th>Label</th>
+                  <th>Message</th>
+                  <th>Status</th>
+                  <th>Sub Label</th>
+                </tr>
+                <tbody *ngIf="middeskData.length != 0">
+                  <tr *ngFor="
+                          let log of middeskData;
+                          index as i
+                        ">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                      {{ log.label }}
+                    </td>
+                    <td>
+                      {{ log.message }}
+                    </td>
+                    <td>
+                      {{ log.status }}
+                    </td>
+                    <td>
+                      {{ log.sub_label }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </accordion-group>
+          <accordion-group heading="Property Ownership">
+
+          </accordion-group>
+          <accordion-group heading="Tax Documents">
+            <div class="">Development in Progress</div>
+          </accordion-group>
+          <accordion-group heading="Financial Questions Asked and Answered">
+            <div class="">Development in Progress</div>
+          </accordion-group>
+          <accordion-group heading="Request For Information">
+            <div class="">Development in Progress</div>
+          </accordion-group>
+        </accordion>
+        </tab>
+                <tab heading="Files Uploaded" >
+                    <div class="p10px" *ngIf="data.ownershipFiles.length>0">
+                        <div class="frameshadow mb20px">
+                          <div>
+                            <div class="mainTitle">Proof Of Ownership Documents</div>
+                          </div>
+                          <div class="p10px">
+                            <table class="table table-bordered">
+                              <tr>
+                                <th style="width: 50px">#</th>
+                                <th>Documents</th>
+                                <th>PDF,JPG,JPEG,PNG</th>
+                              </tr>
+                              <tbody>
+                                <tr *ngFor="let d of data.ownershipFiles; let i = index">
+                                  <td>{{ i + 1 }}</td>
+
+                                  <td>{{ d.originalname }}</td>
+
+                                   <td (click)="view(showFile,d.filename)" class="cursorpointer">
+                        <a>View Document</a>
+                        </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                    </div>
+                </tab>
+
+                <tab heading="Verified System Info" >
+                    <div class="p10px" *ngIf="data.systemInfo != null">
+                        <div class="list">
+                          <ul class="h700">
+                            <li>
+                              <div class="displayFlex listdetails">
+                                <div class="fontWeight">Manufacturer of Modules</div>
+                                <div>
+                                    {{ data.systemInfo["moduleManufacturer"] }}
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="displayFlex listdetails">
+                                <div class="fontWeight">Manufacturer of Inverters</div>
+                                <div>
+                                    {{ data.systemInfo["inverterManufacturer"] }}
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                                <div class="displayFlex listdetails">
+                                  <div class="fontWeight">Manufacturer of Battery</div>
+                                  <div>
+                                      {{ data.systemInfo["batteryManufacturer"] }}
+                                  </div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="displayFlex listdetails">
+                                  <div class="fontWeight">System Size (kW)</div>
+                                  <div>
+                                      {{ data.systemInfo["systemSize"] }}
+                                  </div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="displayFlex listdetails">
+                                  <div class="fontWeight">Estimated Annual Production</div>
+                                  <div>
+                                      {{ data.systemInfo["estAnnualProduction"] }}
+                                  </div>
+                                </div>
+                              </li>
+                          </ul>
+                        </div>
+                      </div>
+                </tab>
+
+                <tab heading="Milestone 1 Request" >
+                  <div class="p10px" *ngIf="data.milestone1ReqFiles.length>0">
+                    <div class="frameshadow mb20px">
+                      <div>
+                        <div class="mainTitle">Proof of initial funding to get the project started</div>
+                      </div>
+                      <div class="p10px">
+                        <table class="table table-bordered">
+                          <tr>
+                            <th style="width: 50px">#</th>
+                            <th>Documents</th>
+                            <th>PDF,JPG,JPEG,PNG</th>
+                          </tr>
+                          <tbody>
+                            <tr *ngFor="let d of data.milestone1ReqFiles; let i = index">
+                              <td>{{ i + 1 }}</td>
+
+                              <td>{{ d.originalname }}</td>
+
+                                 <td (click)="view(showFile,d.filename)" class="cursorpointer">
+                                 <a>View Document</a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="p10px" *ngIf="data.milestone1ReqFiles.length>0">
+                    <div class="list">
+                      <ul class="h700">
+                        <li>
+                          <div class="displayFlex listdetails">
+                            <div class="fontWeight">Milestone 1 Requested Amount</div>
+                            <div>
+                                {{ data.installingInfo.milestone1ReqAmount }}
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </tab>
+
+                <tab heading="Milestone 2 Request" >
+                  <div class="p10px" *ngIf="data.milestone2ReqFiles.length>0">
+                    <div class="frameshadow mb20px">
+                      <div>
+                        <div class="mainTitle">Evidence of completion</div>
+                      </div>
+                      <div class="p10px">
+                        <table class="table table-bordered">
+                          <tr>
+                            <th style="width: 50px">#</th>
+                            <th>Documents</th>
+                            <th>PDF,JPG,JPEG,PNG</th>
+                          </tr>
+                          <tbody>
+                            <tr *ngFor="let d of data.milestone2ReqFiles; let i = index">
+                              <td>{{ i + 1 }}</td>
+
+                              <td>{{ d.originalname }}</td>
+
+                              <td (click)="view(d.filename)"><a class="cursorpointer">View Document</a></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="p10px" *ngIf="data.milestone2ReqFiles.length>0">
+                    <div class="list">
+                      <ul class="h700">
+                        <li>
+                          <div class="displayFlex listdetails">
+                            <div class="fontWeight">Date project was fully installed/completed</div>
+                            <div>
+                                {{ data.installingInfo.projectCompletedAt }}
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="displayFlex listdetails">
+                            <div class="fontWeight">Verified Installation address</div>
+                            <div>
+                                {{ data.installingInfo.verifiedInstAddress?'Yes':'No' }}
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="displayFlex listdetails">
+                            <div class="fontWeight">Milestone 2 Requested Amount</div>
+                            <div>
+                                {{ data.installingInfo.milestone2ReqAmount }}
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </tab>
+
+                <tab heading="Milestone 3 Request" >
+                  <div class="p10px" *ngIf="data.milestone3ReqFiles.length>0">
+                    <div class="frameshadow mb20px">
+                      <div>
+                        <div class="mainTitle">Evidence of PTO</div>
+                      </div>
+                      <div class="p10px">
+                        <table class="table table-bordered">
+                          <tr>
+                            <th style="width: 50px">#</th>
+                            <th>Documents</th>
+                            <th>PDF,JPG,JPEG,PNG</th>
+                          </tr>
+                          <tbody>
+                            <tr *ngFor="let d of data.milestone3ReqFiles; let i = index">
+                              <td>{{ i + 1 }}</td>
+
+                              <td>{{ d.originalname }}</td>
+
+                              <td (click)="view(d.filename)"><a class="cursorpointer">View Document</a></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="p10px" *ngIf="data.milestone3ReqFiles.length>0">
+                    <div class="list">
+                      <ul class="h700">
+                        <li>
+                          <div class="displayFlex listdetails">
+                            <div class="fontWeight">Milestone 3 Requested Amount</div>
+                            <div>
+                                {{ data.installingInfo.milestone3ReqAmount }}
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </tab>
+
+                <tab heading="Project Completed" >
+                  <div class="p10px" *ngIf="data.installingInfo.approvedAt != null">
+                    <div class="list">
+                      <ul class="h700">
+                        <li>
+                          <div class="displayFlex listdetails">
+                            <div class="fontWeight">Application approved at</div>
+                            <div>
+                                {{ datePipe.transform(data.installingInfo.approvedAt, "yyyy/MM/dd") }}
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </tab>
+
+
+                <tab heading="Credit Report" *ngIf="data.from_details.length > 0 && tabs['Credit Report']">
+                  <!-- <div>
+                    <button class="btn btn-primary" *ngIf="equifaxReport.length == 0" (click)="pullCreditReport()">Pull Credit Report</button>
+                  </div> -->
+
+                  <div *ngIf="equifaxReport.length > 0 && equifaxReport!=null;else equifaxReport_err">
+                    <div *ngFor="let creditData of equifaxReport">
+                      <h3 style="padding: 10px 0px 0px 10px;font-weight: 700;"><b>Equifax Consumer Credit Report</b></h3>
+                      <accordion class="p10" *ngIf="creditData.report.creditScore!=undefined">
+                        <accordion-group heading="User Information" >
+                          <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                              <th style="width: 50%">First Name</th>
+                              <td>
+                                {{ (creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.subjectName?.firstName)?(creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.subjectName?.firstName):'--' }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <th>Last Name</th>
+                              <td>
+                                {{ (creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.subjectName?.lastName)?(creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.subjectName?.lastName):'--' }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <th>Middle Name</th>
+                              <td>
+                                {{ (creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.subjectName?.middleName)?(creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.subjectName?.middleName):'--' }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <th>Social Security Number</th>
+                              <td>
+                                {{ (creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.subjectSocialNum)?(creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.subjectSocialNum):'--' }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <th>Credit score</th>
+                              <td>
+                                {{ creditData.report.creditScore }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <th>Former Names First Name</th>
+                              <td>
+                                {{ (creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.formerNames==null)?'--':creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.formerNames[0]?.firstName}}
+                              </td>
+                            </tr>
+                            <tr>
+                              <th>Former Names Last Name</th>
+                              <td>
+                                {{ (creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.formerNames==null)? '---' : creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.formerNames[0]?.lastName}}
+                              </td>
+                            </tr>
+                            <tr>
+                              <th class='font-weight7'>Fraud ID Scan Alert Codes</th>
+                              <th class='font-weight7'>Fraud ID Scan Alert description</th>
+
+                            </tr>
+                            <tr *ngFor='let fval of creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.fraudIDScanAlertCodes'>
+                              <td>
+                                {{ fval.code}}
+                              </td>
+                              <td>
+                                {{ fval.description}}
+                              </td>
+                            </tr>
+                            <tr>
+                              <th class="font-weight7">Identifier Description</th>
+                              <th class="font-weight7">Identifier Value</th>
+                            </tr>
+                            <tr *ngFor="let idres of data.filter_att;let i = index">
+                              <!-- <td>{{id.identifier}}</td> -->
+                              <td *ngIf="data.attributes!=null">{{getattFiltervalcode(idres.identifier,data.attributes)}}</td>
+                              <td *ngIf="idres.value!=null;else value_err">{{idres.value}}</td>
+                              <ng-template #value_err><td>---</td></ng-template>
+                          </tr>
+
+                            </tbody>
+                          </table>
+                          <table class="table table-bordered" *ngIf="data.model_filter_array.length > 0">
+                            <tbody>
+                              <tr>
+                                <th class="font-weight7">Model Type</th>
+                                <th class="font-weight7">Model Number</th>
+                                <th class="font-weight7">Score</th>
+                                <th class="font-weight7">Model IDOr Scorecard</th>
+
+                              </tr>
+                              <tr *ngFor="let mdval of data.model_filter_array;let i = index">
+                                <td>{{mdval.type}}</td>
+                                 <td *ngIf="mdval.modelNumber=='05453';else m_err">
+                                   CONSUMER INCOME VIEW - {{mdval.modelNumber}}
+                                 </td>
+                                 <ng-template #m_err>
+                                   <td *ngIf="mdval.modelNumber=='04129';else m1_err">ABILITYTOPAYFULL -{{mdval.modelNumber}}</td>
+                                   <ng-template #m1_err><td>---</td></ng-template>
+                                </ng-template>
+                                 <td>{{mdval.score}}</td>
+                                 <td>{{mdval.modelIDOrScorecard}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </accordion-group>
+
+                        <accordion-group heading="Address Information">
+                          <table class="table table-bordered" *ngIf="creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.addresses!=null;else address_arr">
+                            <tbody>
+                              <tr>
+                                <th class='font-weight7'>Address Type</th>
+                                <th class='font-weight7'>House Number</th>
+                                <th class='font-weight7'>Street Name</th>
+                                <th class='font-weight7'>Street Type</th>
+                                <th class='font-weight7'>Address</th>
+                                <th class='font-weight7'>Source Of Address</th>
+                                <th class='font-weight7'>Address Line1</th>
+                              </tr>
+                              <tr *ngFor='let addr of creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.addresses'>
+                                <td>{{addr.addressType}}</td>
+                                <td>{{addr.houseNumber}}</td>
+                                <td>{{addr.streetName}}</td>
+                                <td>{{addr.streetType}}</td>
+                                <td>{{addr.stateAbbreviation}},{{addr.cityName}},{{addr.zipCode}}</td>
+                                <td>{{addr.sourceOfAddress.description}}</td>
+                                <td>{{addr.addressLine1}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <ng-template #address_arr>No Data Recieved!</ng-template>
+                        </accordion-group>
+
+                        <accordion-group heading="Credit Information">
+                          <accordion class="p10">
+                            <accordion-group heading="Trade Information">
+                              <div *ngIf="creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.trades;else trade_err">
+                                <div *ngFor="let tradeData of creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.trades">
+                                  <table class="table table-bordered" >
+                                    <tbody>
+                                    <tr>
+                                      <th>Subscriber Member Code</th>
+                                      <td>
+                                        {{ tradeData.customerNumber?tradeData.customerNumber:'--' }}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th>Subscriber Name</th>
+                                      <td>
+                                        {{ tradeData.customerName?tradeData.customerName:'--' }}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th>Portfolio Type</th>
+                                      <td>
+                                        {{ tradeData.tradeType?tradeData.tradeType:'--' }}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th>Account Number</th>
+                                      <td>
+                                        {{ tradeData.accountNumber?tradeData.accountNumber:'--' }}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th>ECOA Designator</th>
+                                      <td>
+                                        {{ (tradeData.accountDesignator?.code)?(tradeData.accountDesignator?.code):'--' }}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th>Date Opened</th>
+                                      <td>
+                                        {{ tradeData.dateOpened?tradeData.dateOpened:'--' }}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th>Current Balance</th>
+                                      <td>
+                                        {{ tradeData.balance?tradeData.balance:'--' }}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th>High Credit</th>
+                                      <td>
+                                        {{ tradeData.highCredit?tradeData.highCredit:'--' }}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th>Account Rating</th>
+                                      <td>
+                                        {{ (tradeData.rate?.code)?(tradeData.rate?.code):'--' }}
+                                      </td>
+                                    </tr>
+                                    </tbody>
+                                  </table>
+                                  <br/>
+                                  <accordion class="p10" *ngIf="tradeData.detailedPaymentHistory">
+                                    <accordion-group heading="Payment Information" *ngFor="let payment of tradeData.detailedPaymentHistory">
+                                      <table class="table table-bordered">
+                                        <tbody>
+                                          <tr>
+                                            <th>{{ payment.date }}</th>
+                                            <td>
+                                              {{ payment.rate?payment.rate:'--' }}
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </accordion-group>
+                                  </accordion>
+                                </div>
+                              </div>
+                              <ng-template #trade_err>No Trade Date Recieved!</ng-template>
+                            </accordion-group>
+
+                            <accordion-group heading="Inquiry Information" >
+                              <div *ngIf="creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.inquiries;else inq_err">
+                                <table class="table table-bordered" *ngFor="let inquiryData of creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.inquiries">
+                                  <tbody>
+                                    <tr>
+                                      <th style="width: 50%">Customer Name</th>
+                                      <td>
+                                        {{ inquiryData.customerName?inquiryData.customerName:'--' }}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th style="width: 50%">Customer Number</th>
+                                      <td>
+                                        {{ inquiryData.customerNumber?inquiryData.customerNumber:'--' }}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th style="width: 50%">Date</th>
+                                      <td>
+                                        {{ inquiryData.inquiryDate?inquiryData.inquiryDate:'--' }}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th>Industry</th>
+                                      <td>
+                                        {{
+                                          inquiryData.auto?inquiryData.auto:
+                                          inquiryData.utility?inquiryData.utility:
+                                          inquiryData.mortgage?inquiryData.mortgage:
+                                          inquiryData.foreignInquiry?inquiryData.foreignInquiry:
+                                          '--'
+                                        }}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th>Industry Code</th>
+                                      <td>
+                                        {{ inquiryData.industryCode?inquiryData.industryCode:'--' }}
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <ng-template #inq_err>No Inquiries Data Recieved!</ng-template>
+                            </accordion-group>
+
+                            <accordion-group heading="Models Information">
+                              <div *ngIf="creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.models;else models_err">
+                                <table class="table table-bordered">
+                                  <tbody>
+                                    <tr>
+                                      <th class='font-weight7'>Type</th>
+                                      <th class='font-weight7'>Score</th>
+                                      <th class='font-weight7'>Model Number</th>
+                                      <th class='font-weight7'>ModelID Or Scorecard</th>
+
+                                    </tr>
+                                    <tr *ngFor='let mval of creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.models'>
+                                      <td>{{mval.type}}</td>
+                                      <td>{{mval.score}}</td>
+                                      <td>{{mval.modelNumber}}</td>
+                                      <td>{{mval.modelIDOrScorecard}}</td>
+
+                                    </tr>
+                                  </tbody>
+                                </table>
+
+                              </div>
+                              <ng-template #models_err>No Models Data Received</ng-template>
+                            </accordion-group>
+
+                            <accordion-group heading="Identification Information">
+                              <div *ngIf="creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.identification;else identification_err">
+                                <table class="table table-bordered">
+                                  <tbody>
+                                    <tr *ngFor='let ival of objectKeys(creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.identification)'>
+                                      <th style='width: 40%'  class='font-weight7'>{{ival}}</th>
+                                      <td>{{creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.identification[ival]}}</td>
+                                    </tr>
+
+                                  </tbody>
+                                </table>
+                              </div>
+                              <ng-template #identification_err>No Identification Data Received</ng-template>
+                            </accordion-group>
+
+                            <accordion-group heading="Attributes Information">
+                              <div *ngIf="creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.attributes;else attributes_err">
+                                <table class="table table-bordered">
+                                  <tbody>
+
+                                    <tr *ngFor="let attVal of creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.attributes">
+                                      <th class="font-weight7">Model Number</th>
+                                      <td>{{attVal.modelNumber}}</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="font-weight7">Identifier Description</th>
+                                      <th class="font-weight7">Identifier Value</th>
+                                    </tr>
+                                    <tr *ngFor="let id of creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.attributes[0]?.attributes;let i = index">
+                                        <!-- <td>{{id.identifier}}</td> -->
+                                        <td>{{getattvalcode(id.identifier,data.attributes)}}</td>
+                                        <td *ngIf="id.value!=null;else value_err">{{id.value}}</td>
+                                        <ng-template #value_err><td>---</td></ng-template>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <ng-template #attributes_err>No Attributes Data Received</ng-template>
+                            </accordion-group>
+
+                            <accordion-group heading="OfacAlerts Information">
+                              <div *ngIf="creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.ofacAlerts;else ofacAlerts_err">
+                                <table class="table table-bordered" *ngFor='let ofval of creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.ofacAlerts'>
+                                  <tbody>
+                                    <tr >
+                                      <th class='font-weight7'>Revised Legal Verbiage Indicator</th>
+                                      <td>{{ofval.revisedLegalVerbiageIndicator}}</td>
+                                    </tr>
+                                    <tr >
+                                      <th class='font-weight7'>Memberfirmcode</th>
+                                      <td>{{ofval.memberFirmCode}}</td>
+                                    </tr>
+                                    <tr >
+                                      <th class='font-weight7'>Cdctransactiondate</th>
+                                      <td>{{ofval.cdcTransactionDate}}</td>
+                                    </tr>
+                                    <tr >
+                                      <th class='font-weight7'>Cdctransactiontime</th>
+                                      <td>{{ofval.cdcTransactionTime}}</td>
+                                    </tr>
+                                    <tr >
+                                      <th class='font-weight7'>Transactiontype</th>
+                                      <td>{{ofval.transactionType}}</td>
+                                    </tr>
+                                    <tr >
+                                      <th class='font-weight7'>Cdcresponsecode</th>
+                                      <td>{{ofval.cdcResponseCode}}</td>
+                                    </tr>
+                                    <tr >
+                                      <th class='font-weight7'>Legalverbiage</th>
+                                      <td>{{ofval.legalVerbiage}}</td>
+                                    </tr>
+                                    <tr >
+                                      <th class='font-weight7'>Datasegmentregulated</th>
+                                      <td>{{ofval.dataSegmentRegulated}}</td>
+                                    </tr>
+
+
+                                  </tbody>
+                                  </table>
+                              </div>
+                              <ng-template #ofacAlerts_err>No OfacAlerts Data Received</ng-template>
+                            </accordion-group>
+
+                            <accordion-group heading="Consumer Referral Location">
+                              <div *ngIf="creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.consumerReferralLocation;else ref_arr">
+                                <table class="table table-bordered" >
+                                  <tbody>
+                                      <tr *ngFor="let refval of objectKeys(creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.consumerReferralLocation)">
+                                        <th style='width: 40%'  class='font-weight7'>{{refval}}</th>
+                                        <td *ngIf='refval!="address" && refval!="telephoneNumber"'>
+                                          {{creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.consumerReferralLocation[refval]}}</td>
+                                      <td *ngIf='refval=="address"'>{{creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.consumerReferralLocation[refval].cityName}}
+                                        ,{{creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.consumerReferralLocation[refval].stateAbbreviation}}
+                                     ,{{creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.consumerReferralLocation[refval].zipCode}}
+                                      </td>
+                                      <td *ngIf='refval=="telephoneNumber"'>{{creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.consumerReferralLocation[refval].telephoneNumber}}</td>
+                                        </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <ng-template #ref_arr>No Consumer Referral Location Data Received</ng-template>
+                            </accordion-group>
+
+
+                          </accordion>
+                        </accordion-group>
+
+                        <accordion-group heading="Other Information">
+                          <accordion class="p10">
+                            <!-- <accordion-group heading="links Information">
+                              <div *ngIf="creditData.report.equaifax?.consumers?.equifaxUSConsumerCreditReport[0]?.consumerReferralLocation;else ref_arr">
+                              </div>
+                            </accordion-group> -->
+                            No Data Received
+                          </accordion>
+                        </accordion-group>
+
+                        <accordion-group heading="Raw Report Information">
+                          <accordion class="p10">
+                            <div>
+                                <pre style="line-height: 21px;height: 500px;overflow: auto;text-align: justify;">
+                                  {{equifaxReport[0].report.equaifax.consumers.equifaxUSConsumerCreditReport[0] | json:3}}
+                                </pre>
+                            </div>
+                          </accordion>
+                        </accordion-group>
+                      </accordion>
+                    </div>
+                  </div>
+                  <ng-template #equifaxReport_err>No Equifax Consumer Report Received!<br><br></ng-template>
+
+
+                  <div *ngIf="equifaxCommercialReport.length > 0 && equifaxCommercialReport!=null && equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport &&  !isObjectEmpty(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder);else equifaxCommercialReport_err">
+                    <h3 style="padding: 10px 0px 0px 10px;font-weight: 700;"><b>Equifax Commercial Credit Report</b>
+                      </h3>
+
+                      <accordion class="p10">
+                          <accordion-group heading="Alert Information" >
+                            <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder && equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Alert;else alert_arr">
+
+
+                              <table class="table table-bordered" *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Alert.length>0;else al_arr">
+                                <tbody >
+
+                                  <tr>
+                                    <th style='width:30%;font-weight: 700;'>Alert Code</th>
+                                    <th style='width:70%;font-weight: 700;'>Alert Description</th>
+                                  </tr>
+                                  <tr *ngFor="let c of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Alert">
+                                    <td >
+                                    {{c.AlertCode}}
+                                    </td>
+                                    <td >
+                                    {{c.AlertDescription}}
+                                    </td>
+                                  </tr>
+
+                                </tbody>
+                              </table>
+
+
+                              <table class="table table-bordered" *ngIf="isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Alert) && equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Alert.length==undefined">
+                                <tbody>
+                                  <tr *ngFor="let commercialData of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Alert)">
+                                    <th class="font-weight7">
+                                    {{commercialData}}
+                                    </th>
+                                    <td >
+                                    {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Alert[commercialData]}}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+
+
+                            </div>
+                            <ng-template #alert_arr>No Alert Information Data Received</ng-template>
+                        </accordion-group>
+
+                        <accordion-group heading="Scores Information" >
+                          <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder && (equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.DecisionTools.ScoreData.length>0 && equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.DecisionTools.ScoreData);else score_arr">
+                            <table class="table table-bordered" >
+                              <tbody>
+                                <tr>
+                                  <th style='font-weight: 700;'>Score Name</th>
+                                  <th style='font-weight: 700;'>Score</th>
+                                  <th style='font-weight: 700;'>Score Type</th>
+                                </tr>
+                                <tr *ngFor="let score of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.DecisionTools.ScoreData">
+                                  <td>
+                                    {{ score.scoreName }}
+                                  </td>
+                                  <td>
+                                    {{ score.score }}
+                                  </td>
+                                  <td>
+                                    {{ score.scoreType }}
+                                  </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="table table-bordered" >
+                              <tbody>
+                                <tr>
+                                  <th style='font-weight: 700;'><b>Reason Code</b></th>
+                                  <th style='font-weight: 700;'><b>Score</b></th>
+                                  <th style='font-weight: 700;'><b>Reason</b></th>
+                                </tr>
+                                <tr *ngFor="let r of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.DecisionTools.ScoreData[0].ReasonCode">
+                                  <td>
+                                    {{ r.code }}
+                                  </td>
+                                  <td>
+                                    {{ r.score }}
+                                  </td>
+                                  <td>
+                                    {{ r.value }}
+                                  </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                          </div>
+                          <ng-template #score_arr>No Score Data Received</ng-template>
+                          </accordion-group>
+
+                  <accordion-group heading="Report Attributes Information" >
+                    <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder && equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes;else report_arr">
+                      <accordion class="p10">
+                        <accordion-group heading="FinancialSummary Information">
+                          <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.FinancialSummary;else FinancialSummary_arr">
+                          <div *ngFor="let f of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.FinancialSummary)">
+                                <accordion-group heading="{{f}} Information">
+                                    <accordion class='p10' *ngIf='f=="SummaryAttributes"'>
+                                      <div >
+                                        <table class="table table-bordered" >
+                                          <tbody>
+                                            <tr *ngFor='let sumval of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.FinancialSummary[f])'>
+                                              <th class="font-weight7">{{sumval}}</th>
+
+                                                <td *ngIf='isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.FinancialSummary[f][sumval]);else else_sumval'>
+                                                  {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.FinancialSummary[f][sumval].value}}
+                                                </td>
+                                                <ng-template #else_sumval>
+                                                  <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.FinancialSummary[f][sumval]}}
+                                                  </td>
+                                                </ng-template>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </accordion>
+                                    <accordion class='p10' *ngIf='f=="CreditUtilization"'>
+                                      <div >
+                                        <table class="table table-bordered" >
+                                          <tbody>
+                                            <tr *ngFor='let sumval of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.FinancialSummary[f])'>
+                                              <th class="font-weight7">{{sumval}}</th>
+
+                                                <td *ngIf='isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.FinancialSummary[f][sumval]);else else_sumval'>
+                                                  {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.FinancialSummary[f][sumval].value}}
+                                                </td>
+                                                <ng-template #else_sumval>
+                                                  <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.FinancialSummary[f][sumval]}}
+                                                  </td>
+                                                </ng-template>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </accordion>
+                                </accordion-group>
+                            </div>
+                          </div>
+                          <ng-template #FinancialSummary_arr>No Financial Summary Data Received</ng-template>
+                        </accordion-group>
+
+                        <accordion-group heading="Non-FinancialSummary Information">
+                          <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary;else Non_FinancialSummary_arr">
+                            <div *ngFor="let nonf of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary)">
+                              <accordion-group heading="{{nonf}} Information">
+                                <accordion class='p10' *ngIf='nonf=="SummaryAttributes"'>
+                                  <table class="table table-bordered" >
+                                    <tbody>
+                                      <tr *ngFor='let nonsumval of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf])'>
+                                        <th class="font-weight7">{{nonsumval}}</th>
+
+                                          <td *ngIf='isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf][nonsumval]);else else_nonsumval'>
+                                            {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf][nonsumval].value}}
+                                          </td>
+                                          <ng-template #else_nonsumval>
+                                            <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf][nonsumval]}}
+                                            </td>
+                                          </ng-template>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+
+                                </accordion>
+                                <accordion class='p10' *ngIf="nonf=='RecentDBT'">
+                              {{nonf}} :  {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf]}}
+                                </accordion>
+                                <accordion class='p10' *ngIf="nonf=='AvgDBT'">
+                                  <table class="table table-bordered" >
+                                    <tbody>
+                                      <tr>
+                                        <th style='font-weight: 700;'>Date DBT </th>
+                                        <th style='font-weight: 700;'>DBT</th>
+                                      </tr>
+                                      <tr *ngFor='let avg of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf];let a=index'>
+                                          <td>{{avg.dateDBT | date:'MM-dd-yyyy'}}</td>
+                                          <td>{{avg.DBT}}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+
+                                </accordion>
+                                <accordion class='p10' *ngIf="nonf=='IndustryDBT'">
+                                  <table class="table table-bordered" >
+                                    <tbody>
+                                      <!-- <div *ngIf='isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf][0].Industry)';else ind_arr>
+                                        <tr *ngFor='let avgs of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf][0].Industry);'>
+                                          <th  style='font-weight: 700;'>{{avgs}}</th>
+                                          <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf][0].Industry[avgs]}}</td>
+                                        </tr>
+                                      </div>
+                                      <ng-template #ind_arr>
+                                        <div>
+                                        <tr >
+                                          <th  style='font-weight: 700;'>Industry</th>
+                                          <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf][0].Industry}}</td>
+                                        </tr>
+                                      </div>
+                                      </ng-template> -->
+                                      <!-- <tr >
+                                        <th  style='font-weight: 700;'>Industry</th>
+                                        <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf][0].Industry}}</td>
+                                      </tr> -->
+
+                                      <!-- <td *ngIf='isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType[thval][0][TimePeriods]);else else_nonsumvals'>
+                                        {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType[thval][0][TimePeriods].value}}
+                                      </td>
+                                      <ng-template #else_nonsumvals>
+                                        <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType[thval][0][TimePeriods]}}
+                                        </td>
+                                      </ng-template> -->
+
+                                    </tbody>
+                                  </table>
+
+                                  <table class="table table-bordered" >
+                                    <tbody>
+                                      <tr>
+                                        <th style='font-weight: 700;'>Date</th>
+                                        <th style='font-weight: 700;'>Value</th>
+                                      </tr>
+                                      <!-- <tr *ngFor='let avgsv of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf][0].DataPoint;let a=index'>
+                                          <td>{{avgsv.Date}}</td>
+                                          <td>{{avgsv.Value}}</td>
+                                      </tr> -->
+                                    </tbody>
+                                  </table>
+
+                                </accordion>
+
+                                <accordion class='p10' *ngIf="nonf=='CountryDBT'">
+                                  <table class="table table-bordered" >
+                                    <tbody>
+                                      <tr>
+                                        <th style='font-weight: 700;'>Country</th>
+                                        <th style='font-weight: 700;'>Date</th>
+                                        <th style='font-weight: 700;'>Value</th>
+                                      </tr>
+                                      <!-- <tr *ngFor='let avgsv of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf][0].DataPoint;let a=index'>
+                                          <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.NonFinancialSummary[nonf][0].Country}}</td>
+                                        <td>{{avgsv.Date}}</td>
+                                          <td>{{avgsv.Value}}</td>
+                                      </tr> -->
+                                    </tbody>
+                                  </table>
+                                </accordion>
+
+                              </accordion-group>
+
+
+
+                            </div>
+                          </div>
+                          <ng-template #Non_FinancialSummary_arr>No Non Financial Summary Data Received</ng-template>
+                        </accordion-group>
+
+                        <accordion-group heading="PaymentIndexInfo Information">
+                          <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.PaymentIndexInfo;else PaymentIndexInfo_arr">
+
+                                  <table class="table table-bordered" >
+                                    <tbody>
+                                      <tr *ngFor='let avgs of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.PaymentIndexInfo)'>
+                                        <th  style='font-weight: 700;'>{{avgs}}</th>
+                                        <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.PaymentIndexInfo[avgs]}}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+
+                          </div>
+                          <ng-template #PaymentIndexInfo_arr>No Payment IndexInfo Data Received</ng-template>
+                        </accordion-group>
+
+                        <accordion-group heading="OpenFiByAcctType Information">
+                          <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType;else OpenFiByAcctType_arr">
+                            <accordion>
+                            <div *ngFor='let thval of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType)'>
+
+                              <accordion-group heading="{{thval}} Information">
+                                <table class="table table-bordered" *ngIf="thval=='TimePeriod'">
+                                  <tbody>
+                                    <tr *ngFor='let TimePeriod of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType[thval])'>
+                                      <th style='font-weight: 700;'>{{TimePeriod}}</th>
+                                        <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType[thval][TimePeriod]}}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+
+                                <table class="table table-bordered" *ngIf="thval=='OpenSummaryAttributes'">
+                                  <tbody>
+                                    <tr *ngFor='let TimePeriods of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType[thval][0])'>
+                                      <th style='font-weight: 700;'>{{TimePeriods}}</th>
+                                      <td *ngIf='isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType[thval][0][TimePeriods]);else else_nonsumvals'>
+                                        {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType[thval][0][TimePeriods].value}}
+                                      </td>
+                                      <ng-template #else_nonsumvals>
+                                        <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType[thval][0][TimePeriods]}}
+                                        </td>
+                                      </ng-template>
+                                    </tr>
+                                  </tbody>
+                                </table>
+
+                                <table class="table table-bordered" *ngIf="thval=='OpenSummaryAttributesTotals'">
+                                  <tbody>
+                                    <tr *ngFor='let TimePeriods of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType[thval])'>
+                                      <th style='font-weight: 700;'>{{TimePeriods}}</th>
+                                      <td *ngIf='isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType[thval][TimePeriods]);else else_nonsumvals'>
+                                        {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType[thval][TimePeriods].value}}
+                                      </td>
+                                      <ng-template #else_nonsumvals>
+                                        <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenFiByAcctType[thval][TimePeriods]}}
+                                        </td>
+                                      </ng-template>
+                                    </tr>
+                                  </tbody>
+                                </table>
+
+                              </accordion-group>
+
+                            </div>
+                          </accordion>
+                          </div>
+                          <ng-template #OpenFiByAcctType_arr>No OpenFiBy AcctType Data Received</ng-template>
+                        </accordion-group>
+
+                        <accordion-group heading="OpenNonFiByIndGroup Information">
+                          <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenNonFiByIndGroup;else OpenNonFiByIndGroup_arr">
+                            <accordion>
+                            <div *ngFor='let thval of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenNonFiByIndGroup)'>
+
+                              <accordion-group heading="{{thval}} Information">
+                                <table class="table table-bordered" *ngIf="thval=='TimePeriod'">
+                                  <tbody>
+                                    <tr *ngFor='let TimePeriod of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenNonFiByIndGroup[thval])'>
+                                      <th style='font-weight: 700;'>{{TimePeriod}}</th>
+                                        <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenNonFiByIndGroup[thval][TimePeriod]}}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+
+                                <table class="table table-bordered" *ngIf="thval=='OpenSummaryAttributes'">
+                                  <tbody>
+                                    <tr *ngFor='let TimePeriods of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenNonFiByIndGroup[thval][0])'>
+                                      <th style='font-weight: 700;'>{{TimePeriods}}</th>
+                                      <td *ngIf='isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenNonFiByIndGroup[thval][0][TimePeriods]);else else_nonsumvals'>
+                                        {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenNonFiByIndGroup[thval][0][TimePeriods].value}}
+                                      </td>
+                                      <ng-template #else_nonsumvals>
+                                        <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenNonFiByIndGroup[thval][0][TimePeriods]}}
+                                        </td>
+                                      </ng-template>
+                                    </tr>
+                                  </tbody>
+                                </table>
+
+                                <table class="table table-bordered" *ngIf="thval=='OpenSummaryAttributesTotals'">
+                                  <tbody>
+                                    <tr *ngFor='let TimePeriods of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenNonFiByIndGroup[thval])'>
+                                      <th style='font-weight: 700;'>{{TimePeriods}}</th>
+                                      <td *ngIf='isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenNonFiByIndGroup[thval][TimePeriods]);else else_nonsumvals'>
+                                        {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenNonFiByIndGroup[thval][TimePeriods].value}}
+                                      </td>
+                                      <ng-template #else_nonsumvals>
+                                        <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.ReportAttributes.OpenNonFiByIndGroup[thval][TimePeriods]}}
+                                        </td>
+                                      </ng-template>
+                                    </tr>
+                                  </tbody>
+                                </table>
+
+                              </accordion-group>
+
+                            </div>
+                          </accordion>
+                          </div>
+                          <ng-template #OpenNonFiByIndGroup_arr>No OpenNonFiBy IndGroup Data Received</ng-template>
+                        </accordion-group>
+                        <accordion-group heading="IdTrait Information" >
+                          <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder && equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.IdTrait!=null;else IdTrait_err">
+                              <accordion class="p10">
+                                  <accordion-group heading="AddressTrait Information" >
+                                    <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.IdTrait[0].AddressTrait!=null;else addresstrait_err">
+                                      <div *ngFor="let mval of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.IdTrait[0].AddressTrait;let iv=index">
+                                        <table class="table table-bordered" *ngIf="iv==0">
+                                          <tbody>
+                                            <tr>
+                                              <th style='font-weight: 700;'>Name</th>
+                                              <th style='font-weight: 700;'>Attribute Value</th>
+                                              <th style='font-weight: 700;'>Match Value</th>
+                                            </tr>
+                                            <tr *ngFor="let mvals of mval.TraitActivity.MatchQuality.MatchQualityAttribute">
+                                              <td >{{mvals.name}}</td>
+                                              <td >{{mvals.AttributeValue}}</td>
+                                              <td >{{mvals.MatchValue}}</td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                    <ng-template #addresstrait_err><span>No Records Found!.</span></ng-template>
+                                  </accordion-group>
+
+                                  <accordion-group heading="IdNumberTrait Information" >
+                                    <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.IdTrait[0].IdNumberTrait!=null;else IdNumberTrait_err">
+                                      <div >
+                                        <table class="table table-bordered">
+                                          <tbody>
+                                            <tr>
+                                              <th style='font-weight: 700;'>Id Number</th>
+                                              <th style='font-weight: 700;'>Id Number Indicator</th>
+                                            </tr>
+                                            <tr *ngFor="let idnum of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.IdTrait[0].IdNumberTrait">
+                                              <td>{{idnum.IdNumber}}</td>
+                                              <td>{{idnum.IdNumberIndicator}}</td>
+                                            </tr>
+                                            </tbody>
+
+                                        </table>
+
+
+                                          <table class="table table-bordered">
+                                            <tbody>
+                                              <tr>
+                                                <th style='font-weight: 700;'>Primary Indicator</th>
+                                                <th style='font-weight: 700;'>Date Created</th>
+                                                <th style='font-weight: 700;'>Reported Date</th>
+
+                                              </tr>
+                                              <tr *ngFor="let tr_ac1 of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.IdTrait[0].IdNumberTrait;let a=index">
+                                                <td>{{tr_ac1.TraitActivity.PrimaryIndicator}}</td>
+                                                <td>{{tr_ac1.TraitActivity.DateCreated}}</td>
+                                                <td>{{tr_ac1.TraitActivity.ReportedDate}}</td>
+                                              </tr>
+                                          </tbody>
+                                          </table>
+
+
+                                      </div>
+                                    </div>
+                                    <ng-template #IdNumberTrait_err><span>No IDNumber Trait Records Found!.</span></ng-template>
+
+                                  </accordion-group>
+                                  <accordion-group heading="InternetTrait Information" >
+                                    <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.IdTrait[0].InternetTrait!=null;else InternetTrait_err">
+                                      <table class="table table-bordered">
+                                        <tbody>
+                                          <tr>
+                                              <th style='font-weight: 700;'>EmailAddress</th>
+                                              <th style='font-weight: 700;'>Primary Indicator</th>
+                                              <th style='font-weight: 700;'>Date Created</th>
+                                              <th style='font-weight: 700;'>Reported Date</th>
+                                          </tr>
+                                          <tr *ngFor="let tr_int of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.IdTrait[0].InternetTrait;let a=index">
+                                              <td>{{tr_int.EmailAddress}}</td>
+                                              <td>{{tr_int.TraitActivity.PrimaryIndicator}}</td>
+                                              <td>{{tr_int.TraitActivity.DateCreated}}</td>
+                                              <td>{{tr_int.TraitActivity.ReportedDate}}</td>
+                                          </tr>
+                                        </tbody>
+                                        </table>
+                                    </div>
+                                    <ng-template #InternetTrait_err><span>No Internet Trait Records Found!.</span></ng-template>
+                                  </accordion-group>
+
+                                  <accordion-group heading="CompanyNameTrait Information" >
+                                    <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.IdTrait[0].CompanyNameTrait!=null;else CompanyNameTrait_err">
+                                      <table class="table table-bordered">
+                                        <tbody>
+                                          <tr>
+                                              <th style='font-weight: 700;'>Business Name</th>
+                                              <th style='font-weight: 700;'>Business Legal  Name</th>
+                                              <th style='font-weight: 700;'>Primary Indicator</th>
+                                              <th style='font-weight: 700;'>Date Created</th>
+                                              <th style='font-weight: 700;'>Reported Date</th>
+                                          </tr>
+                                          <tr *ngFor="let tr_cmp of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.IdTrait[0].CompanyNameTrait;let a=index">
+                                              <td>{{tr_cmp.BusinessName}}</td>
+                                              <td >{{tr_cmp.LegalBusinessName}}</td>
+                                              <td>{{tr_cmp.TraitActivity.PrimaryIndicator}}</td>
+                                              <td>{{tr_cmp.TraitActivity.DateCreated}}</td>
+                                              <td>{{tr_cmp.TraitActivity.ReportedDate}}</td>
+                                          </tr>
+                                        </tbody>
+                                        </table>
+                                    </div>
+                                    <ng-template #CompanyNameTrait_err><span>No Company Name Trait Records Found!.</span></ng-template>
+
+
+
+                                  </accordion-group>
+                              </accordion>
+                        </div>
+                          <ng-template #IdTrait_err><span>No IdTrait Records Found!.</span></ng-template>
+                        </accordion-group>
+
+
+
+                      </accordion>
+                    </div>
+                    <ng-template #report_arr>No Data Received</ng-template>
+                  </accordion-group>
+
+                  <accordion-group heading="Firmographics Trait Information" >
+                    <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.FirmographicsTrait!=null;else FirmographicsTrait_err">
+                      <table class="table table-bordered" >
+                        <tbody>
+                          <tr *ngFor="let firmo_res of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.FirmographicsTrait[0].CurrentFirm)">
+                            <th  style='font-weight: 700;'>{{firmo_res}}</th>
+                            <td *ngIf="firmo_res=='TraitActivity';else fir_err1">
+                              <span>
+          {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.FirmographicsTrait[0].CurrentFirm[firmo_res]['PrimaryIndicator']}}
+                              </span>
+                            </td>
+                            <ng-template #fir_err1>
+                              <td *ngIf="firmo_res!='TraitActivity' && isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.FirmographicsTrait[0].CurrentFirm[firmo_res]);else fir_err2">
+                                {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.FirmographicsTrait[0].CurrentFirm[firmo_res].value}} </td>
+                            </ng-template>
+
+                            <ng-template #fir_err2>
+                              <td *ngIf="firmo_res!='TraitActivity'">
+                                {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.FirmographicsTrait[0].CurrentFirm[firmo_res]}} </td>
+                            </ng-template>
+
+                          </tr>
+                          <tr>
+
+
+
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  <ng-template #FirmographicsTrait_err> <span>No Firmographics Trait Records Found!.</span></ng-template>
+                  </accordion-group>
+
+
+                  <accordion-group heading="Principal Information" >
+                    <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.PrincipalTrait!=null;else PrincipalInfoSource_err">
+                      <table class="table table-bordered">
+                        <tbody>
+
+                          <tr>
+                            <th style='font-weight: 700;'>IsGuarantor</th>
+                            <th style='font-weight: 700;'>AccountReference</th>
+                            <th style='font-weight: 700;'>AccountReference Value</th>
+                            </tr>
+                            <tr *ngFor="let s_prin of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.PrincipalTrait[0].PrincipalInfoSource">
+                              <td>{{s_prin.IsGuarantor}}</td>
+                              <td>{{s_prin.AccountReference.referenceType}}</td>
+                              <td>{{s_prin.AccountReference.value}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <ng-template #PrincipalInfoSource_err><span>No Principal Information Records Found!.</span></ng-template>
+                  </accordion-group>
+
+
+                  <accordion-group heading="TradeInfo Information">
+
+                    <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.TradeInfo!=null;else TradeInfo_err">
+                      <accordion class="p10">
+                        <div *ngFor="let trval of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.TradeInfo;let a_tr=index">
+                          <accordion-group heading="CurrentTrade Information" >
+                            <table class="table table-bordered" >
+                              <tbody>
+                                <tr *ngFor="let trvalinfo of objectKeys(trval.CurrentTrade)">
+                                    <th class="font-weight7">{{trvalinfo}}</th>
+                                    <td *ngIf="isobject(trval.CurrentTrade[trvalinfo]);else else_trerr">
+                                    <span *ngIf="trvalinfo!='TraitActivity';else tr_else">
+                                      {{trval.CurrentTrade[trvalinfo].value}}
+                                      </span>
+                                      <ng-template #tr_else>
+                                      {{trval.CurrentTrade[trvalinfo].PrimaryIndicator}}
+                                      </ng-template>
+
+                                    </td>
+                                    <ng-template #else_trerr>
+          <td>{{trval.CurrentTrade[trvalinfo]}}</td>
+                                    </ng-template>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </accordion-group>
+
+
+                          <accordion-group heading="Trade History Information" >
+                              <table class="table table-bordered" >
+                              <tbody>
+                                <tr *ngFor="let tradehis of objectKeys(trval.TradeHistory[a_tr])">
+                                  <th class="font-weight7">{{tradehis}}</th>
+                                  <td *ngIf="isobject(trval.TradeHistory[a_tr][tradehis]);else else_tradehiserr">
+
+                                    <span *ngIf="tradehis!='TraitActivity';else tr_else">
+                                      {{trval.TradeHistory[a_tr][tradehis].value}}
+                                      </span>
+                                      <ng-template #tr_else>
+                                        {{trval.TradeHistory[a_tr][tradehis].ReportedDate}}
+
+                                      </ng-template>
+
+                                  </td>
+                                  <ng-template #else_tradehiserr>
+          <td>{{trval.TradeHistory[a_tr][tradehis]}}</td>
+                                  </ng-template>
+                              </tr>
+
+                              </tbody>
+                              </table>
+                          </accordion-group>
+
+
+                        </div>
+                      </accordion>
+                    </div>
+                    <ng-template #TradeInfo_err> <span>No TradeInfo Records Found!.</span></ng-template>
+                  </accordion-group>
+
+                  <accordion-group heading="SOSTrait Information" >
+                    <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait!=null;else SOSTrait_err">
+
+                        <accordion class="p10">
+                          <div *ngFor="let res_sos of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0])">
+                          <accordion-group heading="{{res_sos}} Information" >
+
+                            <table class="table table-bordered" *ngIf='res_sos=="IdTrait"'>
+                              <tbody>
+                                <tr *ngFor="let inqs of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0][res_sos].AddressTrait[0])">
+                                  <th style='font-weight: 700;'>{{inqs}}</th>
+
+                                  <td *ngIf='isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0][res_sos].AddressTrait[0][inqs]);else else_sumval'>
+                                  <span *ngIf="inqs=='TraitActivity';else else_span">
+                                    {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0][res_sos].AddressTrait[0][inqs].PrimaryIndicator}}
+                                  </span>
+                                  <ng-template #else_span>
+                                    <span *ngIf='inqs=="AddressType"; else nestelse'>
+                                      {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0][res_sos].AddressTrait[0][inqs]}}
+                                    </span>
+                                    <ng-template #nestelse>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0][res_sos].AddressTrait[0][inqs].value}}</ng-template>
+
+                                  </ng-template>
+                                  </td>
+                                  <ng-template #else_sumval>
+                                    <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0][res_sos].AddressTrait[0][inqs]}}
+                                    </td>
+                                  </ng-template>
+
+                                </tr>
+                              </tbody>
+                            </table>
+
+                            <table class="table table-bordered" *ngIf='res_sos=="IdTrait"'>
+                              <tbody>
+                              <tr *ngFor="let companyval of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0]?.IdTrait?.CompanyNameTrait[0])">
+                                    <th style='font-weight: 700;'>{{companyval}}</th>
+                                    <td *ngIf='isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0]?.IdTrait?.CompanyNameTrait[0][companyval]);else else_cmval'>
+
+                                        {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0]?.IdTrait?.CompanyNameTrait[0][companyval].PrimaryIndicator}}
+                                    </td>
+                                      <ng-template #else_cmval>
+
+                                        <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0]?.IdTrait?.CompanyNameTrait[0][companyval]}}
+
+                                        </td>
+                                      </ng-template>
+
+
+
+                                </tr>
+                              </tbody>
+                            </table>
+
+                            <table class="table table-bordered" *ngIf='res_sos=="CurrentSOSDataTrait"'>
+                              <tbody>
+                                <tr *ngFor="let sos of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0]?.CurrentSOSDataTrait)">
+                                    <th style='font-weight: 700;'>{{sos}}</th>
+                                    <td *ngIf='isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0]?.CurrentSOSDataTrait[sos]);else else_cmval'>
+
+                                        <span *ngIf="sos=='TraitActivity';else soselse">{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0]?.CurrentSOSDataTrait[sos].PrimaryIndicator}}</span>
+                                        <ng-template #soselse>
+                                          {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0]?.CurrentSOSDataTrait[sos].value}}
+                                        </ng-template>
+                                    </td>
+                                      <ng-template #else_cmval>
+
+                                          <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0]?.CurrentSOSDataTrait[sos]}}
+
+                                        </td>
+                                      </ng-template>
+
+
+
+                                </tr>
+                              </tbody>
+
+                            </table>
+
+                            <table class="table table-bordered" *ngIf='res_sos=="TraitActivity"'>
+                              <tbody>
+                                <tr *ngFor="let sostr of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0]?.TraitActivity)">
+                                    <th style='font-weight: 700;'>{{sostr}}</th>
+                                    <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.SOSTrait[0]?.TraitActivity[sostr]}}
+                                </tr>
+                              </tbody>
+                            </table>
+
+                          </accordion-group>
+                        </div>
+                        </accordion>
+
+                    </div>
+                    <ng-template #SOSTrait_err> <span>No SOSTrait Records Found!.</span></ng-template>
+                  </accordion-group>
+
+
+                  <accordion-group heading="Site Information" >
+                    <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site!=null;else Site_err">
+                        <accordion class="p10">
+                          <accordion-group heading="IdTrait Information">
+                            <div *ngFor="let site_arr of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site;let s=index">
+                            <accordion class="p10">
+                              <div *ngFor="let sitearrval of objectKeys(site_arr.IdTrait)">
+                                <accordion-group heading="{{sitearrval}} Information">
+                                  <table class="table table-bordered" *ngIf="sitearrval=='AddressTrait'">
+                                    <tbody>
+                                      <tr *ngFor="let thloop of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0].IdTrait?.AddressTrait[0])">
+                                        <th class="font-weight7">{{thloop}}</th>
+                                        <td *ngIf="isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0].IdTrait?.AddressTrait[0][thloop]) && thloop!='AddressType';else addelse">
+                                          <span *ngIf="thloop=='TraitActivity';else tracterr">
+                                            {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0].IdTrait?.AddressTrait[0][thloop].PrimaryIndicator}}
+                                          </span>
+                                          <ng-template #tracterr>
+                                            <span *ngIf="thloop!='TelephoneTrait';else teelse">{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0].IdTrait?.AddressTrait[0][thloop].value}}
+                                            </span>
+                                            <ng-template #teelse>
+                                              {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0].IdTrait?.AddressTrait[0][thloop][0].TelephoneNumber}}
+                                            </ng-template>
+                                            </ng-template>
+                                        </td>
+                                        <ng-template #addelse><td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0].IdTrait?.AddressTrait[0][thloop]}}</td></ng-template>
+                                      </tr>
+                                  </tbody>
+                                </table>
+
+                                <table class="table table-bordered" *ngIf="sitearrval=='CompanyNameTrait'">
+                                  <tbody>
+                                    <tr *ngFor="let thloops of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0].IdTrait?.CompanyNameTrait[0])">
+                                      <th class="font-weight7">{{thloops}}</th>
+                                      <td *ngIf="isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0].IdTrait?.CompanyNameTrait[0][thloops]);else addelses">
+                                        {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0].IdTrait?.CompanyNameTrait[0][thloops].PrimaryIndicator}}
+                                      </td>
+                                      <ng-template #addelses><td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0].IdTrait?.CompanyNameTrait[0][thloops]}}</td></ng-template>
+
+                                    </tr>
+                                  </tbody>
+                                </table>
+
+                                <table class="table table-bordered" *ngIf="sitearrval=='IdNumberTrait' && equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[1].IdTrait?.IdNumberTrait!=null">
+                                  <tbody>
+                                    <tr *ngFor="let idarr of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[1].IdTrait?.IdNumberTrait[0])">
+                                    <th class="font-weight7">{{idarr}}</th>
+                                    <td *ngIf="isobject(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[1].IdTrait?.IdNumberTrait[0][idarr]);else idelse">
+                                      <span *ngIf="idarr=='TraitActivity';else trelse">{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[1].IdTrait?.IdNumberTrait[0][idarr].PrimaryIndicator}}
+                                      </span>
+                                      <ng-template #trelse>
+                                        {{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[1].IdTrait?.IdNumberTrait[0][idarr][0].ReportedDate}}
+                                      </ng-template>
+                                      </td>
+                                    <ng-template #idelse><td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[1].IdTrait?.IdNumberTrait[0][idarr]}}</td></ng-template>
+                                  </tr>
+
+                                  </tbody>
+                                </table>
+                                </accordion-group>
+                              </div>
+                            </accordion>
+
+                            </div>
+                          </accordion-group>
+
+                          <accordion-group heading="FirmographicsTrait Information">
+                            <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0].FirmographicsTrait!=null;else firmo_err">
+                                <div *ngFor="let firmarr of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0]?.FirmographicsTrait?.CurrentFirm)">
+                                  <table class="table table-bordered">
+                                    <tbody>
+                                      <tr *ngFor='let f1arr of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0]?.FirmographicsTrait?.CurrentFirm[firmarr])'>
+                                        <th class='font-weight7'>{{f1arr}}</th>
+                                        <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0]?.FirmographicsTrait?.CurrentFirm[firmarr][f1arr]}}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                            </div>
+                            <ng-template #firmo_err> <span>No FirmographicsTrait Records Found!.</span></ng-template>
+                          </accordion-group>
+
+                          <accordion-group heading="FolderActivity Information">
+                            <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0].FolderActivity!=null;else firmo_err">
+                                <div >
+                                  <table class="table table-bordered">
+                                    <tbody>
+                                      <tr *ngFor="let firmarr of objectKeys(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0]?.FolderActivity)">
+                                        <th class='font-weight7'>{{firmarr}}</th>
+                                        <td>{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site[0]?.FolderActivity[firmarr]}}</td>
+                                      </tr>
+                                      </tbody>
+                                      <br>
+                                      <tbody>
+                                      <tr><th class='font-weight7'>EfxId</th></tr>
+                                      <tr *ngFor="let efx of equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Site">
+
+                                        <td>{{efx.EfxId}}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                            </div>
+                            <ng-template #firmo_err> <span>No FolderActivity Records Found!.</span></ng-template>
+                          </accordion-group>
+                        </accordion>
+                    </div>
+                    <ng-template #Site_err> <span>No Records Found!.</span></ng-template>
+                  </accordion-group>
+
+                  <accordion-group heading="OFAC Commercial Response Information" >
+                    <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.OFACCommercialResponse!=null;else OFAC_err">
+                      <div *ngFor="let ofacc of OFACCommercialResponse" style="line-height: 25px;font-weight: 600;">
+                        <span class='p-1'>{{ofacc}}</span><br>
+                      </div>
+                    </div>
+                    <ng-template #OFAC_err> <span>No OFAC Commercial Response Records Found!.</span></ng-template>
+                  </accordion-group>
+
+                  <accordion-group heading="Raw Report Information">
+                    <accordion class="p10">
+                      <div>
+                        <pre style="line-height: 21px;height: 500px;overflow: auto;text-align: justify;">{{equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder | json:3}}</pre>
+                      </div>
+                    </accordion>
+                  </accordion-group>
+
+                      </accordion>
+                  </div>
+                  <ng-template #equifaxCommercialReport_err>
+
+                    <span *ngIf="equifaxCommercialReport.length > 0 && equifaxCommercialReport[0].report.EfxTransmit.OFACCommercialResponse==null;else ofacc_err">
+                      No Equifax Commercial Report Received!
+                    </span>
+                    <ng-template #ofacc_err>
+                      <h3 style="padding: 10px 0px 0px 10px;font-weight: 700;"><b>Equifax Commercial Credit Report</b>
+                      </h3>
+                      <accordion class="p10">
+                          <accordion-group heading="OFAC Commercial Response Information" >
+                            <div *ngIf="equifaxCommercialReport.length > 0 && equifaxCommercialReport[0].report.EfxTransmit.OFACCommercialResponse!=null;else OFAC_err">
+                              <div *ngFor="let ofacc of OFACCommercialResponse" style="line-height: 25px;font-weight: 600;">
+                                <span class='p-1'>{{ofacc}}</span><br>
+                              </div>
+                            </div>
+                            <ng-template #OFAC_err> <span>No Records Found!.</span></ng-template>
+                          </accordion-group>
+                      </accordion>
+                    </ng-template>
+
+                  </ng-template>
+                    <!-- <h3 style="padding: 10px 0px 0px 10px;">Paynet Rules</h3> -->
+                    <!-- <table class="table table-bordered" width="100%">
+                      <tbody *ngIf="paynetReport.ruleResults != ''">
+                          <tr *ngFor="let rule of paynetReport.ruleResults; let i = index">
+                            <td width="100">
+                              <strong>s2_Rule_{{i+1}}</strong>
+                            </td>
+                            <td style="margin:0;padding:0;">
+                              <table width="100%">
+                                <tbody>
+                                  <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding:8px;">
+                                      <b>{{rule.rules}}</b>
+                                      <p>{{rule.ruleMessage}}</p>
+                                      <p [ngStyle]="{'color': rule.ruleStatus == 'Rejected' ? 'red' : 'green' }">{{rule.ruleStatus}}</p>
+                                    </td>
+                                  </tr>
+
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                    </table> -->
+                    <!-- <h3 style="padding: 10px 0px 0px 10px;">Equifax</h3>
+                    <div [innerHTML]="data.creditReportRes"></div> -->
+
+                </tab>
+
+                <tab heading="Comply Advantage">
+                  <div class="p10px" id="complyAdvantageTab">
+                    <table class="table table-bordered">
+                      <tr class="bold">
+        
+                        <th>Data Point</th>
+                        <th>Response</th>
+                      </tr>
+                      <tbody>
+                        <tr>
+                          <td>Adverse Media Hit?</td>
+        
+                          <td *ngIf="complyadvantageAdverseMedia;else media_false_content">Yes</td>
+                          <ng-template #media_false_content>
+                            <td>No</td>
+                          </ng-template>
+                        </tr>
+                        <tr>
+                          <td>AML Hit?</td>
+        
+                          <td *ngIf="amlTypes;else aml_false_content">Yes</td>
+                          <ng-template #aml_false_content>
+                            <td>No</td>
+                          </ng-template>
+                        </tr>
+                        <tr>
+                          <td>OFAC Hit?</td>
+        
+                          <td *ngIf="ofacSdnList;else ofac_false_content">Yes</td>
+                          <ng-template #ofac_false_content>
+                            <td>No</td>
+                          </ng-template>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+        
+                  <div class="p10px">
+                    <iframe style="margin-top: 10px;height:500px;" id="docusign" [src]="urlSafeComplyAdvantage" frameBorder="0"
+                      scrolling="auto" width="100%"></iframe>
+                  </div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+  </div>
+
+<ng-template #messagebox>
+    <div class="modal-body text-center">
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <p class="headtext">Message</p>
+      <p *ngFor="let m of message">{{ m }}</p>
+    </div>
+</ng-template>
+
+<ng-template #showFile>
+  <div class="modal-body">
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+<!-- {{checkType}} -->
+    <div *ngIf="checkType!='pdf'">
+
+       <img [src] ="showFiles" width="800px" height="450px" />
+    </div>
+
+      <div *ngIf="checkType=='pdf'">
+
+          <iframe
+          [src] ="urlSafe"
+          frameBorder="0"
+          scrolling="auto"
+          height="450px"
+          width="800px"
+      ></iframe>
+      </div>
+</div>
+
+</ng-template>
+
+
+

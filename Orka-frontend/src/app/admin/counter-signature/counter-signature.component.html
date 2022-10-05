@@ -1,0 +1,51 @@
+<section class="content-header">
+    <ol class="breadcrumb">
+      <li>
+        <a [routerLink]="['/admin/dashboard']"><i class="fa fa-dashboard"></i> Dashboard</a>
+      </li>
+      <li class="active">Pending Countersignature</li>
+    </ol>
+  </section>
+  
+  <div class="frameshadow ">
+    <div class="mainTitle">Pending Countersignature</div>
+  
+    <div class="p10">
+      <table *ngIf="result!=null && result.length > 0" datatable [dtOptions]="dtOptions" class="table cstable">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">App ID</th>
+            <th scope="col">Partner</th>
+            <th scope="col">Business Borrower</th>
+            <th scope="col">Date/Time Submitted</th>
+            <th scope="col">Countersignature</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of result; let i = index">
+              <td> {{data.appid}} </td>
+              <td> {{data.ownerfullname}} </td>
+              <td> {{data.borrower}} </td>
+              <td> {{data.datesubmitted | date:"MM-dd-yyyy h:mm:a"}} </td>
+              <td> <button class="submitButton1" (click)="showCountersign(showFile,data.loanid)">Countersign</button> </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <ng-template #showFile>
+    <div class="modal-body">
+      <div class="pdfBorder" style="overflow: scroll;">
+        <iframe
+        style="margin-top: 10px;height:500px;"
+        id="docusign"
+        (load)="onload()"
+        [src]="urlSafe"
+        frameBorder="0"
+        scrolling="auto"
+        width="100%"
+      ></iframe>
+      </div>
+    </div>
+  
+  </ng-template>

@@ -1,0 +1,787 @@
+<section class="content-header">
+  <!-- <h1>View Application Details</h1> -->
+  <ol class="breadcrumb">
+    <li>
+      <a [routerLink]="['/admin/dashboard']"
+        ><i class="fa fa-dashboard"></i> Dashboard</a
+      >
+    </li>
+    <li>
+      <a [routerLink]="['/admin/installer']"
+        ><i class="fa fa-dashboard"></i> Partner Management</a
+      >
+    </li>
+    <li class="active">Partner Details</li>
+  </ol>
+</section>
+
+<div class="frameshadow">
+  <div class="mainTitle" *ngIf="data.length > 0">
+    <div>Partner Details</div>
+    <div>
+      <button
+        type="button"
+        class="btn-success btn-user-control buttonSize"
+        (click)="add_existing_user(add_existing_usertemplate)"
+      >
+        Add User for Existing Partner</button
+      >&nbsp;
+      <button
+        type="button"
+        class="btn-success btn-user-control buttonSize"
+        *ngIf="data[0]['active_flag'] == 'N'"
+        (click)="active()"
+      >
+        Active
+      </button>
+
+      <button
+        type="button"
+        class="btn-danger btn-user-control buttonSize"
+        *ngIf="data[0]['active_flag'] == 'Y'"
+        (click)="deactive()"
+      >
+        Inactive
+      </button>
+      &nbsp;
+      <button
+        type="button"
+        class="btn-danger btn-user-control buttonSize"
+        (click)="delete()"
+      >
+        <i class="fa fa-trash" aria-hidden="true"></i> Delete
+      </button>
+    </div>
+  </div>
+  <div class="p10">
+    <div>
+      <tabset>
+        <tab heading="Partner Information" *ngIf="data.length > 0">
+          <div id="form" class="spaceBetween p10px list">
+            <div class="profilePhoto">
+              <i class="fa fa-user" aria-hidden="true"></i>
+              <!-- <img src="../../../assets/profile_photo.jpg" /> -->
+            </div>
+            <!-- <form action="" method="post" name="registration" class="register"> -->
+            <form [formGroup]="form" #f="ngForm" novalidate>
+              <!-- <fieldset> -->
+              <table class="partner_info">
+                <tr>
+                  <th><label for="Student">User ID</label></th>
+                  <td>
+                    <input
+                      readonly
+                      class="width-250"
+                      formControlName="user_id"
+                      name="user_id"
+                      id="Student"
+                      placeholder="Enter User ID"
+                      [(ngModel)]="f1['user_id']"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <th><label for="Matric_no">Business Name</label></th>
+                  <td>
+                    <input
+                      class="width-250"
+                      formControlName="businessName"
+                      name="businessName"
+                      id="Student"
+                      placeholder="Enter Business name"
+                      [(ngModel)]="f1['businessName']"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <th><label for="Email">Shortname</label></th>
+                  <td>
+                    <input
+                      class="width-250"
+                      formControlName="businessShortName"
+                      name="businessShortName"
+                      id="Student"
+                      placeholder="Enter Shortname"
+                      [(ngModel)]="f1['businessShortName']"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <th><!-- <label for="Email">Business Email</label> --></th>
+                  <td>
+                    <input
+                      type="hidden"
+                      class="width-250"
+                      formControlName="businessEmail"
+                      name="businessEmail"
+                      id="Student"
+                      placeholder="Enter Mail"
+                      [(ngModel)]="f1['businessEmail']"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <th><label for="Email">Business Phone</label></th>
+                  <td>
+                    <input
+                      class="width-250"
+                      formControlName="businessPhone"
+                      name="businessPhone"
+                      id="Student"
+                      placeholder="Enter Business Phone"
+                      mask="+0 (000) 000-0000"
+                      (keypress)="keyPressNumbers($event)"
+                      [(ngModel)]="f1['businessPhone']"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <th><label for="Email">Firstname</label></th>
+                  <td>
+                    <input
+                      class="width-250"
+                      formControlName="firstName"
+                      name="firstName"
+                      id="Student"
+                      placeholder="Enter firstName"
+                      [(ngModel)]="f1['firstName']"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </td>
+                </tr>
+
+                 <tr>
+                  <th><label for="Email">Lastname</label></th>
+                  <td>
+                    <input
+                      class="width-250"
+                      formControlName="lastName"
+                      name="lastName"
+                      id="Student"
+                      placeholder="Enter lastName"
+                      [(ngModel)]="f1['lastName']"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <th><label for="Username">Address</label></th>
+                  <td>
+                    <!-- <input class="width-250" formControlName="businessAddress" name="businessAddress" id="Student"
+                  placeholder="Enter Address" [(ngModel)]="f1['businessAddress']"
+                  [ngModelOptions]="{standalone: true}" /> -->
+
+                    <input
+                      type="text"
+                      formControlName="businessAddress"
+                      ngx-google-places-autocomplete
+                      [options]="options"
+                      #placesRef="ngx-places"
+                      (onAddressChange)="handleAddressChange($event)"
+                      name="businessAddress"
+                      placeholder="Enter business address"
+                      [(ngModel)]="f1['businessAddress']"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                    <input
+                      type="hidden"
+                      formControlName="lat"
+                      [(ngModel)]="data.lat"
+                      value="{{ data.lat }}"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+
+                    <input
+                      type="hidden"
+                      formControlName="lng"
+                      [(ngModel)]="data.lng"
+                      value="{{ data.lng }}"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <th><label for="Password">City</label></th>
+                  <td>
+                    <input
+                      class="width-250"
+                      formControlName="city"
+                      name="city"
+                      id="Student"
+                      placeholder="Enter City"
+                      [(ngModel)]="f1['city']"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <th>
+                    <label for="Password">State</label>
+                  </th>
+                  <td>
+                    <input
+                      class="width-250"
+                      formControlName="state"
+                      name="state"
+                      id="Student"
+                      placeholder="Enter State"
+                      [(ngModel)]="f1['state']"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <th><label for="Password">ZipCode</label></th>
+                  <td>
+                    <input
+                      class="width-250"
+                      formControlName="zipCode"
+                      name="zipCode"
+                      id="Student"
+                      placeholder="Enter ZipCode"
+                      [(ngModel)]="f1['zipCode']"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th><label for="Username">Contractor License</label></th>
+                  <td>
+                    <input
+                      class="width-250"
+                      formControlName="contractorLicense"
+                      name="contractorLicense"
+                      id="Student"
+                      placeholder="Enter Contractor License"
+                      [(ngModel)]="f1['contractorLicense']"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <label for="Username">Contractor LicenseState</label>
+                  </th>
+                  <td>
+                    <input
+                      class="width-250"
+                      formControlName="contractorLicenseState"
+                      name="contractorLicenseState"
+                      id="Student"
+                      placeholder="Enter Contractor LicenseState"
+                      [(ngModel)]="f1['contractorLicenseState']"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th><label for="Password">Status</label></th>
+                  <td>
+                    <div>
+                      <span
+                        class="text-danger"
+                        *ngIf="data[0]['active_flag'] == 'N'"
+                        >Inactive</span
+                      >
+                      <span
+                        class="text-success"
+                        *ngIf="data[0]['active_flag'] == 'Y'"
+                        >Active</span
+                      >
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label for="Password">Disbursement Sequence</label></th>
+                  <select
+                  formControlName="disbursement"
+                  name="disbursement"
+                  [(ngModel)]="f1['disbursement']"
+                      [ngModelOptions]="{ standalone: true }"
+                  class="form-select"
+                  >
+                  <option value=null>Select Disbursement Sequence</option>
+                  <option *ngFor="let r of data.disbursement" [value]=r.ref_no>{{r.name}}</option>
+                  </select>
+
+                </tr>
+              </table>
+              <!-- </fieldset> -->
+
+              <div class="mt-5">
+                <button
+                  type="button"
+                  class="btn-success btn-user-control buttonSize spaceBetween"
+                  (click)="updateinstall_info(data[0]['user_id'])"
+                >
+                  Update
+                </button>
+              </div>
+            </form>
+            <!--add comment-->
+          </div>
+        </tab>
+
+        <tab heading="Partner Document Center" *ngIf="data.length > 0">
+          <div class="p10px">
+            <div class="mb20px">
+              <div class="frameshadow">
+                <div>
+                  <div class="mainTitle">Upload Documents</div>
+                </div>
+                <div class="displayFlex AlignItemCenter spaceBetween mb50px">
+                  <div
+                    class="grayButton displayFlex AlignItemCenter justifycontencenter"
+                  >
+                    <div class="folders"></div>
+                    <div>
+                      <ngx-file-drop
+                        dropZoneLabel="Drop files here"
+                        (onFileDrop)="dropped($event)"
+                        (onFileOver)="fileOver($event)"
+                        (onFileLeave)="fileLeave($event)"
+                      >
+                        <ng-template
+                          ngx-file-drop-content-tmp
+                          let-openFileSelector="openFileSelector"
+                        >
+                          <span (click)="openFileSelector()"
+                            >Upload new files</span
+                          >
+                        </ng-template>
+                      </ngx-file-drop>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="container1 mt-5" *ngIf="listfiles.length > 0">
+                  <div
+                    class="part2 p-3 mt-3"
+                    *ngFor="let file of fileitems; let i = index"
+                  >
+                    <div class="row align-items-center">
+                      <div class="col-1">
+                        <div class="greenfolder"></div>
+                      </div>
+                      <div class="col-3">
+                        {{ file.name.split(".")[0] }}
+                      </div>
+                      <div class="col-1">
+                        <span class="bg-white p-1 rounded text-sales">{{
+                          file.name.split(".")[1] | uppercase
+                        }}</span>
+                      </div>
+                      <div class="col-1">
+                        {{ (file.size / 1024).toFixed(2) }} KB
+                      </div>
+                      <div class="col-1">
+                        {{ today }}
+                      </div>
+                      <div class="col-2">
+                        <select (change)="selectDocType(i, $event)">
+                          <option value="">Select Document Type</option>
+                          <option value="Government Issued ID">
+                            Government Issued ID
+                          </option>
+                          <option value="Paystub">Paystub</option>
+                          <option value="Income Document">
+                            Income Document
+                          </option>
+                          <option value="Driver License">Driver License</option>
+                          <option value="Bank Statement">Bank Statement</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <input
+                          hidden
+                          (keyup)="docTypeComment(i, $event.target.value)"
+                        />
+                      </div>
+                      <div class="col-2 text-right">
+                        <div
+                          class="delete_icon cursorpointer"
+                          (click)="deleteFileSelected(file)"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="p-3 mt-3 text-center">
+                    <button
+                      type="button"
+                      class="btn btn-sales"
+                      (click)="upoadDocuments()"
+                    >
+                      Upload
+                    </button>
+                  </div>
+                </div>
+
+                <div class="p10px">
+                  <table
+                    class="table table-bordered"
+                    *ngIf="data_res != null && data_res.length > 0"
+                  >
+                    <tr>
+                      <th style="width: 50px">#</th>
+                      <th>Documents</th>
+                      <!-- <th>Document Type</th> -->
+                      <th>PDF,JPG,JPEG,PNG</th>
+                    </tr>
+                    <tbody>
+                      <tr *ngFor="let d of data_res.files; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ d.originalname }}</td>
+                        <!-- <td>{{ d.documentType }}</td> -->
+                        <td (click)="view(d.filename)">
+                          <a style="cursor: pointer">View Document</a>
+                        </td>
+                      </tr>
+                      <!-- <tbody>
+                      <tr *ngFor="let d of data_res.files; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ d.originalname }}</td>
+                        <<td>{{ d.documentType }}</td> >
+                        <td (click)="view(d.filename)"><a>View Document</a></td>
+                      </tr -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
+
+        <tab heading="Partner User Information" *ngIf="data.length > 0">
+          <div class="p10">
+            <table
+              *ngIf="data_sht_name != null && data_sht_name.length > 0"
+              [dtOptions]="noOrder"
+              datatable
+              class="table"
+            >
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">User ID</th>
+                  <!-- <th scope="col">Reference No</th> -->
+                  <th scope="col">Email</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Partner Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of data_sht_name; let i = index">
+                  <th class="bold" scope="row">{{ i + 1 }}</th>
+
+                  <td>
+                    <a
+                      routerLink="/admin/users/{{ d.id }}"
+                      style="cursor: pointer"
+                      >{{ d.ref_no }}</a
+                    >
+                  </td>
+                  <!-- <td>{{ d.ref_no }}</td> -->
+                  <td>{{ d.email }}</td>
+                  <td>{{ d.firstName }}</td>
+                  <td>{{ d.lastName }}</td>
+                  <td>{{ f1["businessName"] }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <table *ngIf="data_sht_name.length == 0" [dtOptions]="noOrder" datatable class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">User ID</th>
+                  <!-- <th scope="col">Reference No</th> -->
+                  <th scope="col">Email</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Partner Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                No Records Found!
+              </tbody>
+            </table>
+          </div>
+        </tab>
+
+        <tab heading="Loan Product Services" *ngIf="data.length > 0">
+          <div class="p10">
+            <table
+              *ngIf="data.loanproducts != null && data.loanproducts.length > 0"
+              datatable
+              [dtOptions]="dtOptions"
+              class="table"
+            >
+              <thead class="thead-dark">
+                <tr>
+                  <!-- <th>Activate/Deactivate</th> -->
+                  <th>Activate/Deactivate</th>
+                  <th>productId</th>
+                  <th class="name_width">Name</th>
+                  <th>Type</th>
+                  <th>Tenor Months</th>
+                  <th>Tenor Years</th>
+                  <th>Interest Base Rate</th>
+                  <th>Ach Discount</th>
+                  <th>Ach Discount Interest Rate</th>
+                  <th>Dealer Fee</th>
+                  <th>Origination Fee</th>
+                  <th>Prepayment Flag</th>
+                  <th>Prepayment</th>
+                  <th>Prepayment Month</th>
+                  <th>Downpayment</th>
+                  <th>MpfAchWItc Prepay</th>
+                  <th>MpfAchWO Prepay</th>
+                  <th>MpfCheckWItc Prepay</th>
+                  <th>MpfCheckWO Prepay</th>
+                  <th>Flex Ream Prepay Amount</th>
+                  <th>Flex Ream PrepayPercent of Principal</th>
+                  <th>Flex Ream MaxAnnual Frequency</th>
+                  <th>Status</th>
+                  <th>Created Date</th>
+                  <th>Updated Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of data.loanproducts; let i = index">
+                  <td>
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        [checked]="d.partnerStatus == 'Y'"
+                        (change)="
+                          updateLoanProducts(
+                            data.loanproducts[i].productId,
+                            $event
+                          )
+                        "
+                        name="onoffswitch"
+                      />
+                      <span class="slider round"></span>
+                    </label>
+                  </td>
+                  <td>{{ d.productId }}</td>
+                  <td>{{ d.name }}</td>
+                  <td>{{ d.type }}</td>
+                  <td>{{ d.tenorMonths }}</td>
+                  <td>{{ d.tenorYears }}</td>
+                  <td>{{ d.interestBaseRate }}</td>
+                  <td>{{ d.achDiscount }}</td>
+                  <td>{{ d.achDiscountInterestRate }}</td>
+                  <td>{{ d.dealerFee }}</td>
+                  <td>{{ d.originationFee }}</td>
+                  <td>{{ d.prepayment_flag }}</td>
+                  <td>{{ d.prepayment }}</td>
+                  <td>{{ d.prepaymentMonth }}</td>
+                  <td>{{ d.downpayment }}</td>
+                  <td>{{ d.mpfAchWItcPrepay }}</td>
+                  <td>{{ d.mpfAchWOPrepay }}</td>
+                  <td>{{ d.mpfCheckWItcPrepay }}</td>
+                  <td>{{ d.mpfCheckWOPrepay }}</td>
+                  <td>{{d.flexReamPrepayAmount}}</td>
+                  <td>{{d.flexReamPrepayPercentofPrincipal}}</td>
+                  <td>{{d.flexReamMaxAnnualFrequency}}</td>
+                  <td>{{ d.status }}</td>
+                  <td>{{ d.createdAt | date: "MM-dd-yyyy" }}</td>
+                  <td>{{ d.updatedAt | date: "MM-dd-yyyy" }}</td>
+                  <!-- <td>{{d.partnerStatus}}</td> -->
+
+                </tr>
+              </tbody>
+            </table>
+            <!-- <table *ngIf="data.length == 0" datatable class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">User ref</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                      </tr>
+                </thead>
+                <tbody></tbody>
+              </table> -->
+          </div>
+          <div class="p10">
+            <h2 class="p10">Products Log</h2>
+            <table
+              id="product_log"
+              *ngIf="
+                data.loanproducts_logs != null &&
+                data.loanproducts_logs.length > 0
+              "
+              datatable
+              [dtOptions]="noOrder"
+              class="table"
+            >
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Partner ID</th>
+                  <th scope="col">USER</th>
+                  <th scope="col">Activity</th>
+                  <th scope="col">Created Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let log of data.loanproducts_logs; let i = index">
+                  <td>{{ log.id }}</td>
+                  <td>{{ log.installer_id }}</td>
+                  <td>{{ log.user }}</td>
+                  <td>{{ log.activity }}</td>
+                  <td>{{ log.createdat | date: "MM-dd-yyyy" }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </tab>
+      </tabset>
+    </div>
+  </div>
+</div>
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p class="headtext">Message</p>
+    <p *ngFor="let m of message">{{ m }}</p>
+  </div>
+</ng-template>
+
+<ng-template #add_existing_usertemplate>
+  <div class="add-existing-user p20">
+    <form
+      name="form"
+      (ngSubmit)="fs.form.valid && adduserSubmit()"
+      #fs="ngForm"
+      novalidate
+    >
+      <div class="form-group">
+        <label for="ContactName">Short Name</label>
+        <select
+          class="form-control mt-1"
+          (change)="onChangeShortName($event.target.value)"
+          name="shortname"
+          [(ngModel)]="res.businessShortName"
+        >
+          <option value="null" disabled>Select Short Name</option>
+          <option *ngFor="let r of res" [value]="r.businessShortName">
+            {{ r.businessShortName }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="ContactName">Business Name</label>
+        <input
+          readonly
+          type="text"
+          name="businessName"
+          class="form-control"
+          placeholder="Enter Business Name"
+          (input)="res.businessName = namedata($event)"
+          [(ngModel)]="res.businessName"
+          #businessName="ngModel"
+        />
+      </div>
+
+      <!-- <div class="form-group">
+            <label for="ContactEmail">Business Email</label>
+            <input readonly type="email" name="businessEmail" class="form-control" placeholder="Enter Email"
+                [(ngModel)]="res.businessEmail" #businessEmail="ngModel" required
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+               />
+        </div> -->
+
+      <div class="form-group">
+        <label for="ContactEmail">User Email</label>
+        <input
+          type="email"
+          name="userEmail"
+          class="form-control floatdisable"
+          placeholder="Enter User Email"
+          [(ngModel)]="res.userEmail"
+          #userEmail="ngModel"
+          required
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+          [ngClass]="{ 'is-invalid': fs.submitted && userEmail.invalid }"
+        />
+        <span
+          *ngIf="userEmail.invalid && (userEmail.touched || fs.submitted)"
+          class="text-danger"
+          >User Email is required</span
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="ContactName">First Name</label>
+        <input
+          type="text"
+          name="firstName"
+          class="form-control floatdisable"
+          placeholder="Enter firstName"
+          (input)="res.firstName = namedata($event)"
+          [(ngModel)]="res.firstName"
+          #firstName="ngModel"
+          required
+          [ngClass]="{ 'is-invalid': fs.submitted && firstName.invalid }"
+        />
+        <small
+          *ngIf="firstName.invalid && (firstName.touched || fs.submitted)"
+          class="text-danger"
+          >First name is required</small
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="ContactName">Last Name</label>
+        <input
+          type="text"
+          name="lastName"
+          class="form-control floatdisable"
+          placeholder="Enter lastName Name"
+          (input)="res.lastName = namedata($event)"
+          [(ngModel)]="res.lastName"
+          #lastName="ngModel"
+          required
+          [ngClass]="{ 'is-invalid': fs.submitted && lastName.invalid }"
+        />
+        <small
+          *ngIf="lastName.invalid && (lastName.touched || fs.submitted)"
+          class="text-danger"
+          >lastName name is required</small
+        >
+      </div>
+      <button type="submit" class="greenbutton">Save</button>
+      <!-- <div class="form-group">
+            <label for="ContactName">Role</label>
+            <select class="form-control" name="shortname" [(ngModel)]="res.role">
+                <option value="null">Select Role</option>
+                <option *ngFor="let r of roleList" [value]=r.id>{{r.name}}</option>
+              </select>
+        </div> -->
+    </form>
+  </div>
+</ng-template>

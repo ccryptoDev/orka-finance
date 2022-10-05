@@ -1,0 +1,2160 @@
+<div class="container oppBlock">
+  <!-- PHASE-1 START  -->
+  <div class="section1 pt50">
+    <!-- <div class="leftheading1">Credit days remaining: 28</div> -->
+  </div>
+  <!-- PHASE-1 END  -->
+
+  <!-- PHASE-2 START PHASE SELECT  -->
+  <!-- <div class="section1 pt50">
+                <div class="leftheading1" style="color: #EEAC00;">Credit days remaining: 28</div>
+            </div> -->
+  <!-- PHASE-2 END  -->
+
+  <div class="section2 pt50">
+    <div>
+      <a routerLink="/partner/opportunity">
+        <div class="opportunity_list"></div>
+      </a>
+      <div class="leftheading2">{{ data.business_name }}</div>
+
+      <!-- PHASE-1 START  -->
+      <div class="minh30px">
+        <div class="row1" *ngIf="!loading; else elseBlock">
+          <div class="saveIcon"></div>
+          <div class="savebutton fs-12">Saved</div>
+        </div>
+        <!-- PHASE-1 END  -->
+
+        <!-- PHASE-2 START  -->
+        <ng-template #elseBlock>
+          <div class="row1" *ngIf="isServer_error">
+            <div class="savedicon"></div>
+            <div class="savebutton fs-12" style="color: #eeac00">Saving</div>
+          </div>
+        </ng-template>
+
+        <div class="row1" *ngIf="!isServer_error">
+          <div class="exclamationIcon"></div>
+          <div class="savebutton fs-12" style="color: #ee0000">
+            Update Could not be Saved!
+          </div>
+        </div>
+        <!-- PHASE-2 END  -->
+      </div>
+      <div class="leftheading3 pt50 pb20">CUSTOMER</div>
+      <div id="form">
+        <!-- <form action="" method="post" name="registration" class="register"> -->
+        <form [formGroup]="form" #f="ngForm" novalidate>
+          <fieldset>
+            <div class="displayFlex pb10px tabflexDirection">
+              <div class="w250 textAlignLeft calcTitle lineHeight20">
+                BUSINESS NAME
+              </div>
+              <!-- Work done -->
+              <div class="w250 textAlignLeft">
+                <textarea class="calcinput w100per lineHeight20" formControlName="business_name"
+                  [(ngModel)]="data.business_name" name="business_name" id="Student" placeholder="Enter business name"
+                  [readonly]="isReadOnly">
+                </textarea>
+                <!-- <input
+                  class="width-250 calcinput"
+                  formControlName="business_name"
+                  [(ngModel)]="data.business_name"
+                  name="business_name"
+                  id="Student"
+                  [readonly]="isReadOnly"
+
+
+                /> -->
+              </div>
+            </div>
+
+            <!-- <div class="displayFlex pb10px tabflexDirection">
+              <div class="w250 textAlignLeft calcTitle lineHeight20">
+                BUSINESS OWNER NAME
+              </div>
+              <div class="w250 textAlignLeft">
+                <textarea
+                  class="w100per calcinput lineHeight20"
+                  formControlName="business_owner_name"
+                  [(ngModel)]="data.business_owner_name"
+                  name="business_owner_name"
+                  id="Student"
+                  [readonly]="isReadOnly"
+                  value="{{ result.ownerFirstName }}"
+                  placeholder="Enter Business owner name"
+                ></textarea>
+              </div>
+            </div> -->
+            <div class="displayFlex pb10px tabflexDirection">
+              <div class="w250 textAlignLeft calcTitle lineHeight20">
+                BUSINESS OWNER FIRST NAME
+              </div>
+              <div class="w250 textAlignLeft">
+                <textarea class="w100per calcinput lineHeight20" formControlName="business_owner_first_name"
+                  [(ngModel)]="data.business_owner_first_name" name="business_owner_first_name" id="Student"
+                  [readonly]="isReadOnly" value="{{ result.ownerFirstName }}"
+                  placeholder="Enter Business Owner First Name"></textarea>
+              </div>
+            </div>
+
+            <div class="displayFlex pb10px tabflexDirection">
+              <div class="w250 textAlignLeft calcTitle lineHeight20">
+                BUSINESS OWNER LAST NAME
+              </div>
+              <div class="w250 textAlignLeft">
+                <textarea class="w100per calcinput lineHeight20" formControlName="business_owner_last_name"
+                  [(ngModel)]="data.business_owner_last_name" name="business_owner_last_name" id="Student"
+                  [readonly]="isReadOnly" value="{{ result.ownerLastName }}"
+                  placeholder="Enter Business Owner Last Name"></textarea>
+              </div>
+            </div>
+
+            <div class="displayFlex pb10px tabflexDirection">
+              <div class="w250 textAlignLeft calcTitle lineHeight20">
+                BUSINESS OWNER EMAIL
+              </div>
+              <div class="w250 textAlignLeft">
+                <textarea class="w100per calcinput lineHeight20" formControlName="business_email"
+                  [(ngModel)]="data.business_email" name="business_email" id="Student" [readonly]="isReadOnly"
+                  value="{{ result.email }}" placeholder="Enter Business owner email"></textarea>
+                <!-- <input
+                  class="width-250 calcinput"
+                  formControlName="business_email"
+                  [(ngModel)]="data.business_email"
+                  name="business_email"
+                  id="Student"
+                  [readonly]="isReadOnly"
+                  value="{{ result.email }}"
+                  placeholder="Enter Business owner email"
+                /> -->
+              </div>
+            </div>
+
+            <div class="displayFlex pb10px tabflexDirection">
+              <div class="w250 textAlignLeft calcTitle lineHeight20">
+                BUSINESS OWNER PHONE
+              </div>
+              <div class="w250 textAlignLeft">
+                <textarea
+                  class="w100per calcinput lineHeight20"
+                  formControlName="business_phone"
+                  id="Student"
+                  value="{{ result.businessPhone }}"
+                  mask="(000) 000-0000"
+                  placeholder="Enter Business owner phone"
+                  (keypress)="keyPressNumbers($event)"
+                  (input)="data.business_phone = namedata($event)"
+                  [readonly]="isReadOnly"
+                  [(ngModel)]="data.business_phone"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="displayFlex pb10px tabflexDirection">
+              <div class="w250 textAlignLeft calcTitle lineHeight20">
+                BUSINESS ADDRESS
+              </div>
+              <div class="w250 textAlignLeft">
+                <!-- <textarea
+                  class="w100per calcinput lineHeight20"
+                  formControlName="business_address"
+                  [(ngModel)]="data.business_address"
+                  name="business_address"
+                  id="Student"
+                  [readonly]="isReadOnly"
+                  value="{{ result.businessAddress }}"
+                  placeholder="Enter contact address"
+                ></textarea> -->
+
+                <textarea [readonly]="isReadOnly" formControlName="business_address" ngx-google-places-autocomplete
+                  [options]="options" #placesRef="ngx-places" (onAddressChange)="
+                    handleAddressChange($event, 'businessaddressval')
+                  " class="w100per calcinput lineHeight20" placeholder="Enter business address"
+                  [(ngModel)]="data.businessAddress"></textarea>
+
+                <input type="hidden" formControlName="business_city" [(ngModel)]="data.business_city"
+                  value="{{ result.city }}" />
+
+                <input type="hidden" formControlName="business_state" [(ngModel)]="data.business_state"
+                  value="{{ result.state }}" />
+
+                <input type="hidden" formControlName="business_zipcode" [(ngModel)]="data.business_zipcode"
+                  value="{{ data.business_zipcode }}" />
+
+                <input type="hidden" formControlName="lat" [(ngModel)]="data.businessInstallLat"
+                  value="{{ data.businessInstallLat }}" />
+
+                <input type="hidden" formControlName="lng" [(ngModel)]="data.businessInstallLng"
+                  value="{{ data.businessInstallLng }}" />
+
+                <!-- <input
+                  class="width-250 calcinput"
+                  formControlName="business_address"
+                  [(ngModel)]="data.business_address"
+                  name="business_address"
+                  id="Student"
+                  [readonly]="isReadOnly"
+                  value="{{ result.businessAddress }}"
+                  placeholder="Enter contact address"
+                /> -->
+              </div>
+            </div>
+
+            <!-- <label for="Student">BUSINESS NAME</label>
+            <input
+              class="width-250 calcinput"
+              formControlName="business_name"
+              [(ngModel)]="data.business_name"
+              name="business_name"
+              id="Student"
+              [readonly]="isReadOnly"
+              value="{{ result.legalName }}"
+              placeholder="Enter business name"
+            />
+            <label for="Matric_no">BUSINESS OWNER NAME</label>
+            <input
+              class="width-250 calcinput"
+              formControlName="business_owner_name"
+              [(ngModel)]="data.business_owner_name"
+              name="business_owner_name"
+              id="Student"
+              [readonly]="isReadOnly"
+              value="{{ result.ownerFirstName }}"
+              placeholder="Enter Business owner name"
+            /> -->
+
+            <!-- <label for="Email">BUSINESS OWNER EMAIL</label>
+            <input
+              class="width-250 calcinput"
+              formControlName="business_email"
+              [(ngModel)]="data.business_email"
+              name="business_email"
+              id="Student"
+              [readonly]="isReadOnly"
+              value="{{ result.email }}"
+              placeholder="Enter Business owner email"
+            /> -->
+
+            <!-- <label for="Username">BUSINESS OWNER PHONE</label>
+            <input
+              class="width-250 calcinput"
+              formControlName="business_phone"
+              [(ngModel)]="data.business_phone"
+              name="business_phone"
+              id="Student"
+              [readonly]="isReadOnly"
+              value="{{ result.businessPhone }}"
+              mask="+0 (000) 000-0000"
+              placeholder="Enter Business owner phone"
+              (keypress)="keyPressNumbers($event)"
+            /> -->
+
+            <!-- <label for="Password">BUSINESS ADDRESS</label>
+            <input
+              class="width-250 calcinput"
+              formControlName="business_address"
+              [(ngModel)]="data.business_address"
+              name="business_address"
+              id="Student"
+              [readonly]="isReadOnly"
+              value="{{ result.businessAddress }}"
+              placeholder="Enter contact address"
+            /> -->
+          </fieldset>
+        </form>
+      </div>
+    </div>
+    <div>
+      <div class="leftheading3">OPPORTUNITY PHASE: {{ phase_type }}</div>
+      <!-- SHARKIMAGE PHASE-1 START  -->
+      <div class="sharkImage" *ngIf="phase_type == 'New'"></div>
+      <!-- SHARKIMAGE PHASE-1 END  -->
+
+      <!-- SHARKIMAGE PHASE-2 START  -->
+      <div *ngIf="phase_type == 'Underwriting'" class="sharkImage">
+        <div class="fill1"></div>
+      </div>
+      <!-- SHARKIMAGE PHASE-2 END  -->
+
+      <!-- SHARKIMAGE PHASE-3 START  -->
+      <div *ngIf="phase_type == 'Project Setup'" class="sharkImage">
+        <div class="fill2"></div>
+      </div>
+      <!-- SHARKIMAGE PHASE-3 END  -->
+
+      <!-- SHARKIMAGE PHASE-4 START  -->
+      <div *ngIf="phase_type == 'Contracting'" class="sharkImage">
+        <div class="fill3"></div>
+      </div>
+      <!-- SHARKIMAGE PHASE-4 END  -->
+
+      <!-- SHARKIMAGE PHASE-5 START  -->
+      <div *ngIf="phase_type == 'Construction'" class="sharkImage">
+        <div class="fill4"></div>
+      </div>
+      <!-- SHARKIMAGE PHASE-5 END --- -->
+
+      <div class="leftheading3">NEXT ACTION: {{this.phase}}</div>
+      <!-- <div class="qrcode">
+        <div class="qrcodetext">
+          <i>
+            Scan QR Code for customer<br />
+            credit application</i
+          >
+        </div>
+        <div class="qrcodeimage"></div>
+      </div> -->
+    </div>
+  </div>
+
+  <div class="section3">
+    <div class="pb200px">
+      <div class="image11 row1 jus-spa" (click)="
+          hiddensite = !hiddensite;
+          hidden_underwriting = false;
+          hidden_projectsetup = false;
+          hidden_contract = false;
+          hidden_construction = false;
+          hidden_activity = false
+        ">
+        <div class="row1">
+          <!-- EXPOSED-ARROW START  -->
+          <!-- <div class="exposedArrow"></div> -->
+          <!-- EXPOSED-ARROW END  -->
+
+          <!-- EXPANDED-ARROW START  -->
+          <div [ngClass]="hiddensite ? 'expandedArrow' : 'exposedArrow'"></div>
+          <!-- EXPANDED-ARROW END  -->
+          <div class="backgroundtext">SITE</div>
+        </div>
+        <!-- SITE PHASE-2 START  -->
+        <div class="row1">
+          <!-- <div class="pin"></div>
+          <div class="backgroundsubtext">{{ data.businessInstallAddress }}</div> -->
+          <div class="pin mr10"></div>
+          <div class="backgroundsubtext mr17">
+            {{ data.businessInstallAddress }}
+          </div>
+        </div>
+        <!-- SITE PHASE-2 END  -->
+      </div>
+
+      <!-- SITE PHASE-1 START  -->
+      <div class="site-p1" [ngStyle]="{ display: hiddensite ? 'block' : 'none' }">
+        <div id="form" class=" ">
+          <!-- <form action="" method="post" name="site_form" class="register"> -->
+          <form [formGroup]="site_form" #f1="ngForm"  >
+            <fieldset>
+              <div class="displayFlex ptop26 pb70 columnReverse">
+                <div class="">
+                  <div class="displayFlex pb30px">
+                    <div class="w250 textAlignLeft calcTitle">SITE ADDRESS <span class="text-danger">*</span></div>
+                    <div class="w250 textAlignLeft">
+                      <div class="pb10px">
+                        <!-- <textarea
+                          class="w100per calcinput"
+                          [readonly]="isReadOnly"
+                          formControlName="businessInstallAddress"
+                          id="Student"
+                          [(ngModel)]="data.businessInstallAddress"
+                          placeholder="Enter street address"
+                        ></textarea> -->
+                        <textarea [readonly]="isReadOnly" formControlName="businessInstallAddress"
+                          ngx-google-places-autocomplete [options]="options" #placesRef="ngx-places" (onAddressChange)="
+                            handleAddressChange(
+                              $event,
+                              'business_installaddress'
+                            )
+                          " class="w100per calcinput" placeholder="Enter business Install address"
+                          [(ngModel)]="data.businessInstallAddress">
+                        </textarea>
+                         <small
+                          *ngIf="(site_form.controls.businessInstallAddress.invalid && site_form.controls.businessInstallAddress.touched)"
+                          class="text-danger"
+                          >
+                          Please provide Site Address to send the loan agreement
+                          </small>
+                        <!-- <i class="fas fa-map-marker-alt addressIcons"></i>
+                      <small
+                        *ngIf="
+                          businessInstallAddress.invalid &&
+                          (businessInstallAddress.touched || f.submitted)
+                        "
+                        class="text-danger valid-info"
+                        >Business address is required</small
+                      > -->
+
+
+                      <!-- <span class="text-danger"
+                      *ngIf=
+                      "data.businessInstallAddress.invalid &&
+                      (data.businessInstallAddress.touched || f.submitted)
+                        "
+                        class="text-danger valid-info"
+                        >
+                       Field Required
+                       </span> -->
+                      </div>
+                      <div class="pb10px" style="display: none">
+                        <textarea class="w100per calcinput" [readonly]="isReadOnly" formControlName="city"
+                          name="Student" id="Student" [(ngModel)]="data.city" placeholder="Enter city"></textarea>
+                        <!-- <input
+                          class="calcinput w250"
+                          [readonly]="isReadOnly"
+                          formControlName="city"
+                          name="Student"
+                          id="Student"
+                          [(ngModel)]="data.city"
+                          placeholder="Enter city"
+                        /> -->
+                      </div>
+                      <div class="pb30px" style="display: none">
+                        <input [readonly]="isReadOnly" formControlName="state" placeholder="Enter  State"
+                          class="calcinput w250" [(ngModel)]="data.state" />
+                      </div>
+                      <div class=" " style="display: none">
+                        <input [readonly]="isReadOnly" formControlName="zipcode" placeholder="Enter Zip Code"
+                          (keypress)="keyPressNumbers($event)" class="calcinput w250" [(ngModel)]="data.zipcode" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pb30px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">SITE TYPE</div>
+                      <div class="w250 textAlignLeft">
+                        <input formControlName="siteType" [(ngModel)]="siteProjectDetails.siteType" name="site_type"
+                          id="Student" placeholder="Enter your site type" class="calcinput w250" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pb30px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        UTILITY COMPANY
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <!-- <select
+                          class="dropdownSite"
+                          formControlName="electricCompany"
+                          [(ngModel)]="siteProjectDetails.electricCompany"
+                          name="site_type"
+                          id="site-select"
+                          placeholder="Choose your electrical provider"
+                        >
+                          <option value="null">
+                            Choose your Utility Company
+                          </option>
+                          <option value="dog">Abc</option>
+                          <option value="cat">Def</option>
+                          <option value="hamster">Ghi</option>
+                        </select>
+                        <i class="fas fa-caret-down dropdownIcon"></i> -->
+                        <input formControlName="electricCompany" [(ngModel)]="siteProjectDetails.electricCompany"
+                          name="site_type" id="Student" placeholder="Enter Utility Company" class="calcinput w250" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pb33px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        <div>AVG. UTIL. BILL / MONTH</div>
+                        <div class="symbol-text">($)</div>
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <input class="calcinput w250" formControlName="avgUtilPerMonth"
+                          [(ngModel)]="data.avgUtilPerMonth" name="avgUtilPerMonth"
+                          value="{{ result_sitedetails.avgUtilPerMonth }}" id="Student"
+                          (keypress)="keyPressNumbers($event)" placeholder="Enter $ amount" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pb33px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        <div>AVG. CONSUMPTION / MONTH</div>
+                        <div class="symbol-text">(KWhs)</div>
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <input class="calcinput w250" formControlName="avgConsumptionPerMonth"
+                          [(ngModel)]="data.avgConsumptionPerMonth" name="avgConsumptionPerMonth" value="{{
+                            result_sitedetails.avgConsumptionPerMonth
+                          }}" id="Student" placeholder="Enter XXXXX" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div *ngIf="
+                      data.businessInstallLat == null &&
+                        data.businessInstallLng == null;
+                      else map_show
+                    " class="mapicon"></div>
+                  <ng-template #map_show>
+                    <agm-map style="height: 200px; width: 200px" [latitude]="data.businessInstallLat"
+                      [longitude]="data.businessInstallLng" [zoom]="zoom">
+                      <agm-marker [latitude]="data.businessInstallLat" [longitude]="data.businessInstallLng"
+                        [label]="currenlabel"></agm-marker>
+                    </agm-map>
+                  </ng-template>
+                </div>
+              </div>
+
+              <div style="clear: both"></div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+      <!-- SITE PHASE-1 END  -->
+
+      <div class="row1">
+        <div class="image11 row1 jus-spa" (click)="
+            hidden_underwriting = !hidden_underwriting;
+            hiddensite = false;
+            hidden_projectsetup = false;
+            hidden_contract = false;
+            hidden_construction = false;
+            hidden_activity = false
+          ">
+          <div class="row1">
+            <!-- EXPOSED-ARROW START  -->
+            <!-- <div class="exposedArrow"></div> -->
+            <!-- EXPOSED-ARROW END  -->
+
+            <!-- EXPANDED-ARROW START  -->
+            <div [ngClass]="hidden_underwriting ? 'expandedArrow' : 'exposedArrow'"></div>
+            <!-- EXPANDED-ARROW END  -->
+            <div class="backgroundtext">UNDERWRITING</div>
+          </div>
+
+          <!-- UNDERWRITING PHASE-1 START  -->
+          <div class="row1" *ngIf="underwriting_status != 'approved'  && underwriting_status != 'canceled'">
+            <div class="backgroundsubtext">Underwriting Status</div>
+
+            <div class="bgextra1">
+              <div class="underWritingredSatus" *ngIf="underwriting_status == 'canceled'"></div>
+              <div class="dottedline1 calcDottedLine"></div>
+            </div>
+          </div>
+          <!-- UNDERWRITING PHASE-1 END  -->
+
+          <div class="row1" *ngIf="underwriting_status == 'canceled'" style="padding-right: 20px">
+            <div class="backgroundsubtext">Credit Denied</div>
+            <div class="deniedIcon" style="margin-left: 10px; margin-right: 10px"></div>
+
+          </div>
+
+          <!-- UNDERWRITING PHASE-2 START  -->
+          <div class="row1" *ngIf="underwriting_status == 'approved'" style="padding-right: 20px">
+            <div class="backgroundsubtext">Credit Approved</div>
+            <div class="selectedicon" style="margin-left: 10px; margin-right: 10px"></div>
+            <div class="backgroundsubtext">Expiration date: 3/15/2022</div>
+            <div class="ml10px" >
+              <img src="../../../assets/info_icon.svg" class="cursorpointer changedirection" (click)="switchShowUnderwritingTool($event)" />
+              <div class="tooltipblock"  *ngIf="showUnderwritingTool" style="width: 450px;" >
+                Credit is approved for 2 months. If a Loan Agreement is signed within 2 months, credit expiration extends to 4 months from the date of Milestone 1 achieved. Project project must achieve Milestone 3 within 12 months of original credit approval.
+              </div>
+            </div>
+
+          </div>
+          <!-- UNDERWRITING PHASE-2 END  -->
+
+          <!-- UNDERWRITING PHASE-3 START  -->
+          <div class="row1" *ngIf="underwriting_status == 'funded'">
+            <div class="moneyicon"></div>
+            <div class="backgroundsubtext">Loan Funded</div>
+          </div>
+          <!-- UNDERWRITING PHASE-3 END  -->
+        </div>
+
+        <!-- UNDERWRITING-BUTTON PHASE-1 START  -->
+        <button (click)="
+            hidden_projectsetup = false;
+            hidden_underwriting = !hidden_underwriting;
+            hiddensite = false;
+            hidden_contract = false;
+            hidden_construction = false;
+            hidden_activity = false
+          " *ngIf="phase_type == 'New'" class="blueButton row1">
+          <div class="icon1"></div>
+          Send credit application
+        </button>
+        <!-- UNDERWRITING-BUTTON PHASE-1 END  -->
+
+        <!-- UNDERWRITING-BUTTON PHASE-2 START  -->
+        <button (click)="
+            hidden_projectsetup = false;
+            hidden_underwriting = !hidden_underwriting;
+            hiddensite = false;
+            hidden_contract = false;
+            hidden_construction = false;
+            hidden_activity = false
+          " *ngIf="phase_type == 'Underwriting'" class="blueButton row1">
+          <div class="icon2"></div>
+          Complete credit application
+        </button>
+        <!-- UNDERWRITING-BUTTON PHASE-2 END  -->
+      </div>
+
+      <!-- UNDERWRITING PHASE-1 START  -->
+      <div class="pb70" *ngIf="underwriting_status != 'approved' && underwriting_status != 'canceled'"
+        [ngStyle]="{ display: hidden_underwriting ? 'block' : 'none' }">
+        <div *ngIf="phase_type == 'Underwriting'; else err_understatus">
+          <ng-container *ngFor="let d of loanProductdata.loanProducts; let i = index">
+            <div class="under-products">
+              <!-- (change)="getValue($event)" -->
+              <input type="radio" class="mt-25under" id="test{{ i }}" name="check" value="{{ i }}" />
+              <label class="under-label" for="test{{ i }}">{{ d.tenorMonths }} months / {{ d.interestBaseRate }}%
+                interest</label>
+            </div>
+          </ng-container>
+        </div>
+        <ng-template #err_understatus>
+          <div class="calcTitle ptop26 textUpercase pb17px">
+            Send credit application:
+          </div>
+          <div class="row1">
+            <button
+              gtagEvent
+              trackOn="click"
+              category="Partner Activity"
+              [params]="{ event_label: 'Credit Application Sent'}"
+              class="underWrittingBut w160" (click)="resendEmail()">
+              <div class="emailicons"></div>
+              Email
+            </button>
+            <!-- <div class="ortext">OR</div> -->
+            <!-- <button [disabled]="!isSmsbtn" class="underWrittingBut w160">
+              <div class="messageicons"></div>
+              SMS
+            </button> -->
+          </div>
+        </ng-template>
+
+      </div>
+
+      <div *ngIf="underwriting_status == 'approved'" [ngStyle]="{ display: hidden_underwriting ? 'block' : 'none' }"
+        class="pb70">
+        <div class="calcTitle ptop26 textUpercase pb17px">
+          FINANCING TERMS REQUESTED AND APPROVED
+        </div>
+        <div style="margin-bottom: 15px">
+          <div class="row1 mb15">
+            <div class="radioText ml0">${{result_sitedetails.financingRequested}} | {{result_sitedetails.financingTermRequested}} months | {{result_sitedetails.apr}}% APR | {{selectedProduct?.prepayment}}% prepay | ${{((selectedProduct.financingApproved * selectedProduct.mpfCheckWItcPrepay) / 100).toFixed(2)}}/month</div>
+        </div>
+        </div>
+      </div>
+
+      <div *ngIf="underwriting_status == 'canceled'" [ngStyle]="{ display: hidden_underwriting ? 'block' : 'none' }"
+        class="pb70">
+        <div class="calcTitle ptop26 textUpercase pb17px">
+          SORRY, NO OFFERS AVAILABLE
+        </div>
+        <div style="margin-bottom: 15px">
+          <div class="row1 mb15">
+            <div class="radioText ml0">We regret that Orka was unable to finance your customer’s project at the terms requested</div>
+        </div>
+        </div>
+      </div>
+      <!-- UNDERWRITING PHASE-1 END  -->
+
+      <!-- UNDERWRITING PHASE-2 START  -->
+      <!-- <div class="under-p2">
+                <div>
+                    <div class="leftheading3 heading">APPROVED FINANCING TERMS</div>
+                    <div>
+                        <div class="row1 mb15">
+                            <input type="radio" name="choice-radio" value="Y" />
+                            <div class="radioText">x months | x% APR | prepay x% at month X | $2,021.25/month
+                            </div>
+                        </div>
+                        <div class="row1 mb15">
+                            <input type="radio" name="choice-radio" value="Y" />
+                            <div class="radioText">y months | y% APR | prepay y% at month X | $2,001.50/month
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="class2">
+                    <div class="leftheading1 heading">PENDING STIPULATIONS</div>
+                    <table>
+                        <tr>
+                            <th class="tableHeading">Stipulation</th>
+                            <th class="tableHeading">Action needed</th>
+                        </tr>
+                        <tr class="tableRow">
+                            <td class="tableData">
+                                <div class="underwritingline linewidth"></div>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut
+                                labore
+                                et dolore magna
+                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                                aliquip
+                                ex ea
+                                commodo consequat. Duis
+                                aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                pariatur.
+                                Excepteur sint
+                                occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                                laborum.
+                            </td>
+                            <td class="tableData">
+                                <div class="underwritingline"></div>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut
+                                labore
+                                et dolore magna
+                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                                aliquip
+                                ex ea
+                                commodo consequat.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tableData">
+                                <div class="underwritingline linewidth"></div>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut
+                                labore
+                                et dolore magna
+                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                                aliquip
+                                ex ea
+                                commodo consequat. Duis
+                                aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                pariatur.
+                                Excepteur sint
+                                occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                                laborum.
+                            </td>
+                            <td class="tableData">
+                                <div class="underwritingline"></div>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut
+                                labore
+                                et dolore magna
+                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                                aliquip
+                                ex ea
+                                commodo consequat.
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div> -->
+      <!-- UNDERWRITING PHASE-2 END  -->
+
+      <!-- UNDERWRITING PHASE-3 START  -->
+      <!-- <div class="under-p3">
+                <div class="leftheading3 heading">FINANCING TERMS</div>
+                <div class="row1 mb15">
+                    <div class="radioText ml0">y months | y% APR | prepay y% at month X |
+                        $2,001.50/month</div>
+                </div>
+            </div> -->
+      <!-- UNDERWRITING PHASE-3 END  -->
+
+      <div class="row1">
+        <div class="image11 row1 jus-spa" (click)="
+            hidden_projectsetup = !hidden_projectsetup;
+            hidden_underwriting = false;
+            hiddensite = false;
+            hidden_contract = false;
+            hidden_construction = false;
+            hidden_activity = false
+          ">
+          <div class="row1">
+            <!-- EXPOSED-ARROW START  -->
+            <!-- <div class="exposedArrow"></div> -->
+            <!-- EXPOSED-ARROW END  -->
+
+            <!-- EXPANDED-ARROW START  -->
+            <div [ngClass]="hidden_projectsetup ? 'expandedArrow' : 'exposedArrow'"></div>
+            <!-- EXPANDED-ARROW END  -->
+            <div class="backgroundtext">PROJECT SETUP</div>
+          </div>
+        </div>
+        <!-- PROJECT-SETUP-BUTTON PHASE-1 START  -->
+        <button class="blueButton row1" (click)="
+            hidden_projectsetup = !hidden_projectsetup;
+            hidden_underwriting = false;
+            hiddensite = false;
+            hidden_contract = false;
+            hidden_construction = false;
+            hidden_activity = false
+          " *ngIf="phase_type == 'Project Setup'">
+          <div class="icon1"></div>
+          Upload sales contract
+        </button>
+        <!-- PROJECT-SETUP-BUTTON PHASE-1 END  -->
+      </div>
+
+      <!-- PROJECT-SETUP PHASE-1 START  -->
+      <div class="project-p1" [ngStyle]="{ display: hidden_projectsetup ? 'block' : 'none' }">
+        <div id="form" class=" ">
+          <!-- class="pb55"<form action="" method="post" name="projectSetUp_form" class="register"> -->
+          <form [formGroup]="projectSetUp_form" #f2="ngForm" novalidate>
+            <fieldset>
+              <div class="displayFlex ptop26">
+                <div [ngClass]="
+                    data_sales_contract['files'].length > 0 ||
+                    listfiles.length > 0
+                      ? ''
+                      : 'pb55'
+                  ">
+                  <div class="pb33px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        <div>ARRAY SIZE</div>
+
+                        <div class="symbol-text">(kW DC)</div>
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <div class="pb10px">
+                          <input name="Student" formControlName="arraySize" [(ngModel)]="data.arraySize" id="Student"
+                            placeholder="Enter array size" class="calcinput w250" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pb30px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        PANEL MANUFACTURER
+                        <span class="text-danger">*</span>
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <select
+                          class="dropdownSite"
+                          formControlName="panelManufacturer"
+                          name="site_type"
+                          id="site-select"
+                          [(ngModel)]="data.panelManufacturer"
+                        >
+                          <option value="" >
+                            Choose your panel manufacturer
+                          </option>
+                          <option *ngFor="let v of panelManufacturer" [ngValue]="v.value" >
+                            {{ v.value }}
+                          </option>
+                        </select>
+                        <i class="fas fa-caret-down dropdownIcon"></i>
+                        <small
+                        *ngIf="projectSetUp_form.get('panelManufacturer').touched && projectSetUp_form.get('panelManufacturer').invalid "
+                        class="text-danger"
+                        >
+                        Please provide Panel Manufacturer to send the loan agreement
+                        </small>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="pb30px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        INVERTER NAMEPLATE CAPACITY
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <input name="Student" formControlName="inverterNamePlateCapacity"
+                          [(ngModel)]="data.inverterNamePlateCapacity" id="Student" placeholder="Enter capacity"
+                          class="calcinput w250" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pb30px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        INVERTER MANUFACTURER
+                        <span class="text-danger">*</span>
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <select class="dropdownSite" formControlName="inverterManufacturer"
+                          [(ngModel)]="data.inverterManufacturer" name="site_type" id="site-select">
+                          <option value="">
+                            Choose your inverter manufacturer
+                          </option>
+                          <option *ngFor="let v of inverterManufacturer" [ngValue]="v.value">
+                            {{ v.value }}
+                          </option>
+                        </select>
+                        <i class="fas fa-caret-down dropdownIcon"></i>
+                        <small
+                      *ngIf="projectSetUp_form.get('inverterManufacturer').touched && projectSetUp_form.get('inverterManufacturer').invalid "
+                      class="text-danger"
+                      >
+                      Please provide Inverter Manufacturer to send the loan agreement
+                      </small>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pb33px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        <div>BATTERY CAPACITY</div>
+                        <div class="symbol-text">(kWh)</div>
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <input name="Student" formControlName="batteryCapacity" [(ngModel)]="data.batteryCapacity"
+                          id="Student" placeholder="Enter battery capacity" class="calcinput w250" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pb30px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        <div>BATTERY MANUFACTURER</div>
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <select class="dropdownSite" formControlName="batteryManufacturer"
+                          [(ngModel)]="data.batteryManufacturer" name="site_type" id="site-select">
+                          <option value="null">
+                            Choose your battery manufacturer
+                          </option>
+                          <option *ngFor="let v of batteryManufaturer" [ngValue]="v.value">
+                            {{ v.value }}
+                          </option>
+                        </select>
+                        <i class="fas fa-caret-down dropdownIcon"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pb30px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        <div>MOUNT TYPE</div>
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <select class="dropdownSite" formControlName="mountType" [(ngModel)]="data.mountType"
+                          name="site_type" id="site-select">
+                          <option value="null">Choose your mount type</option>
+                          <option *ngFor="let v of mountType" [ngValue]="v.value">
+                            {{ v.value }}
+                          </option>
+                        </select>
+                        <i class="fas fa-caret-down dropdownIcon"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pb33px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        <div>EST Y1 GENERATION RATE</div>
+                        <div class="symbol-text">(kWh / kW / YR)</div>
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <input name="Student" formControlName="estGenerationRate" [(ngModel)]="data.estGenerationRate"
+                          id="Student" placeholder="Enter kWh/kW for system first year" class="calcinput w250" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pb30px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        <div>NON-SOLAR EQUIPMENT / WORK</div>
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <input name="Student" formControlName="nonSolarEquipmentWork"
+                          [(ngModel)]="data.nonSolarEquipmentWork" id="Student"
+                          placeholder="List all non-solar equipment/work" class="calcinput w250" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pb30px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        <div>NON-SOLAR % OF PROJECT COST</div>
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <select class="dropdownSite" formControlName="nonSolarProjectCost"
+                          [(ngModel)]="data.nonSolarProjectCost" name="site_type" id="site-select">
+                          <option value="null">Choose %</option>
+                          <option value="0-10">0-10%</option>
+                          <option value="10-20">10-20%</option>
+                          <option value="20-30">20-30%</option>
+                          <option value="30-40">30-40%</option>
+                          <option value="40-50">40-50%</option>
+                          <option value="60-70">60-70%</option>
+                          <option value="70-80">70-80%</option>
+                          <option value="80-90">80-90%</option>
+                          <option value="90-100">90-100%</option>
+                        </select>
+                        <i class="fas fa-caret-down dropdownIcon"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pb33px">
+                    <div class="displayFlex AlignItemCenter">
+                      <div class="w250 textAlignLeft calcTitle">
+                        <div>TOTAL PROJECT COST
+                          <span class="text-danger">*</span>
+                        </div>
+                        <div class="symbol-text">($)</div>
+                      </div>
+                      <div class="w250 textAlignLeft">
+                        <input name="Student" formControlName="totalProjectCost" [(ngModel)]="data.totalProjectCost"
+                          id="Student" placeholder="Enter total project cost" class="calcinput w250" />
+                          <small
+                      *ngIf="(projectSetUp_form.controls.totalProjectCost.invalid && projectSetUp_form.controls.totalProjectCost.touched)"
+                      class="text-danger"
+                      >
+                      Please provide Total Project Cost to send the loan agreement
+                      </small>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="clear: both"></div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+      <div class="pb20" [ngStyle]="{ display: hidden_projectsetup ? 'block' : 'none' }">
+        <div class="underwritingline linewidth"></div>
+        <button class="newbutton mt20" *ngIf="
+            listfiles.length == 0 &&
+            data_replace_res.length == 0 &&
+            data_sales_contract['files'].length == 0
+          " [disabled]="phase_type != 'Project Setup'">
+          <div class="" *ngIf="phase_type == 'Project Setup'; else disablebtn">
+            <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="salesitems($event)"
+              (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+              <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                <span (click)="openFileSelector()">Upload sales contract</span>
+              </ng-template>
+            </ngx-file-drop>
+          </div>
+          <ng-template #disablebtn>
+            <div>Upload sales contract</div>
+          </ng-template>
+        </button>
+      </div>
+
+      <!-- PROJECT-SETUP PHASE-1 END  -->
+
+      <!-- PROJECT-SETUP PHASE-2 START  -->
+      <div class="project-p2 w731 pb70" *ngIf="listfiles.length > 0 && sales_items.length > 0">
+        <div class="calcTitle pb30px" *ngIf="sales_items.length > 0">
+          SALES CONTRACT
+        </div>
+        <div class="row1 AlignItemCenter spaceBetween" *ngFor="let file of sales_items; let i = index">
+          <div class="displayFlex AlignItemCenter">
+            <img *ngIf="filetype_salesitems_val_res == 'pdf'" src="../../../assets/pdf_icon1.png" class="pdficon"
+              alt="" />
+            <img *ngIf="filetype_salesitems_val_res == 'doc'" src="../../../assets/doc_icon.png" class="pdficon"
+              alt="" />
+            <img *ngIf="filetype_salesitems_val_res == 'png'" src="../../../assets/png_icon.png" class="pdficon"
+              alt="" />
+            <img *ngIf="
+                filetype_salesitems_val_res == 'jpeg' ||
+                filetype_salesitems_val == 'jpg'
+              " src="../../../assets/jpeg_icon.png" class="pdficon" alt="" />
+            <div class="leftheading3 pdfText">
+              {{ file.name.split(".")[0] }}
+              <span class="tomatoColor">
+                <i class="fas fa-times cur-poi" (click)="deleteFileSelected_sales(e)"></i></span>
+            </div>
+          </div>
+          <!-- <button [disabled]="clicked" (click)="upoadDocuments(); clicked = true;" class="replaceButton1">
+            Submit
+          </button> -->
+          <button  (click)="upoadDocuments();" class="replaceButton" >
+            Submit
+          </button>
+        </div>
+        <div class="leftheading3 dateText" *ngIf="sales_items.length > 0">
+          <!-- Posted: {{upload_sales_date | date:"MM-dd-yyyy"}} -->
+        </div>
+      </div>
+      <!-- PROJECT-SETUP PHASE-2 END  -->
+      <!---SALES CONTRACT UPLOAD FILES LIST AREA-->
+      <div class="pb70 project-p2 w731" [ngStyle]="{ display: hidden_projectsetup ? 'block' : 'none' }"
+        *ngFor="let d of data_sales_contract.files; let i = index">
+        <div class="calcTitle pb30px">SALES CONTRACT</div>
+        <div class="row1 AlignItemCenter spaceBetween">
+          <div class="displayFlex AlignItemCenter">
+            <img *ngIf="d.originalname.split('.')[1] == 'pdf'" src="../../../assets/pdf_icon1.png" class="pdficon"
+              alt="" />
+            <img *ngIf="d.originalname.split('.')[1] == 'doc'" src="../../../assets/doc_icon.png" class="pdficon"
+              alt="" />
+            <img *ngIf="d.originalname.split('.')[1] == 'png'" src="../../../assets/png_icon.png" class="pdficon"
+              alt="" />
+            <img *ngIf="
+                d.originalname.split('.')[1] == 'jpeg' ||
+                d.originalname.split('.')[1] == 'jpg'
+              " src="../../../assets/jpeg_icon.png" class="pdficon" alt="" />
+            <div class="fs18px AvenirBlack cursor-pointer" (click)="view(d.filename)">
+              {{ d.originalname }}<span class="tomatoColor fs-12"> </span>
+              <!--<i class="fas fa-times cur-poi" (click)="deleteFilelist(d.originalname)"></i>-->
+            </div>
+          </div>
+          <button [disabled]="salescontractreviewcomments.length == 0"  class="replaceButton1"
+          *ngIf="salescontractreviewcomments.comments == '' || salescontractreviewcomments.length == 0 " >
+            Submitted
+          </button>
+
+          <button class="replaceButton" (click)="deleteFileSelected_sales(e)" *ngIf="salescontractreviewcomments && salescontractreviewcomments.comments!=null && salescontractreviewcomments.comments != '' ">
+            <div >
+              <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="salesitems($event)"
+                (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+                <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                  <span (click)="openFileSelector()" >Replace</span>
+                </ng-template>
+              </ngx-file-drop>
+            </div>
+          </button>
+
+
+        </div>
+        <div class="leftheading3 dateText" >
+          Posted: {{ upload_sales_date | date: "MM-dd-yyyy" }}
+        </div>
+      </div>
+
+      <div [ngStyle]="{ display: hidden_projectsetup ? 'block' : 'none' }"
+      *ngIf="phase_type == 'Project Setup' && salescontractreviewcomments.comments != undefined && salescontractreviewcomments.comments!=null && salescontractreviewcomments.comments != '' ">
+        <div class="leftheading3 fs-12" style="color: #e50000">
+          ADDITIONAL INFORMATION NEEDED
+        </div>
+        <div class="row">
+          <div class="projectText1">Sales Contract Review</div>
+          <div class="projectText2">
+            {{ salescontractreviewcomments.comments }}
+          </div>
+        </div>
+      </div>
+
+      <!---SALES CONTRACT UPLOAD FILES LIST AREA-->
+
+      <div class="row1">
+        <div class="image11 row1 jus-spa" (click)="
+            hidden_contract = !hidden_contract;
+            hidden_projectsetup = false;
+            hidden_underwriting = false;
+            hiddensite = false;
+            hidden_construction = false;
+            hidden_activity = false
+          ">
+          <div class="row1">
+            <!-- EXPOSED-ARROW START  -->
+            <!-- <div class="exposedArrow"></div> -->
+            <!-- EXPOSED-ARROW END  -->
+
+            <!-- EXPANDED-ARROW START  -->
+            <div [ngClass]="hidden_contract ? 'expandedArrow' : 'exposedArrow'"></div>
+            <!-- EXPANDED-ARROW END  -->
+            <div class="backgroundtext">FINANCING CONTRACT</div>
+          </div>
+          <div class="row1 financing">
+            <!-- FINANCING PHASE-1 START  -->
+            <div class="backgroundsubtext">Contract Status</div>
+            <div class="bgextra1">
+              <div class="dottedline2 calcDottedLine"></div>
+              <div class="dottedline3 calcDottedLine"></div>
+            </div>
+            <!-- FINANCING PHASE-1 END  -->
+
+            <!-- FINANCING PHASE-2 START  -->
+            <!-- <div class="row1 mr10">
+                            <div class="bgextra2"></div>
+                            <div class="dottedline4"></div>
+                            <div class="bgextra11"></div>
+                            <div class="dottedline4"></div>
+                            <div class="bgextra12"></div>
+                        </div> -->
+            <!-- FINANCING PHASE-2 END  -->
+
+            <!-- FINANCING PHASE-3 START  -->
+            <!-- <div class="row1 mr10">
+                            <div class="bgextra2"></div>
+                            <div class="dottedline4"></div>
+                            <div class="bgextra21"></div>
+                            <div class="dottedline4"></div>
+                            <div class="bgextra12"></div>
+                        </div> -->
+            <!-- FINANCING PHASE-3 END  -->
+
+            <!-- FINANCING PHASE-4 START  -->
+            <!-- <div class="row1 mr10">
+                            <div class="bgextra2"></div>
+                            <div class="dottedline4"></div>
+                            <div class="bgextra22"></div>
+                            <div class="dottedline4"></div>
+                            <div class="bgextra4"></div>
+                        </div> -->
+            <!-- FINANCING PHASE-4 END  -->
+
+            <!-- FINANCING PHASE-5 START  -->
+            <!-- <div class="row1">
+                            <div class="rewardicon"></div>
+                            <div class="backgroundsubtext">Contract Complete</div>
+                        </div> -->
+            <!-- FINANCING PHASE-5 END  -->
+
+            <!-- FINANCING PHASE-6 START  -->
+            <!-- <div class="row1 mr10">
+                            <div class="bgextra2"></div>
+                            <div class="dottedline4"></div>
+                            <div class="bgextra21"></div>
+                            <div class="dottedline4"></div>
+                            <div class="bgextra32"></div>
+                        </div> -->
+            <!-- FINANCING PHASE-6 END  -->
+
+            <!-- FINANCING PHASE-7 START  -->
+            <!-- <div class="row1 mr10">
+                            <div class="bgextra2"></div>
+                            <div class="dottedline4"></div>
+                            <div class="bgextra3"></div>
+                            <div class="dottedline4"></div>
+                            <div class="bgextra4"></div>
+                        </div> -->
+            <!-- FINANCING PHASE-7 END  -->
+          </div>
+        </div>
+
+        <!-- FINANCING-BUTTON PHASE-1 START  -->
+        <!-- <button class="blueButton row1" (click)="
+            hidden_contract = !hidden_contract;
+            hidden_projectsetup = false;
+            hidden_underwriting = false;
+            hiddensite = false;
+            hidden_construction = false;
+            hidden_activity = false
+          " *ngIf="phase_type == 'Project Setup'">
+          <div class="icon3"></div>
+          Setup financing request
+        </button> -->
+        <!-- FINANCING-BUTTON PHASE-1 END  -->
+
+        <!-- FINANCING-BUTTON PHASE-2 START  -->
+        <!-- <button class="blueButton row1" (click)="
+            hidden_contract = !hidden_contract;
+            hidden_projectsetup = false;
+            hidden_underwriting = false;
+            hiddensite = false;
+            hidden_construction = false;
+            hidden_activity = false
+          " *ngIf="phase_type == 'Contracting'">
+          <div class="icon4"></div>
+          Complete financing request
+        </button> -->
+        <!-- FINANCING-BUTTON PHASE-2 END  -->
+      </div>
+
+      <!-- FINANCING PHASE-1 START  -->
+      <div class="financing-p1" [ngStyle]="{ display: hidden_contract ? 'block' : 'none' }">
+        <div id="form" class=" ">
+          <!-- <form action="" method="post" name="registration" class="register"> -->
+          <form [formGroup]="finance_form" #f3="ngForm" novalidate>
+            <div class="displayFlex ptop26">
+              <div class=" ">
+                <div class="pb33px">
+                  <div class="displayFlex AlignItemCenter">
+                    <div class="w250 textAlignLeft calcTitle">
+                      <div>FINANCING REQUESTED
+                        <span class="text-danger">*</span>
+                      </div>
+
+                      <div class="symbol-text">($)</div>
+                    </div>
+                    <div class="w250 textAlignLeft">
+                      <div>
+                        <input
+                          name="financingRequested"
+                          id="financingRequested"
+                          formControlName="financingRequested"
+                          placeholder="Enter requested financing amount"
+                          class="calcinput w250"
+                          (keypress)="keyPressNumbers($event)"
+                          (change)="financingRequestedFormat($event)"
+                          (keyup)="financeRemove($event)"
+                          (keyup)="financeRemoveComa($event)"
+                          [(ngModel)]="data.financingRequested"
+                        />
+                        <!-- <small
+                          *ngIf="(data.financingRequested < 25001 || showFinancingRequested < 25001) && data.businessAddress != 'Rhode Island, USA' && validationMessage == true"
+                          class="text-danger">The financing requested cannot be less than $25,001
+                        </small> -->
+                        <small *ngIf="condition1" class="text-danger">The financing requested cannot be less than $25,001
+                        </small>
+                        <!-- <small
+                          *ngIf="(data.financingRequested > 300000 || showFinancingRequested > 300000) && data.businessAddress != 'Rhode Island, USA' && validationMessage == true"
+                          class="text-danger">The financing requested is in excess of our current lending limit.
+                        </small> -->
+                        <!-- <small
+                          *ngIf="(data.financingRequested < 25001 || showFinancingRequested < 25001) && data.businessAddress == 'Rhode Island, USA'"
+                          class="text-danger">The financing requested cannot be less than $25,001
+                        </small> -->
+
+                        <div *ngIf="condition2" class="text-danger">The financing requested is in excess of our current lending limit.
+                        </div>
+
+                        <!-- <small
+                          *ngIf="(data.financingRequested > 300000 || showFinancingRequested > 300000) && data.businessAddress == 'Rhode Island, USA'"
+                          class="text-danger">The financing requested is in excess of our current lending limit.
+                        </small> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class=" pb30px">
+                  <div class="displayFlex AlignItemCenter">
+                    <div class="w250 textAlignLeft calcTitle">
+                      <div>FINANCING TERM REQUESTED</div>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="w250 textAlignLeft">
+                      <select
+                        class="dropdownSite"
+                        formControlName="financingTermRequested"
+                        name="financingTermRequested"
+                        id="site-select"
+                        (change)="onChangefinance($event.target.value)"
+                        [(ngModel)]="data.financingTermRequested"
+                      >
+                        <option disabled value="null">
+                          Choose your requested term
+                        </option>
+                        <option
+                          *ngFor="let d of loanproductsmonths"
+                          [ngValue]="d.tenorMonths"
+                          [disabled]="isReadOnly"
+                        >
+                          {{ d.tenorMonths }} months /
+                          {{ d.achDiscountInterestRate }}% interest
+                        </option>
+                      </select>
+                      <i class="fas fa-caret-down dropdownIcon"></i>
+                      <small
+                        *ngIf="finance_form.get('financingTermRequested').touched && finance_form.get('financingTermRequested').invalid "
+                        class="text-danger"
+                      >
+                        Please provide Financing Term Requested to send the loan agreement
+                      </small>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="clear: both"></div>
+              </div>
+            </div>
+            <div class="pendingText">
+              Note, the interest rates shown reflect an ACH discount of 0.50%. This discount is available to any borrower electing to use ACH to make loan payments
+            </div>
+
+            <fieldset>
+              <!-- <label for="Student"
+                >FINANCING REQUESTED<br />
+                <div class="symbol-text">($)</div>
+              </label>
+              <input
+                name="financingRequested"
+                id="financingRequested"
+                formControlName="financingRequested"
+                [(ngModel)]="data.financingRequested"
+                (keypress)="keyPressNumbers($event)"
+                placeholder="Enter requested financing amount"
+              /> -->
+
+              <!-- <div class="mt60">
+                <label for="Matric_no">FINANCING TERM REQUESTED</label>
+                <div>
+                  <select
+                    class="dropdownSite"
+                    formControlName="financingTermRequested"
+                    [(ngModel)]="data.financingTermRequested"
+                    name="financingTermRequested"
+                    id="site-select"
+                  >
+                    <option value="null">Choose your requested term</option>
+                    <option value="Term1">12</option>
+                    <option value="Term2">24</option>
+                    <option value="Term3">36</option>
+                    <option value="Term1">42</option>
+                    <option value="Term2">48</option>
+                    <option value="Term3">49</option>
+                    <option value="Term1">50</option>
+                    <option value="Term2">60</option>
+                  </select>
+                  <i class="fas fa-caret-down dropdownIcon"></i>
+                </div>
+              </div> -->
+            </fieldset>
+          </form>
+        </div>
+      </div>
+      <div style="clear: both"></div>
+      <div class="pb70" [ngStyle]="{ display: hidden_contract ? 'block' : 'none' }">
+        <button
+          [disabled]="phase != 'Contracting'"
+          (click)="sendfinanceform()"
+          class="newbutton"
+          gtagEvent
+          trackOn="click"
+          category="Parter Activity"
+          [params]="{ event_label: 'Financing Contract Sent'}"
+        >
+          Send financing contract to customer
+        </button>
+        <div class="row1">
+          <div class="column">
+            <div class="leftheading3 fs-12">SENT TO CUSTOMER</div>
+            <div class="pendingText">Pending</div>
+          </div>
+          <div class="financearrowicon"></div>
+          <div class="column">
+            <div class="leftheading3 fs-12">CUSTOMER SIGNED</div>
+            <div class="pendingText">Pending</div>
+          </div>
+          <div class="financearrowicon"></div>
+          <div class="column">
+            <div class="leftheading3 fs-12">ORKA APPROVED</div>
+            <div class="pendingText">Pending</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row1">
+        <div class="image11 row1 jus-spa" (click)="
+            hidden_construction = !hidden_construction;
+            hidden_contract = false;
+            hidden_projectsetup = false;
+            hidden_underwriting = false;
+            hiddensite = false;
+            hidden_activity = false
+          ">
+          <div class="row1">
+            <!-- EXPOSED-ARROW START  -->
+            <!-- <div class="exposedArrow"></div> -->
+            <!-- EXPOSED-ARROW END  -->
+
+            <!-- EXPANDED-ARROW START  -->
+            <div [ngClass]="hidden_construction ? 'expandedArrow' : 'exposedArrow'"></div>
+            <!-- EXPANDED-ARROW END  -->
+            <div class="backgroundtext">PROJECT CONSTRUCTION</div>
+          </div>
+
+          <!-- PROJECT-CONSTRUCTION PHASE-1 START  -->
+          <div class="row1">
+            <div class="backgroundsubtext mr10">Milestones</div>
+            <div class="mr17 row1">
+              <div [ngClass]="
+                  eqipment_status == 'complete'
+                    ? 'backgroundsubtext1'
+                    : eqipment_status == 'need_additional'
+                    ? 'backgroundsubtext2'
+                    : eqipment_status == 'confirmed'
+                    ? 'backgroundsubtext3'
+                    : 'backgroundsubtextSameColor'
+                ">
+                EQUIPMENT
+              </div>
+              <div [ngClass]="
+                  construct_status == 'complete'
+                    ? 'backgroundsubtext1'
+                    : construct_status == 'need_additional'
+                    ? 'backgroundsubtext2'
+                    : construct_status == 'confirmed'
+                    ? 'backgroundsubtext3'
+                    : 'backgroundsubtextSameColor'
+                ">
+                CONSTRUCTION
+              </div>
+              <div [ngClass]="
+                  permission_status == 'complete'
+                    ? 'backgroundsubtext1'
+                    : permission_status == 'need_additional'
+                    ? 'backgroundsubtext2'
+                    : permission_status == 'confirmed'
+                    ? 'backgroundsubtext3'
+                    : 'backgroundsubtextSameColor'
+                ">
+                COMMERCIAL OPERATION
+              </div>
+            </div>
+          </div>
+          <!-- PROJECT-CONSTRUCTION PHASE-1 END  -->
+
+          <!-- PROJECT-CONSTRUCTION PHASE-2 START  -->
+          <!-- <div class="row1">backgroundsubtextSameColor
+                            <div class="backgroundsubtext">Milestones</div>
+                            <div class="backgroundsubtext1">EQUIPMENT</div>
+                            <div class="backgroundsubtext2">CONSTRUCTION</div>
+                            <div class="backgroundsubtext3">Commercial Operation</div>
+                        </div> -->
+          <!-- PROJECT-CONSTRUCTION PHASE-2 END  -->
+        </div>
+
+        <!-- PROJECT-CONSTRUCTION-BUTTON PHASE-1 START  -->
+        <button class="blueButton row1" (click)="
+            hidden_construction = !hidden_construction;
+            hidden_contract = false;
+            hidden_projectsetup = false;
+            hidden_underwriting = false;
+            hiddensite = false;
+            hidden_activity = false
+          " *ngIf="phase_type == 'Construction'">
+          <div class="icon5"></div>
+          Upload project documentation
+        </button>
+        <!-- PROJECT-CONSTRUCTION-BUTTON PHASE-1 END  -->
+      </div>
+
+      <!-- PROJECT-CONSTRUCTION PHASE-1 START  -->
+      <div class="pb70 project-cons-p1" [ngStyle]="{ display: hidden_construction ? 'block' : 'none' }">
+        <table class="table pt_20 width-800 projectTable">
+          <thead>
+            <tr>
+              <th scope="col">MILESTONE</th>
+              <th scope="col">UPLOAD</th>
+              <th scope="col">SUBMIT</th>
+              <th scope="col">APPROVED</th>
+              <th scope="col">DISBURSED</th>
+              <th scope="col">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Equipment & Permit</th>
+              <td>
+                <div class="row bordercss">
+                  <div class="ml-8px" *ngIf="
+                      eqipment_items.length == 0 &&
+                      project_construction['equipment'].length == 0
+                    ">
+                    Equipment
+                  </div>
+                  <div>
+                    <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="equipment($event)"
+                      (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+                      <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                        <div (click)="openFileSelector()" *ngIf="
+                            eqipment_items.length == 0 &&
+                              project_construction['equipment'].length == 0;
+                            else equipE_err
+                          ">
+                          <img src="../../../assets/upload_icon1.svg" class="uploadicon1" alt="" />
+                        </div>
+                        <ng-template #equipE_err>
+                          <div *ngIf="project_construction['equipment'].length > 0">
+                            <div *ngFor="
+                                let item of project_construction['equipment']
+                              ">
+                              <span title="{{ item.originalname }}" (click)="view(item.filename)">
+                                {{ item.originalname | slice: 0:10 }}
+                              </span>
+                              <!-- <span class="tomatoColor">
+                        <i
+                          class="fas fa-times cur-poi"
+                          (click)="deleteFileSelected(e)"
+                        ></i
+                      ></span> -->
+                            </div>
+                          </div>
+                        </ng-template>
+
+                        <div *ngFor="let e of eqipment_items" class="mt10">
+                          <div *ngIf="eqipment_items.length > 0">
+                            <img *ngIf="filetype_equipment_val_res == 'pdf'" src="../../../assets/pdf_icon1.png"
+                              class="pdficon" alt="" />
+                            <img *ngIf="filetype_equipment_val_res == 'doc'" src="../../../assets/doc_icon.png"
+                              class="pdficon" alt="" />
+                            <img *ngIf="filetype_equipment_val_res == 'png'" src="../../../assets/png_icon.png"
+                              class="pdficon" alt="" />
+                            <img *ngIf="
+                                filetype_equipment_val_res == 'jpeg' ||
+                                filetype_equipment_val == 'jpg'
+                              " src="../../../assets/jpeg_icon.png" class="pdficon" alt="" />
+                          </div>
+                          <div>
+                            <span title="{{ e.name }}">{{
+                              e.name.length > 6
+                              ? (e.name | slice: 0:6) + ".."
+                              : e.name
+                              }}</span>
+                          </div>
+                          <div class="ml5">
+                            <span class="tomatoColor">
+                              <i class="fas fa-times cur-poi" (click)="deleteFileSelected1(e)"></i></span>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ngx-file-drop>
+                  </div>
+                </div>
+                <div class="row bordercss">
+                  <div class="ml-34px" *ngIf="
+                      eqipmentPermit_items.length == 0 &&
+                      project_construction['equipmentPermit'].length == 0
+                    ">
+                    Permit
+                  </div>
+                  <div>
+                    <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="equipmentPermit($event)"
+                      (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+                      <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                        <div (click)="openFileSelector()" *ngIf="
+                            eqipmentPermit_items.length == 0 &&
+                              project_construction['equipmentPermit'].length ==
+                                0;
+                            else equipEP_err
+                          ">
+                          <img src="../../../assets/upload_icon1.svg" class="uploadicon1" alt="" />
+                        </div>
+                        <ng-template #equipEP_err>
+                          <div *ngIf="
+                              project_construction['equipmentPermit'].length > 0
+                            ">
+                            <div *ngFor="
+                                let item of project_construction[
+                                  'equipmentPermit'
+                                ]
+                              ">
+                              <span title="{{ item.originalname }}" (click)="view(item.filename)">
+                                {{ item.originalname | slice: 0:10 }}
+                              </span>
+                              <!-- <span class="tomatoColor">
+                        <i
+                          class="fas fa-times cur-poi"
+                          (click)="deleteFileSelected(e)"
+                        ></i
+                      ></span> -->
+                            </div>
+                          </div>
+                        </ng-template>
+
+                        <div *ngFor="let e of eqipmentPermit_items" class="mt10">
+                          <div *ngIf="eqipmentPermit_items.length > 0">
+                            <img *ngIf="filetype_equipment_val_res == 'pdf'" src="../../../assets/pdf_icon1.png"
+                              class="pdficon" alt="" />
+                            <img *ngIf="filetype_equipment_val_res == 'doc'" src="../../../assets/doc_icon.png"
+                              class="pdficon" alt="" />
+                            <img *ngIf="filetype_equipment_val_res == 'png'" src="../../../assets/png_icon.png"
+                              class="pdficon" alt="" />
+                            <img *ngIf="
+                                filetype_equipment_val_res == 'jpeg' ||
+                                filetype_equipment_val == 'jpg'
+                              " src="../../../assets/jpeg_icon.png" class="pdficon" alt="" />
+                          </div>
+                          <div>
+                            <span title="{{ e.name }}">{{
+                              e.name.length > 6
+                              ? (e.name | slice: 0:6) + ".."
+                              : e.name
+                              }}</span>
+                          </div>
+                          <div class="ml5">
+                            <span class="tomatoColor">
+                              <i class="fas fa-times cur-poi" (click)="deleteFileSelectedP1(e)"></i></span>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ngx-file-drop>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <button *ngIf="
+                    submit_date_equipment == '' ||
+                      submit_date_equipmentPermit == '';
+                    else date_err
+                  " (click)="upoadDocumentsProject('e')" class="button1"
+                    gtagEvent
+                        trackOn="click"
+                        category="Partner Activity"
+                        [params]="{event_label: 'Milestone 1 Submitted'}"
+                >
+                  Submit
+                </button>
+                <ng-template #date_err>
+                  {{
+                  submit_date_equipment > submit_date_equipmentPermit
+                  ? (submit_date_equipment | date: "MM-dd-yyyy")
+                  : (submit_date_equipmentPermit | date: "MM-dd-yyyy")
+                  }}
+                </ng-template>
+              </td>
+              <td class="pending_color">
+                <span *ngIf="submit_date_equipment != ''; else esubdate_err">
+                  Pending
+                </span>
+                <ng-template #esubdate_err>------</ng-template>
+              </td>
+              <td class="pending_color">
+                <span *ngIf="submit_date_equipment != ''; else esubdate_err">
+                  Pending
+                </span>
+                <ng-template #esubdate_err>------</ng-template>
+              </td>
+              <td>
+                <div *ngIf="
+                    eqipment_status == 'complete' &&
+                    isApprovalDate &&
+                    submit_date_equipment != ''
+                  " class=" ">
+                  <div class="tableText2">Complete</div>
+                  <div class="tableText3">Submitted for verification</div>
+                </div>
+
+                <div *ngIf="eqipment_status == 'need_additional'" class="tableText2 mb10" style="color: #e50000">
+                  Need additional documentation
+                </div>
+
+                <div *ngIf="isApprovalDate && submit_date_equipment != ''" class="mb10">
+                  <div class="tableText2" style="color: #eeac00">Confirmed</div>
+                  <div class="tableText3" style="color: #eeac00">
+                    Pending disbursement
+                  </div>
+                </div>
+                <div *ngIf="!isApprovalDate && submit_date_equipment != ''" class="mb10">
+                  <div class="tableText2" style="color: #eeac00">Uploaded</div>
+                  <div class="tableText3" style="color: #eeac00">
+                    Pending Approval
+                  </div>
+                </div>
+                <div *ngIf="!isApprovalDate && submit_date_equipment == ''" class="mb10">
+                  ------
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Construction</th>
+              <td>
+                <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="construction($event)"
+                  (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+                  <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                    <div (click)="openFileSelector()" *ngIf="
+                        construct_items.length == 0 &&
+                          project_construction['construction'].length == 0;
+                        else equipC_err
+                      ">
+                      <img src="../../../assets/upload_icon1.svg" class="uploadicon1" alt="" />
+                    </div>
+                    <ng-template #equipC_err>
+                      <div *ngIf="project_construction['construction'].length > 0">
+                        <div *ngFor="
+                            let item of project_construction['construction']
+                          ">
+                          <span title="{{ item.originalname }}" (click)="view(item.filename)">
+                            {{ item.originalname | slice: 0:10 }}
+                          </span>
+                          <!-- <span class="tomatoColor">
+                    <i
+                      class="fas fa-times cur-poi"
+                      (click)="deleteFileSelected(e)"
+                    ></i
+                  ></span> -->
+                        </div>
+                      </div>
+                    </ng-template>
+
+                    <div *ngFor="let e of construct_items" class="mt10">
+                      <div *ngIf="construct_items.length > 0">
+                        <img *ngIf="filetype_construct_val_res == 'pdf'" src="../../../assets/pdf_icon1.png"
+                          class="pdficon" alt="" />
+                        <img *ngIf="filetype_construct_val_res == 'doc'" src="../../../assets/doc_icon.png"
+                          class="pdficon" alt="" />
+                        <img *ngIf="filetype_construct_val_res == 'png'" src="../../../assets/png_icon.png"
+                          class="pdficon" alt="" />
+                        <img *ngIf="
+                            filetype_construct_val_res == 'jpeg' ||
+                            filetype_construct_val_res == 'jpg'
+                          " src="../../../assets/jpeg_icon.png" class="pdficon" alt="" />
+                      </div>
+                      <div>
+                        <span title="{{ e.name }}">{{
+                          e.name.length > 6
+                          ? (e.name | slice: 0:6) + ".."
+                          : e.name
+                          }}</span>
+                      </div>
+                      <div class="ml5">
+                        <span class="tomatoColor">
+                          <i class="fas fa-times cur-poi" (click)="deleteFileSelected2(e)"></i></span>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngx-file-drop>
+              </td>
+              <td>
+                <button *ngIf="submit_date_construct == ''" (click)="upoadDocumentsProject('c')" class="button1">
+                  Submit
+                </button>
+                {{ submit_date_construct | date: "MM-dd-yyyy" }}
+              </td>
+              <td class="pending_color">
+                <span *ngIf="submit_date_construct != ''; else esubdate_err">
+                  Pending
+                </span>
+                <ng-template #esubdate_err>------</ng-template>
+              </td>
+              <td class="pending_color">
+                <span *ngIf="submit_date_construct != ''; else esubdate_err">
+                  Pending
+                </span>
+                <ng-template #esubdate_err>------</ng-template>
+              </td>
+              <td>
+                <div *ngIf="
+                    construct_status == 'complete' &&
+                    isApprovalDateC &&
+                    submit_date_construct != ''
+                  " class=" ">
+                  <div class="tableText2">Complete</div>
+                  <div class="tableText3">Submitted for verification</div>
+                </div>
+
+                <div *ngIf="construct_status == 'need_additional'" class="tableText2" style="color: #e50000">
+                  Need additional documentation
+                </div>
+
+                <div *ngIf="isApprovalDateC && submit_date_construct != ''" class=" ">
+                  <div class="tableText2" style="color: #eeac00">Confirmed</div>
+                  <div class="tableText3" style="color: #eeac00">
+                    Pending disbursement
+                  </div>
+                </div>
+                <div *ngIf="!isApprovalDateC && submit_date_construct != ''" class="mb10">
+                  <div class="tableText2" style="color: #eeac00">Uploaded</div>
+                  <div class="tableText3" style="color: #eeac00">
+                    Pending Approval
+                  </div>
+                </div>
+                <div *ngIf="!isApprovalDateC && submit_date_construct == ''" class="mb10">
+                  ------
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Commercial Operation</th>
+              <td>
+                <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+                  (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+                  <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                    <div (click)="openFileSelector()" *ngIf="
+                        fileitems.length == 0 &&
+                          project_construction['permissiontooperate'].length ==
+                            0;
+                        else equipOP_err
+                      ">
+                      <img src="../../../assets/upload_icon1.svg" class="uploadicon1" alt="" />
+                    </div>
+                    <ng-template #equipOP_err>
+                      <div *ngIf="
+                          project_construction['permissiontooperate'].length > 0
+                        ">
+                        <div *ngFor="
+                            let item of project_construction[
+                              'permissiontooperate'
+                            ]
+                          ">
+                          <span title="{{ item.originalname }}" (click)="view(item.filename)">{{ item.originalname |
+                            slice: 0:10 }}
+                          </span>
+                          <!-- <span class="tomatoColor">
+                    <i
+                      class="fas fa-times cur-poi"
+                      (click)="deleteFileSelected(e)"
+                    ></i
+                  ></span> -->
+                        </div>
+                      </div>
+                    </ng-template>
+
+                    <div *ngFor="let e of fileitems" class="mt10">
+                      <div *ngIf="fileitems.length > 0">
+                        <img *ngIf="filetype_val_res == 'pdf'" src="../../../assets/pdf_icon1.png" class="pdficon"
+                          alt="" />
+                        <img *ngIf="filetype_val_res == 'doc'" src="../../../assets/doc_icon.png" class="pdficon"
+                          alt="" />
+                        <img *ngIf="filetype_val_res == 'png'" src="../../../assets/png_icon.png" class="pdficon"
+                          alt="" />
+                        <img *ngIf="
+                            filetype_val_res == 'jpeg' ||
+                            filetype_val_res == 'jpg'
+                          " src="../../../assets/jpeg_icon.png" class="pdficon" alt="" />
+                      </div>
+                      <div>
+                        <span title="{{ e.name }}">{{
+                          e.name.length > 6
+                          ? (e.name | slice: 0:6) + ".."
+                          : e.name
+                          }}</span>
+                      </div>
+                      <div class="ml5">
+                        <span class="tomatoColor">
+                          <i class="fas fa-times cur-poi" (click)="deleteFileSelected(e)"></i></span>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngx-file-drop>
+              </td>
+              <td>
+                <button *ngIf="submit_date_need == ''" (click)="upoadDocumentsProject('p')" class="button1">
+                  Submit
+                </button>
+                {{ submit_date_need | date: "MM-dd-yyyy" }}
+              </td>
+              <td class="pending_color">
+                <span *ngIf="submit_date_need != '' && permission_status=='complete'; else esubdate_err">
+                  Approved
+                </span>
+                <ng-template #esubdate_err>Pending</ng-template>
+              </td>
+              <td class="pending_color">
+                <span *ngIf="submit_date_need != ''; else esubdate_err">
+                  Pending
+                </span>
+                <ng-template #esubdate_err>------</ng-template>
+              </td>
+              <td>
+                <div *ngIf="
+                    permission_status == 'complete' &&
+                    isApprovalDateP &&
+                    submit_date_need != ''
+                  " class=" ">
+                  <div class="tableText2">Complete</div>
+                  <div class="tableText3">Submitted for verification</div>
+                </div>
+
+                <div *ngIf="permission_status == 'need_additional'" class="tableText2 mb10" style="color: #e50000">
+                  Need additional documentation
+                </div>
+
+                <div *ngIf="isApprovalDateP && submit_date_need != ''" class="mb10">
+                  <div class="tableText2" style="color: #eeac00">Confirmed</div>
+                  <div class="tableText3" style="color: #eeac00">
+                    Pending disbursement
+                  </div>
+                </div>
+
+                <div *ngIf="!isApprovalDateP && submit_date_need != ''" class="mb10">
+                  <div class="tableText2" style="color: #eeac00">Uploaded</div>
+                  <div class="tableText3" style="color: #eeac00">
+                    Pending Approval
+                  </div>
+                </div>
+                <div *ngIf="!isApprovalDateP && submit_date_need == ''" class="mb10">
+                  ------
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="mt50" *ngIf="milestoneReviewComments!=null">
+          <div *ngIf="milestoneReviewComments!=null" class="leftheading3 fs-12" style="color: #e50000">
+            ADDITIONAL INFORMATION NEEDED
+          </div>
+          <div class="underwritingline width-800"></div>
+          <div class="row" *ngFor="let d of milestoneReviewComments">
+            <div class="row" *ngIf="d.status!='Approved' && d.comments!=null">
+              <div class="projectText1">{{(d.milestone=='PTO')?'Commercial Operation':d.milestone}}</div>
+              <div class="projectText2">
+                {{d.comments}}
+              </div>
+            </div>
+            <!-- <div class="submitbutton3"></div> -->
+          </div>
+        </div>
+
+      </div>
+      <!-- PROJECT-CONSTRUCTION PHASE-1 END  -->
+      <!-- PROJECT-CONSTRUCTION PHASE-2 START  -->
+      <!-- <div class="mb50 project-cons-p2">
+                <table class="table pt_20 width-800">
+                    <thead>
+                        <tr>
+                            <th scope="col">MILESTONE</th>
+                            <th scope="col">UPLOAD</th>
+                            <th scope="col">SUBMIT</th>
+                            <th scope="col">APPROVED</th>
+                            <th scope="col">DISBURSED</th>
+                            <th scope="col">STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Equipment</th>
+                            <td>
+                                <div><img src="../../../assets/pdf_icon1.png" class="pdficon" alt=""></div>
+                            </td>
+                            <td>10/8/2021</td>
+                            <td>10/10/2021</td>
+                            <td>10/14/2021</td>
+                            <td>
+                                <div class="mb10">
+                                    <div class="tableText2">Complete</div>
+                                    <div class="tableText3">Submitted for verification</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Construction</th>
+                            <td>
+                                <div><img src="../../../assets/pdf_icon1.png" class="pdficon" alt=""></div>
+                            </td>
+                            <td>10/8/2021</td>
+                            <td class="pending_color">Pending</td>
+                            <td class="pending_color">Pending</td>
+                            <td>
+                                <div class="tableText2 mb10" style="color: #E50000;">Need additional
+                                    documentation</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"></th>
+                            <td>
+                                <div><img src="../../../assets/upload_icon1.svg" class="uploadicon1" alt=""></div>
+                            </td>
+                            <td>
+                                <button class="button1">Submit</button>
+                            </td>
+                            <td class="pending_color">Pending</td>
+                            <td class="pending_color">Pending</td>
+                            <td>
+                                <div class="mb10">
+                                    <div class="tableText2" style="color: #EEAC00;">Confirmed</div>
+                                    <div class="tableText3" style="color: #EEAC00;">Pending disbursement</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="mt50">
+                    <div class="leftheading3 fs-12" style="color: #E50000;">ADDITIONAL DOCUMENTATION
+                        NEEDED
+                    </div>
+                    <div class="underwritingline width-800"></div>
+                    <div class="row">
+                        <div class="projectText1">Construction</div>
+                        <div class="projectText2">
+                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                            nulla
+                            pariatur. Excepteur sint
+                            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                            laborum.
+                        </div>
+                        <div class="submitbutton3"></div>
+                    </div>
+                </div>
+            </div> -->
+      <!-- PROJECT-CONSTRUCTION PHASE-2 END  -->
+
+      <div class="image13 row1 jus-spa" (click)="
+          hidden_activity = !hidden_activity;
+          hidden_construction = false;
+          hidden_contract = false;
+          hidden_projectsetup = false;
+          hidden_underwriting = false;
+          hiddensite = false
+        ">
+        <div class="row1 mt-m50">
+          <!-- EXPOSED-ARROW START  -->
+          <!-- <div class="exposedArrow"></div> -->
+          <!-- EXPOSED-ARROW END  -->
+
+          <!-- EXPANDED-ARROW START  -->
+          <div [ngClass]="hidden_activity ? 'expandedArrow' : 'exposedArrow'"></div>
+          <!-- EXPANDED-ARROW END  -->
+          <div class="backgroundtext">ACTIVITY LOG</div>
+        </div>
+      </div>
+
+      <!-- ACTIVITY-LOG PHASE-1 START  -->
+      <div class="activityLog" [ngStyle]="{ display: hidden_activity ? 'block' : 'none' }">
+        <div class="scrolldiv">
+          <table class="" cellspacing="20" *ngIf="activity_res != null && activity_res.length > 0">
+            <tr>
+              <th class=" ">Event</th>
+              <th class=" ">User</th>
+              <th class=" ">Date</th>
+            </tr>
+            <tr *ngFor="let activity of activity_res" class=" ">
+              <td class=" ">
+                <div class=" "></div>
+                {{ activity.module }}
+              </td>
+              <td class=" ">
+                <div class=" "></div>
+                {{ activity.user }}
+              </td>
+              <td class=" ">
+                <div class=" "></div>
+                {{ activity.createdat | date: "dd/MM/yyyy" }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <!-- ACTIVITY-LOG PHASE-1 END  -->
+    </div>
+  </div>
+</div>
+<footer>
+  <div class="partnerFooter"></div>
+  <div class="partnerFooterbg">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <img class="footerLogo" src="../../../assets/orka_whitelogo1.png" />
+        </div>
+        <div class="col-md-3">
+          <div class="displayFlex flexDirection">
+            <div class="graytext cursorpointer pr20 pb10px" target="_blank" (click)="privacy()">
+              Privacy Policy
+            </div>
+
+            <div class="graytext cursorpointer pr20 pb10px" target="_blank" (click)="termscondition()">
+              Terms and Conditions
+            </div>
+
+            <div class="graytext cursorpointer pb10px" target="_blank" (click)="securitypolicy()">
+              Security Policy
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="graytext pb10px">Need help or have questions?</div>
+
+          <div class="whiteText pb10px">
+            Don't hesitate to contact ORKA's Support Team at
+            <a href="mailto:support@orkafinance.com" class="footerlinktxt">support@orkafinance.com</a>
+          </div>
+          <div class="whiteText pb10px">or by phone at (844) ORKA-POD.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<ng-template #messagebox>
+  <div class="modal-body text-center">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p class="headtext">Message</p>
+    <p *ngFor="let m of message">{{ m }}</p>
+  </div>
+</ng-template>

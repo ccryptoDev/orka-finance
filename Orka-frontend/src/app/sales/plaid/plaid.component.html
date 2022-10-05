@@ -1,0 +1,265 @@
+<div class="containermainBlock">
+  <div class="headerDiv">
+    <div class="displayFlex spaceBetween plr50">
+      <div class="logoBlock"><img src="../../../assets/logo1.png" /></div>
+      <div>
+        <div class=" ">
+          <div class="whaleBg"></div>
+          <div class="displayFlex progressbarcontiner">
+            <div class="displayFlex" style="margin-right: 87px">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -52px"
+              >
+                Part
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex" style="margin-right: 88px">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -16px"
+              >
+                1
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex" style="margin-right: 89px">
+              <div class="step02"><img src="../../../assets/step03.svg" /></div>
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -16px"
+              >
+                2
+              </div>
+              <div class="blueLineSmall"></div>
+            </div>
+            <div class="displayFlex mr90" style="margin-right: 89px">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px activetext fs16px"
+                style="margin-left: -16px"
+              >
+                3
+              </div>
+              <div
+                class="positionAbsolute AvenirBlack activetext fs16px"
+                style="margin-left: -180px; padding-top: 297px"
+              >
+                BANK STATEMENTS
+              </div>
+              <div class="blueLineBig"></div>
+            </div>
+            <div class="displayFlex mr90">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -16px"
+              >
+                4
+              </div>
+              <div class="blackline"></div>
+            </div>
+            <div class="displayFlex mr90" style="margin-right: 20px">
+              <div
+                class="positionAbsolute AvenirBlack textTransform pt240px fs16px"
+                style="margin-left: -16px"
+              >
+                5
+              </div>
+              <div class="blackline"></div>
+              <div class="infoicon"><img src="../../../assets/info.png" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mainDivsection">
+    <div class="containerBlock">
+      <div class="ptb50">
+        <div class="titleTxt">How’s it going?</div>
+        <div class="mainContent pt50px">
+            ORKA has partnered with Plaid to bring you a seamless and secure way to import account balance
+            data from your business' primary operating account(s) directly into the credit application
+            with no manual effort on your part. Through Plaid, we’ll bring you to your bank’s login
+            screen (two-factor authentication may be required, so have your phone handy) in order 
+            to import 24 months of balance statements from your business bank account.
+        </div>
+        <!-- <div class="mainContent mt30">
+          Not comfortable with the automated experience? You may also share 24
+          months of bank statements using the manual uploader
+          <span style="color: #00b0c7; cursor: pointer" (click)="next()"
+            >here.</span
+          >
+        </div> -->
+      </div>
+      <form name="form"  #f="ngForm" novalidate>
+      <div class="ptb50"><!--LOOKING AHEAD SECTION-->
+       
+          <div class="titleTxt ltext">Looking Ahead!</div>
+
+          <p class="lookingText">Please answer the following questions to provide more detail 
+          about where your business is headed - this will help expedite our review of your finances:</p>
+
+          <div class="questiontext">
+            1. What life cycle stage would best describe your business now? *
+          </div>
+          <div>
+          <select
+          name="lifeCycleStage"
+          id="lifeCycleStage"
+          class="inputField form-control"
+          [(ngModel)]="data.lifeCycleStage"
+          (input)="data.lifeCycleStage = namedata($event)"
+          #lifeCycleStage="ngModel"
+          [ngClass]="{
+            'is-invalid': f.submitted && lifeCycleStage.invalid
+          }"
+          required
+          >
+          <option value=null disabled>Select the most appropriate answer</option>
+          <option value="Growth/expansion">Growth / expansion</option>
+          <option value="Mature/established">Mature / established</option>
+          <option value="Pursuing sale/possible exit">Pursuing sale / possible exit</option>
+          </select>
+          </div>
+          <i class="fas fa-caret-down addressIcon"></i>
+          <small *ngIf="lifeCycleStage.invalid && (lifeCycleStage.touched || f.submitted)"
+            class="text-danger">A response is required</small>
+
+            <div class="questiontext mt-10">
+              2a. What revenue growth do you expect in the year ahead? *
+            </div>
+            <div>
+            <select
+            name="expectedRevGrowth"
+            id="expectedRevGrowth"
+            class="inputField form-control"
+            [(ngModel)]="data.expectedRevGrowth"
+            (input)="data.expectedRevGrowth = namedata($event)"
+            #expectedRevGrowth="ngModel"
+            [ngClass]="{
+              'is-invalid': f.submitted && expectedRevGrowth.invalid
+            }"
+            required
+            >
+            <option value=null disabled>Select from range below</option>
+            <option value="<0%"><0%</option>
+            <option value="1-10%">1-10%</option>
+            <option value="11-25%">11-25%</option>
+            <option value=">25%">>25%</option>
+            </select>
+            </div>
+            <i class="fas fa-caret-down addressIcon"></i>
+            <small *ngIf="expectedRevGrowth.invalid && (expectedRevGrowth.touched || f.submitted)"
+              class="text-danger">A response is required</small>
+
+
+            <div class="questiontext mt-10">
+              2b. What’s driving this growth?*
+            </div>
+            <textarea class="form-control drivertextarea" name="growthDrivers" [(ngModel)]="data.growthDrivers"
+              #growthDrivers="ngModel" minlength="10" required [ngClass]="{ 'is-invalid': f.submitted && growthDrivers.invalid }">
+            </textarea>
+            <small *ngIf="growthDrivers.invalid && (growthDrivers.touched || f.submitted) && !growthDrivers.errors?.minlength"
+            class="text-danger">A response is required</small>
+            <small  class="text-danger" *ngIf="growthDrivers.errors?.minlength">
+              Response must be at least 10 characters long
+            </small> 
+
+
+            <div class="questiontext mt-10">
+              2c. How do you expect your business’ profitability (net margin) to grow over the next 1-3 years, compared to revenue expectations? *
+            </div>
+            <div>
+            <select
+            name="profitabilityGrowth"
+            id="profitabilityGrowth"
+            class="inputField form-control"
+            [(ngModel)]="data.profitabilityGrowth"
+            (input)="data.profitabilityGrowth = namedata($event)"
+            #profitabilityGrowth="ngModel"
+            [ngClass]="{
+              'is-invalid': f.submitted && profitabilityGrowth.invalid
+            }"
+            required
+            >
+            <option value=null disabled>Select the most appropriate answer</option>
+            <option value="In line with revenue">In line with revenue</option>
+            <option value="Lower, due to higher expenses">Lower, due to higher expenses</option>
+            <option value="Lower, due to one time expenses / investments">Lower, due to one time expenses / investments</option>
+            <option value="Higher than revenue">Higher than revenue</option>
+            <option value="Other">Other</option>
+            </select>
+            </div>
+            <i class="fas fa-caret-down addressIcon"></i>
+            <small *ngIf="profitabilityGrowth.invalid && (profitabilityGrowth.touched || f.submitted)"
+              class="text-danger">A response is required</small>
+
+              <ng-container *ngIf="data.profitabilityGrowth == 'Other'">
+                <div class="questiontext mt-10 mb-10" >Please explain</div>
+                <!-- <input type="text" name="profitabilityGrowthreason" class="inputField form-control"
+                (input)="data.profitabilityGrowthreason = namedata($event)"
+                (keypress)="keyPressNumbers($event)" [(ngModel)]="data.profitabilityGrowthreason" #profitabilityGrowthreason="ngModel"
+                required [ngClass]="{
+                  'is-invalid': f.submitted && profitabilityGrowthreason.invalid
+                }" /> -->
+
+                <textarea class="form-control drivertextarea" name="profitabilityGrowthreason" [(ngModel)]="data.profitabilityGrowthreason"
+              #profitabilityGrowthreason="ngModel"  required [ngClass]="{ 'is-invalid': f.submitted && profitabilityGrowthreason.invalid }">
+            </textarea>
+              <small *ngIf="
+              profitabilityGrowthreason.invalid &&
+                  (profitabilityGrowthreason.touched || f.submitted)
+                " class="text-danger">A response is required</small>
+              </ng-container>
+
+
+          <div class="questiontext mt-10">
+            3. Please describe any significant liabilities / indebtedness, including purpose and repayment terms.*
+          </div>
+          <textarea class="form-control drivertextarea" name="liabilities" [(ngModel)]="data.liabilities"
+            #liabilities="ngModel" minlength="10" required [ngClass]="{ 'is-invalid': f.submitted && liabilities.invalid }">
+          </textarea>
+          <small *ngIf="liabilities.invalid && (liabilities.touched || f.submitted) && !liabilities.errors?.minlength"
+          class="text-danger">A response is required</small>
+          <small  class="text-danger" *ngIf="liabilities.errors?.minlength">
+            Response must be at least 10 characters long
+          </small> 
+
+          <div class="questiontext mt-10">
+            4. Describe any challenges, if any, you expect for your business coming out of the COVID-19 pandemic.
+          </div>
+          <textarea class="form-control drivertextarea" name="challenges" [(ngModel)]="data.challenges"
+            #challenges="ngModel" [ngClass]="{ 'is-invalid': f.submitted && challenges.invalid }">
+          </textarea>
+         
+
+        
+      </div><!--LOOKING AHEAD SECTION END-->
+
+      <div class="ptb50">
+        <div class="fotterbg displayFlex">
+          <div class="displayFlex letsgo">
+            <div>
+              <button type="submit" (click)="plaidLogin()">GO TO PLAID</button>
+            </div>
+            <div
+              [ngClass]="{
+                safariarrowalign: OsName == 'MacOS',
+                windowarrowalign: OsName == 'Windows'
+              }"
+              id="arrowalign"
+            >
+              <img
+                src="../../../assets/nextarrow.svg"
+                style="width: 33px; margin-left: 5px"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
