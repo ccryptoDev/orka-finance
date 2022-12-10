@@ -1,15 +1,19 @@
 import {
-    Entity,
-    Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    PrimaryGeneratedColumn,
-    BaseEntity    
+  Entity,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  PrimaryGeneratedColumn,
+  BaseEntity
 } from 'typeorm';
 
 export enum Flags {
-    N = 'N',
-    Y = 'Y'
+  N = 'N',
+  Y = 'Y'
+}
+export enum ReportType {
+  Consumer = 'equifax-consumer',
+  Commercial = 'equifax-comercial-set2'
 }
 
 @Entity({ name: 'tblcreditreport' })
