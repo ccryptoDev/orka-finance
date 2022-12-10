@@ -1,15 +1,30 @@
 import {
-    Entity,
-    Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    PrimaryGeneratedColumn,
-    BaseEntity    
+  Entity,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  PrimaryGeneratedColumn,
+  BaseEntity    
 } from 'typeorm';
 
 export enum Flags {
-    N = 'N',
-    Y = 'Y'
+  N = 'N',
+  Y = 'Y'
+}
+
+export interface ComplyAdvantageReportPayload {
+  code: number;
+  status: string;
+  content: {
+    data: {
+      hits: {
+        doc: {
+          sources: string[];
+          types: string[];
+        };
+      }[];
+    };
+  };
 }
 
 @Entity({ name: 'tblcomplyadvantage' })
