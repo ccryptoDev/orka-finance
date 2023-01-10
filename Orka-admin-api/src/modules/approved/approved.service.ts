@@ -1,11 +1,11 @@
 import { Injectable,InternalServerErrorException } from '@nestjs/common';
 import { getManager } from 'typeorm';
-import {LoanService} from '../loan/loan.service'
-//commit changes for commit
+import { CreditReportService } from '../credit-report/credit-report.service';
+
 @Injectable()
 export class ApprovedService {
     constructor(
-        private readonly creditReportService:LoanService){}
+        private readonly creditReportService: CreditReportService){}
     async get(){
         const entityManager = getManager();
         try{
@@ -52,8 +52,7 @@ export class ApprovedService {
                 data["loanDetails"] = await entityManager.query(`select t."financingRequested", t."financingTermRequested", t.apr, t2."interestBaseRate" ,t."status_flag", t."originationFee", t."paymentAmount",t2.*
                 from tblloan t left join tblproduct t2 on CAST(t2."productId"  as varchar) =t."productId" 
                 where t.id ='${id}' and  t.delete_flag ='N'`)                
-                let creditReports :any = await this.creditReportService.getReports(id);
-                data['equifaxReport'] = creditReports.equifaxReport;
+                data['equifaxReport'] = await this.creditReportService.getByLoanId(id);
                 
                 
                 return {"statusCode": 200, data:data };
