@@ -1,10 +1,17 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getManager } from 'typeorm';
 
-import { ComplyAdvantageReport } from '../../entities/complyAdvantage.entity';
+import { ComplyAdvantageReport, ComplyAdvantageReportPayload } from '../../entities/complyAdvantage.entity';
+import { CustomerEntity } from '../../entities/customer.entity';
 import { ComplyAdvantageReportRepository } from '../../repository/complyAdvantage.repository';
+import { RuleResult } from '../decision-service/decision-service.service';
+
+interface CreateComplyAdvantageDTO {
+  loanId: string;
+  report: ComplyAdvantageReportPayload;
+  ruleResults: RuleResult[];
+}
 
 @Injectable()
 export class ComplyAdvantageService {
@@ -14,81 +21,53 @@ export class ComplyAdvantageService {
     private httpService: HttpService
   ) {}
 
-  async getReport(loanId: string) {
-    const entityManager = getManager();
-    const URL = process.env.ComplyAdvantageUrl + process.env.ComplyAdvantageKey;
-    const checkReport = await entityManager.query(
-      `
-        SELECT
-          report
-        FROM
-          tblcomplyadvantage
-        WHERE
-          loan_id = $1 AND delete_flag = 'N'
-      `,
-      [loanId]
-    );
+  public async create(createComplyAdvantageDto: CreateComplyAdvantageDTO): Promise<ComplyAdvantageReport> {
+    const { loanId, report, ruleResults } = createComplyAdvantageDto;
+    let complyAdvantage = await this.complyAdvantageReportRepository.findOne({ loan_id: loanId });
 
-    if (checkReport.length != 0) {
-      return { status: true, data: checkReport[0].report }
+    if (!complyAdvantage) {
+      complyAdvantage = new ComplyAdvantageReport();
+      complyAdvantage.loan_id = loanId;
+      complyAdvantage.report = JSON.stringify({ complyAdvantage: report, Rules: ruleResults });
+
+      await this.complyAdvantageReportRepository.save(complyAdvantage);
     }
 
-    try {
-      const [customer] = await entityManager.query(
-        `
-          SELECT
-            "ownerFirstName",
-            "ownerLastName",
-            "ownerDOB"
-          FROM
-            tblcustomer
-          WHERE
-            "loanId" = $1
-        `,
-        [loanId]
-      );
+    return complyAdvantage;
+  }
 
-      if (customer) {
-        const headers = { 'Content-Type': 'application/json' };
-        const body = {
-          search_term: {},
-          filters: {},
-          share_url: 1,
-          exact_match: true
-        };
+  public async findByLoanId(loanId: string): Promise<ComplyAdvantageReport> {
+    const middesk = await this.complyAdvantageReportRepository.findOne({ loan_id: loanId });
 
-        if (customer.ownerFirstName) {
-          body["search_term"]["first_name"] = customer.ownerFirstName;
+    if (!middesk) {
+      throw new NotFoundException({ status: 404, message: 'No Comply Advantage report found for the given loan ID' });
+    }
+
+    return middesk;
+  }
+
+  public async getReport(customer: CustomerEntity): Promise<ComplyAdvantageReportPayload> {
+    const complyAdvantageRequestPayload = {
+      exact_match: true,
+      filters: {
+        birth_year: customer.ownerDOB.split('-')[0]
+      },
+      search_term: {
+        first_name: customer.ownerFirstName,
+        last_name: customer.ownerLastName
+      },
+      share_url: 1
+    };
+    const { data }: { data: ComplyAdvantageReportPayload } = await this.httpService.post(
+      `${process.env.ComplyAdvantageUrl}`,
+      complyAdvantageRequestPayload,
+      {
+        headers: {
+          Authorization: `Token ${process.env.ComplyAdvantageKey}`
         }
-
-        if (customer.ownerLastName) {
-          body["search_term"]["last_name"] = customer.ownerLastName;
-        }
-
-        if (customer.ownerDOB) {
-          body["filters"]["birth_year"] = customer.ownerDOB.split('-')[0];
-        }
-
-        const res = await this.httpService.post(URL, body, { headers: headers }).toPromise();
-        const data = JSON.stringify(res.data);
-        
-        if (data) {
-          const complyAdvantageReport = new ComplyAdvantageReport();
-          
-          complyAdvantageReport.loan_id = loanId;
-          complyAdvantageReport.report = data;
-
-          await this.complyAdvantageReportRepository.save(complyAdvantageReport)
-        }
-
-        return { status: true, data: data }
-      } else {
-        return { status: false };
       }
-    } catch (error) {
-      console.log({ error });
+    ).toPromise();
 
-      return { status: false }
-    }
+    return data;
   }
 }
