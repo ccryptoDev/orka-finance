@@ -6,7 +6,6 @@ import { UserEntity } from '../../entities/users.entity';
 import { PartnerProductEntity } from '../../entities/partnerProducts.entity';
 import { ProductEntity } from '../../entities/products.entity';
 import { CustomerEntity } from '../../entities/customer.entity';
-import { Creditreport } from '../../entities/creditReport.entity';
 import { LendingLimitEntity } from '../../entities/lendingLimit.entity';
 import { DecisionServiceService } from './decision-service.service';
 import { DecisionServiceController } from './decision-service.controller';
@@ -23,7 +22,6 @@ import { PlaidModule } from '../plaid/plaid.module';
       PartnerProductEntity,
       ProductEntity,
       CustomerEntity,
-      Creditreport,
       LendingLimitEntity
     ]),
     MailModule,
