@@ -21,9 +21,26 @@ interface ConsumerReportRequestData {
   streetName?: string;
   phone: string;
 }
-export interface ConsumerReport {
+export interface EquifaxConsumerReportPayload {
   status: string;
-  consumers: any; // Type whenever we have time
+  consumers: {
+    equifaxUSConsumerCreditReport: {
+      attributes?: {
+        attributes: {
+          identifier: string;
+          value: string;
+        }[];
+      }[];
+      formerNames?: {
+        firstName: string;
+        lastName: string;
+      }[];
+      models?: {
+        score: number;
+        type: string;
+      }[];
+    }[];
+  };
   links: any[]; // Type whenever we have time
 }
 interface CommercialReportRequestData {
@@ -33,7 +50,7 @@ interface CommercialReportRequestData {
   businessState: string;
   businessZipCode: string;
 }
-export interface CommercialReport {
+export interface EquifaxCommercialReportPayload {
   EfxTransmit: {
     customerReference: string;
     efxInternalTranId: string;
@@ -79,7 +96,7 @@ export class EquifaxService {
     this.equifaxApiConfig = this.configService.get<ConfigType<typeof equifax>>('equifax');
   }
 
-  public async getConsumerReport(requestData: ConsumerReportRequestData): Promise<ConsumerReport> {
+  public async getConsumerReport(requestData: ConsumerReportRequestData): Promise<EquifaxConsumerReportPayload> {
     const equifaxApiToken = await this.authenticate();
     const equifaxPayload = {
       consumers: {
@@ -141,7 +158,7 @@ export class EquifaxService {
         }
       }
     };
-    const { data }: { data: ConsumerReport } = await this.httpService.post(
+    const { data }: { data: EquifaxConsumerReportPayload } = await this.httpService.post(
       `${this.equifaxApiConfig.consumerApiBaseUrl}/business/consumer-credit/v1/reports/credit-report`,
       equifaxPayload,
       {
@@ -155,7 +172,7 @@ export class EquifaxService {
     return data;
   }
 
-  public async getCommercialReport(requestData: CommercialReportRequestData): Promise<CommercialReport> {
+  public async getCommercialReport(requestData: CommercialReportRequestData): Promise<EquifaxCommercialReportPayload> {
     const equifaxPayload = {
       EfxCommercialRequest: {
         customerReference: 'XXXXXXXXXX',
@@ -180,11 +197,6 @@ export class EquifaxService {
               name: 'SCR',
               code: '0117',
               value: 'SCR0117'
-            },
-            {
-              name: 'RPT',
-              code: '3003',
-              value: 'RPT3003'
             }
           ]
         },
@@ -205,7 +217,7 @@ export class EquifaxService {
         }
       }
     };
-    const { data }: { data: CommercialReport } = await this.httpService.post(
+    const { data }: { data: EquifaxCommercialReportPayload } = await this.httpService.post(
       `${this.equifaxApiConfig.commercialApiBaseUrl}/sbeppe/jsonservices/DecisionService/OrderCreditReport`,
       equifaxPayload,
       {
