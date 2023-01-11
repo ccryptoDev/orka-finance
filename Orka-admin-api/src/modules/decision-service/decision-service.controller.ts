@@ -17,12 +17,12 @@ export const Roles = (...roles: string[]) => SetMetadata('role', roles);
 export class DecisionServiceController {
   constructor(private readonly decisionServiceService: DecisionServiceService) { }
 
-  @Post('set-lending-limit-personal-guarantor/:loanId')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: "Set Lending Limit Personal Guarantor" })
-  async personalGaurantor(@Param('loanId', ParseUUIDPipe) loanId: string,) {
-    return this.decisionServiceService.setLendingLimitPersonalGuarantor(loanId)
-  }
+  // @Post('set-lending-limit-personal-guarantor/:loanId')
+  // @HttpCode(HttpStatus.OK)
+  // @ApiOperation({ summary: "Set Lending Limit Personal Guarantor" })
+  // async personalGaurantor(@Param('loanId', ParseUUIDPipe) loanId: string,) {
+  //   return this.decisionServiceService.setLendingLimitPersonalGuarantor(loanId)
+  // }
 
   @Post('qa-lending-limit')
   @HttpCode(HttpStatus.OK)
