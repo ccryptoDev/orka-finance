@@ -35,7 +35,7 @@ export class IncompleteService {
           join tbluser t2 on t2.id = t.user_id
           join tblcustomer t3 on t3."loanId" =t.id 
           where t.id='${id}' and  t.delete_flag = 'N' 
-          and t.active_flag = 'Y' and t.status_flag = 'waiting' order by t."createdAt" desc`)
+          and t.active_flag = 'N' and t.status_flag = 'waiting' order by t."createdAt" desc`)
           data['CoApplicant'] = [];
           data['files'] = await entityManager.query("select originalname,filename from tblfiles where link_id = '"+id+"'")
           data['paymentScheduleDetails'] = await entityManager.query(`select * from tblpaymentschedule where loan_id = '${id}'  order by "scheduleDate" asc`)
