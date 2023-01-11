@@ -11,12 +11,15 @@ import { CommentsRepository } from '../../repository/comments.repository';
 import { LogRepository } from '../../repository/log.repository';
 import { LoanRepository } from '../../repository/loan.repository'
 import { CreditreportRepository } from './../../repository/creditRepositiry.repository';
-import { MiddeskService } from '../middesk/middesk.service';
 import { ComplyAdvantageService } from '../comply-advantage/comply-advantage.service';
 import { ComplyAdvantageReportRepository } from '../../repository/complyAdvantage.repository';
 import { CustomerEntity } from '../../entities/customer.entity';
 import { EquifaxModule } from '../equifax/equifax.module';
 import { DecisionServiceModule } from '../decision-service/decision-service.module';
+import { CreditReportModule } from '../credit-report/credit-report.module';
+import { MiddeskModule } from '../middesk/middesk.module';
+import { PlaidModule } from '../plaid/plaid.module';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
   controllers: [DeniedController],
@@ -33,12 +36,15 @@ import { DecisionServiceModule } from '../decision-service/decision-service.modu
     ]),
     HttpModule,
     EquifaxModule,
-    DecisionServiceModule
+    DecisionServiceModule,
+    CreditReportModule,
+    MiddeskModule,
+    PlaidModule,
+    MailModule
   ],
   providers: [
     DeniedService,
     LoanService,
-    MiddeskService,
     ComplyAdvantageService
   ]
 })
