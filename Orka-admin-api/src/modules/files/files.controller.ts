@@ -7,15 +7,20 @@ import {
   Get,
   Param,
   HttpStatus, HttpCode,
-  Res
+  Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
-import {  ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { CreateUploadDto } from './dto/create-upload.dto';
 import { extname } from "path";
 import { S3 } from 'aws-sdk';
 import { Logger } from '@nestjs/common';
+import { FilesService } from './files.service';
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'src/guards/roles.guard';
+
 export const imageFileFilter = (req, file, callback) => {
   if (!file.originalname.match(/\.(jpg|jpeg|png|pdf)$/)) {
     return callback({"statusCode": 400, "message": "Only jpg,jpeg,png,pdf are allowed!","error": "Bad Request"}, false);
@@ -23,9 +28,9 @@ export const imageFileFilter = (req, file, callback) => {
   }
   callback(null, true);
 };
-import { FilesService } from './files.service';
 
-
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 @Controller('files')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
@@ -74,8 +79,7 @@ export class FilesController {
         resolve(data);
         });
     });
-}
-
+  }
 
   @Get('/download/:name')
   @HttpCode(HttpStatus.OK)
@@ -115,8 +119,5 @@ export class FilesController {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     });
-}
-
-
-  
+  }
 }
