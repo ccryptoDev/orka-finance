@@ -12,12 +12,14 @@ import { MailService } from '../../mail/mail.service';
 import { LoanRepository } from '../../repository/loan.repository'
 import { CreditreportRepository } from './../../repository/creditRepositiry.repository';
 import { LoanService } from './../loan/loan.service';
-import { MiddeskService } from '../middesk/middesk.service';
 import { ComplyAdvantageService } from '../comply-advantage/comply-advantage.service';
 import { ComplyAdvantageReportRepository } from '../../repository/complyAdvantage.repository';
 import { CustomerEntity } from '../../entities/customer.entity';
 import { EquifaxModule } from '../equifax/equifax.module';
 import { DecisionServiceModule } from '../decision-service/decision-service.module';
+import { CreditReportModule } from '../credit-report/credit-report.module';
+import { MiddeskModule } from '../middesk/middesk.module';
+import { PlaidModule } from '../plaid/plaid.module';
 
 @Module({
   controllers: [PendingController],
@@ -35,13 +37,15 @@ import { DecisionServiceModule } from '../decision-service/decision-service.modu
     ]),
     HttpModule,
     EquifaxModule,
-    DecisionServiceModule
+    DecisionServiceModule,
+    CreditReportModule,
+    MiddeskModule,
+    PlaidModule
   ],
   providers: [
     PendingService,
     MailService,
     LoanService,
-    MiddeskService,
     ComplyAdvantageService
   ]
 })
