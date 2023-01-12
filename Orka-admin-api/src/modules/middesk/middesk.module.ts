@@ -1,12 +1,21 @@
 import { Module } from '@nestjs/common';
-import { MiddeskService } from './middesk.service';
+import { HttpModule } from '@nestjs/axios';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { MiddeskController } from './middesk.controller';
-import { HttpModule, HttpService } from '@nestjs/axios';
+import { MiddeskService } from './middesk.service';
+import { MiddeskReport } from '../../entities/middesk.entity';
+import { CustomerEntity } from '../../entities/customer.entity';
+import { CommonModule } from '../../common/common.module';
 
 @Module({
   controllers: [MiddeskController],
-  providers: [MiddeskService],
-  imports: [HttpModule],
-  exports: [MiddeskService]
+  exports: [MiddeskService],
+  imports: [
+    TypeOrmModule.forFeature([MiddeskReport, CustomerEntity]),
+    HttpModule,
+    CommonModule
+  ],
+  providers: [MiddeskService]
 })
-export class MiddeskModule { }
+export class MiddeskModule {}
