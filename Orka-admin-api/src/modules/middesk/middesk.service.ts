@@ -1,197 +1,114 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { getManager } from 'typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { setTimeout } from 'timers';
+import { Repository } from 'typeorm';
+import { AddressHelper } from '../../common/helpers/address.helper';
+import { CustomerEntity } from '../../entities/customer.entity';
 
-export interface MiddeskCreationDTO {
-  name: string;
-  addresses: {
-    address_line1: string;
-    address_line2?: string;
-    city?: string;
-    state?: string;
-    postal_code?: string;
-    full_address?: string;
-  }[];
-  people?: {
-    name: string;
-    first_name?: string;
-    last_name?: string;
-    dob?: string;
-    ssn?: string;
-    address_line1?: string;
-    address_line2?: string;
-    city?: string;
-    state?: string;
-    postal_code?: string;
-    phone_number?: string;
-    email?: string;
-    device_session_id?: string;
-  }[];
-  phone_numbers?: {
-    phone_number: string;
-  }[];
-  tin?: {
-    tin: string;
-  }
+import { MiddeskReport, MiddeskReportPayload } from '../../entities/middesk.entity';
+import { RuleResult } from '../decision-service/decision-service.service';
+
+interface CreateMiddeskDTO {
+  loanId: string;
+  report: MiddeskReportPayload;
+  ruleResults: RuleResult[];
 }
 
 @Injectable()
 export class MiddeskService {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    @InjectRepository(MiddeskReport)
+    private readonly middeskRepository: Repository<MiddeskReport>,
+    private readonly addressHelper: AddressHelper,
+    private readonly httpService: HttpService
+  ) {}
 
-  public async create(middeskCreationDto: MiddeskCreationDTO, loanId: string) {
-    const entityManager = getManager();
-    let url = process.env.middeskurl;
-    let middeskkey = process.env.middeskkey;
-    
-    try {
-      const rawData = await entityManager.query(
-        `
-          SELECT
-            "ownerFirstName" || ' ' || "ownerLastName" as name
-          FROM
-            tblcustomer
-          WHERE
-            "loanId" = $1
-        `,
-        [loanId]
-      );
+  public async create(createMiddeskDto: CreateMiddeskDTO): Promise<MiddeskReport> {
+    const { loanId, report, ruleResults } = createMiddeskDto;
+    let middesk = await this.middeskRepository.findOne({ loan_id: loanId });
 
-      middeskCreationDto['people'] = rawData;
-      
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + middeskkey
-        }
-      };
-      const res = await this.httpService
-        .post(url + 'businesses', middeskCreationDto, config)
-        .toPromise();
-      let id = res.data.id;
-      
-      if (id == '' && id == null) {
-        for (let z = 0; z < 5; z++) {
-          await this.timeout(5000); //  Product Not ready from plaid
+    if (!middesk) {
+      middesk = new MiddeskReport();
+      middesk.loan_id = loanId;
+      middesk.middesk_id = report.id;
+      middesk.report = JSON.stringify({ middesk: report, Rules: ruleResults });
 
-          let res = await this.httpService
-            .post(url + 'businesses', middeskCreationDto, config)
-            .toPromise();
-
-          id = res.data.id;
-
-          if (id != '') {
-            break;
-          }
-        }
-      }
-      
-      const middeskIdCount = await entityManager.query(
-        `
-          SELECT
-            COUNT(loan_id)
-          FROM
-            tblmiddesk
-          WHERE
-            delete_flag='N' AND loan_id = $1
-        `,
-        [loanId]
-      );
-
-      if (middeskIdCount[0].count != 0) {
-        await entityManager.query(
-          `
-            UPDATE
-              tblmiddesk
-            SET
-              delete_flag = 'Y'
-            WHERE
-              loan_id = $1
-          `,
-          [loanId]
-        );
-      }
-
-      await entityManager.query(
-        `
-          INSERT INTO
-            tblmiddesk (loan_id, middesk_id)
-          VALUES
-            ($1, $2)
-        `,
-        [loanId, id]
-      );
-
-      return true;
-    } catch (error) {
-      console.log(error);
-
-      throw new InternalServerErrorException(error);
+      await this.middeskRepository.save(middesk);
     }
+
+    return middesk;
   }
 
-  public async get(loanId: string) {
-    try {
-      const entityManager = getManager();
-      const url = process.env.middeskurl;
-      const middeskkey = process.env.middeskkey;
-      const [middesk] = await entityManager.query(
-        `
-          SELECT
-            middesk_id,
-            report
-          FROM
-            tblmiddesk
-          WHERE
-            loan_id = $1 AND delete_flag = 'N'
-        `,
-        [loanId]
-      );
-  
-      if (middesk) {
-        if (middesk.report) {
-          return { status: true, data: middesk.report };
-        } else {
-          const config = {
-            headers: {
-              'Content-type': 'application/json',
-              Accept: 'application/json',
-              Authorization: 'Bearer ' + middeskkey
-            }
-          };
-          const res = await this.httpService
-            .get(url + 'businesses/' + middesk['middesk_id'], config)
-            .toPromise();
-          const data = JSON.stringify(res.data);
-  
-          if (data) {
-            await entityManager.query(
-              `
-                UPDATE
-                  tblmiddesk
-                SET
-                  report = $1
-                WHERE
-                  loan_id = $2 AND delete_flag = 'N'
-              `,
-              [data, loanId]
-            );
-          }
-  
-          return { status: true, data: data };
+  public async getReport(customer: CustomerEntity): Promise<MiddeskReportPayload> {
+    const middeskRequestPayload = {
+      addresses: [
+        {
+          address_line1: customer.businessAddress,
+          city: customer.city,
+          postal_code: customer.zipCode,
+          state: this.addressHelper.getState(customer.zipCode),
         }
-      } else {
-        return { status: false, data: null }
+      ],
+      name: customer.legalName,
+      people: [
+        {
+          name: customer.ownerFirstName
+        }
+      ],
+      phone_numbers: [
+        {
+          phone_number: customer.businessPhone
+        }
+      ],
+      tin: {
+        tin: customer.taxId
       }
-    } catch (error) {
-      console.log(error);
+    };
+    const { data }: { data: MiddeskReportPayload } = await this.httpService.post(
+      `${process.env.middeskurl}/businesses`,
+      middeskRequestPayload,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.middeskkey}`
+        }
+      }
+    ).toPromise();
+    const updatedMiddeskReport = await this.findReport(data.id);
 
-      return { status: false };
+    return updatedMiddeskReport;
+  }
+
+  public async findByLoanId(loanId: string): Promise<MiddeskReport> {
+    const middesk = await this.middeskRepository.findOne({ loan_id: loanId });
+
+    if (!middesk) {
+      throw new NotFoundException({ status: 404, message: 'No Middesk report found for the given loan ID' });
     }
-}
 
-  private async timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return middesk;
+  }
+
+  private async findReport(reportId: string): Promise<MiddeskReportPayload> {
+    let data: MiddeskReportPayload;
+    let currentReportStatus = '';
+
+    while (currentReportStatus !== 'in_review') {
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      const response = await this.httpService.get(
+        `${process.env.middeskurl}/businesses/${reportId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.middeskkey}`
+          }
+        }
+      ).toPromise();
+  
+      data = response.data;
+      currentReportStatus = data.status;
+    }
+
+    return data;
   }
 }
