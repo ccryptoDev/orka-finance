@@ -589,157 +589,210 @@ export class PlaidService {
     }
   }
 
-  async getAssets(id){//loan_id
+  async getAssets(loanId: string) {
     const entityManager = getManager();
+
     try{
-        //fetching all the accounts of a loan ID
-        const rawData:any = await entityManager.query(`SELECT id, asset_report_token from tblplaidmaster where loan_id = '${id}' and asset_report_token is not null;`);
-        for(let i=0;i<rawData.length;i++){
-            const configuration = new Configuration(this.plaidConfig);
-              try {
-                const client = new PlaidApi(configuration);
-                var d = new Date();
-                var d1 = new Date();
-                d1.setDate(d1.getDate() - 365);
-                const today = this.dt(d);
-                const thirtyDaysAgo = this.dt(d1);
-                console.log(rawData[i])
-                const request: AssetReportGetRequest = {
-                  asset_report_token: rawData[i]['asset_report_token'],
-                  include_insights: true,
-                };//getting the asset reports
-                const response  = await client.assetReportGet(request);
-                response.data.report.items[0].accounts.map(async(e)=>{
-                  let mask = 'XXXXXXXXXXXX'+e.mask;
-                  //selecting the right bank account
-                  let accInfo = await entityManager.query(`select id from tblbankaccounts where acno ='${mask}' and type='${e.type}' and subtype ='${e.subtype}' and loan_id ='${id}'`)
-                  //console.log(accInfo[0],e.type,e.subtype)
-                  if(accInfo[0]){
-                    let historicalBalanceArray=[];
-                    e.historical_balances.map((b)=>{
-                        let historicalBalance = new HistoricalBalanceEntity();
-                        historicalBalance.bankAccountId=accInfo[0]['id']
-                        historicalBalance.amount = b.current;
-                        historicalBalance.date = new Date(b.date);
-                        historicalBalance.currency=b.iso_currency_code;
-                        historicalBalanceArray.push(historicalBalance);
-                    })
-                    this.historicalBalanceRepository.save(historicalBalanceArray)
-                  }
-                  else{
-                    //need to handle if the account is not exists in the tblbankaccounts
-                    //We can have 2 columns assets  -->Y or N and transactions --> Y or N and based on that we shall fetch later
-                  }
-                })
-                return {"statusCode": 200, message:'Asset Report Saved Successfully' }; 
-              } catch (error) {
-                console.log(error);
-                if(error.data.error_code == 'PRODUCT_NOT_READY')
-                {
-                  return {"statusCode":200,message:["Asset report is not ready yet. Try again later"]}
-                }
-                console.log(error)
-                return {"statusCode": 400,"message": error.response.data.error_message}
+      const rawData: any = await entityManager.query(
+        `
+          SELECT
+            id,
+            asset_report_token
+          from
+            tblplaidmaster
+          where
+            loan_id = $1 and asset_report_token is not null
+        `,
+        [loanId]
+      );
+      
+      for (let i = 0; i < rawData.length; i++) {
+        const configuration = new Configuration(this.plaidConfig);
+
+          try {
+            const client = new PlaidApi(configuration);
+            const request: AssetReportGetRequest = {
+              asset_report_token: rawData[i]['asset_report_token'],
+              include_insights: true,
+            };
+            const response  = await client.assetReportGet(request);
+
+            for (const e of response.data.report.items[0].accounts) {
+              const mask = 'XXXXXXXXXXXX' + e.mask;
+              const accInfo = await entityManager.query(
+                `
+                  select
+                    id
+                  from
+                    tblbankaccounts
+                  where
+                    acno = $1 and type = $2 and subtype = $3 and loan_id = $4
+                `,
+                [mask, e.type, e.subtype, loanId]
+              );
+              const existingHistoricalBalances = await entityManager.query(
+                `
+                  SELECT
+                    COUNT(*)
+                  FROM
+                    tblhistoricalbalance
+                  WHERE
+                    "bankAccountId" = $1
+                `,
+                [accInfo[0]['id']]
+              );
+              
+              if (accInfo[0] && !Number(existingHistoricalBalances[0].count)) {
+                let historicalBalanceArray = [];
+
+                e.historical_balances.map((b)=>{
+                  const historicalBalance = new HistoricalBalanceEntity();
+
+                  historicalBalance.bankAccountId = accInfo[0]['id'];
+                  historicalBalance.amount = b.current;
+                  historicalBalance.date = new Date(b.date);
+                  historicalBalance.currency= b.iso_currency_code;
+
+                  historicalBalanceArray.push(historicalBalance);
+                });
+
+                this.historicalBalanceRepository.save(historicalBalanceArray);
+              } else {
+                // need to handle if the account is not exists in the tblbankaccounts
+                // We can have 2 columns assets  -->Y or N and transactions --> Y or N and based on that we shall fetch later
               }
-        }
-        
-            return {"statusCode": 200, data:rawData };            
-    }catch (error) {
-        console.log(error);
-        
-        return {"statusCode": 500, "message": [new InternalServerErrorException(error)['response']['name']], "error": "Bad Request"};
+            }
+
+            return {"statusCode": 200, message: 'Asset Report Saved Successfully' }; 
+          } catch (error) {
+            console.log(error);
+
+            if(error.data.error_code == 'PRODUCT_NOT_READY') {
+              return {"statusCode":200,message:["Asset report is not ready yet. Try again later"]}
+            }
+
+            console.log(error);
+
+            return {"statusCode": 400,"message": error.response.data.error_message}
+          }
+      }
+      
+      return { "statusCode": 200, data: rawData };
+    } catch (error) {
+      console.log(error);
+      
+      return {"statusCode": 500, "message": [new InternalServerErrorException(error)['response']['name']], "error": "Bad Request"};
     }
   }
 
   async getAssetsDisplay(id){
     try {
-      let banks = []
-      let allAccountAvg = []
-        let plaidAccessTokens = await this.plaidMasterRepository.find({loan_id:id, delete_flag: Flags.N })
-        if(plaidAccessTokens.length){          
-          for(let p=0; p<plaidAccessTokens.length; p++){
-            let bankAccounts = await this.bankAccountsRepository.find({where:{loan_id: id, plaid_access_token_master_id: plaidAccessTokens[p].id, delete_flag: Flags.N}})
-            // console.log(bankAccounts)
-            if(bankAccounts.length>0){
-              for(let i=0; i<bankAccounts.length; i++){
-                let historicalBalRes = await this.historicalBalanceRepository.find({where: {bankAccountId: bankAccounts[i].id}})
-                bankAccounts[i]['average_balance']=[];
-                let averageCompute:{}={};
-                //Getting the values in its appropriate month
-                historicalBalRes.map((e)=>{
-                    let month = new Intl.DateTimeFormat('en-US', {month:'long'}).format(e.date)
-                    let year = e.date.getFullYear();
-                    let monthYear=month+'-'+year;
-                    // averageCompute['November-2021']=[]
-                    if(averageCompute.hasOwnProperty(monthYear)){
-                        averageCompute[monthYear].push(e.amount)
-                    }
-                    else{
-                      averageCompute[monthYear]=[];
-                      averageCompute[monthYear].push(e.amount)
-                    }
-                })
-                //Calculate all the months average
-                for(let key in averageCompute){
-                  if(averageCompute.hasOwnProperty(key)){
-                    const average = averageCompute[key].reduce((a,b)=>a+b,0)/averageCompute[key].length;
-                    // console.log(key,average)
-                    let bal:{} = {
-                      month:key,
-                      value:average.toFixed(2)
-                    }
-                    bankAccounts[i]['average_balance'].push(bal)
-                    allAccountAvg.push(bal)
-                  }
-                  // console.log(averageCompute[key])
+      const banks = [];
+      const allAccountAvg = [];
+      const plaidAccessTokens = await this.plaidMasterRepository.find({ loan_id: id, delete_flag: Flags.N });
+
+      if (plaidAccessTokens.length) {
+        for (let p = 0; p < plaidAccessTokens.length; p++) {
+          const bankAccounts = await this.bankAccountsRepository.find({
+            where: {
+              loan_id: id,
+              plaid_access_token_master_id: plaidAccessTokens[p].id,
+              delete_flag: Flags.N
+            }
+          });
+          
+          if (bankAccounts.length > 0) {
+            for (let i = 0; i < bankAccounts.length; i++) {
+              const historicalBalances = await this.historicalBalanceRepository.find({
+                where: {
+                  bankAccountId: bankAccounts[i].id
+                }
+              });
+
+              bankAccounts[i]['average_balance'] = [];
+
+              const averageCompute = {};
+              
+              historicalBalances.forEach((historicalBalance) => {
+                const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(historicalBalance.date);
+                const year = historicalBalance.date.getFullYear();
+                const monthYear = month + '-' + year;
+                
+                if (averageCompute.hasOwnProperty(monthYear)) {
+                  averageCompute[monthYear].push(historicalBalance.amount);
+                } else{
+                  averageCompute[monthYear] = [];
+                  averageCompute[monthYear].push(historicalBalance.amount);
+                }
+              });
+              
+              for (let key in averageCompute) {
+                if (averageCompute.hasOwnProperty(key)) {
+                  const average = averageCompute[key].reduce((a, b) => a + b, 0) / averageCompute[key].length;                  
+                  const bal = { month: key, value: average.toFixed(2) };
+
+                  bankAccounts[i]['average_balance'].push(bal);
+                  allAccountAvg.push(bal);
                 }
               }
             }
-            banks.push({bankName: plaidAccessTokens[p].institutionName, bankAccounts: bankAccounts})
-          }
-          let finalAvg = []
-          let month = []
-          for(let i = 0;i<allAccountAvg.length;i++)
-          {   
-              if(month.indexOf(allAccountAvg[i].month)==-1)
-              {
-                  month.push(allAccountAvg[i].month)
-              }
           }
 
-          for(let i = 0; i<month.length;i++)
-          {
-              let sum = 0;
-              for(let j = 0; j<allAccountAvg.length;j++)
-              {
-                  if(allAccountAvg[j].month===month[i])
-                  {   
-                      sum += parseInt(allAccountAvg[j].value)
-                  }
-              }
-              let avg = {
-                  month:month[i],
-                  value:sum
-              }
-              finalAvg.push(avg)
-          }
-
-          let minBalance = finalAvg[0].value;
-          for(let i = 0;i<finalAvg.length;i++)
-          {
-              if(minBalance>finalAvg[i].value)
-              {
-                  minBalance = finalAvg[i].value
-              }
-          }
-          return {"statusCode": 200, data:banks, allAccountAvg, minBalance}; 
-        }else{          
-          return {"statusCode": 100, "message":"No Accounts Available", data: []};
+          banks.push({ bankName: plaidAccessTokens[p].institutionName, bankAccounts: bankAccounts });
         }
-    }
-    catch (error) {
-      console.log(error)
-      return {"statusCode": 500, "message": [new InternalServerErrorException(error)['response']['name']], "error": "Bad Request"};
+
+        const finalAvg = [];
+        const month = [];
+
+        for (let i = 0; i < allAccountAvg.length; i++) {
+          if (month.indexOf(allAccountAvg[i].month) === -1) {
+            month.push(allAccountAvg[i].month);
+          }
+        }
+
+        for (let i = 0; i < month.length; i++) {
+          let sum = 0;
+
+          for (let j = 0; j < allAccountAvg.length; j++) {
+            if (allAccountAvg[j].month === month[i]) {   
+              sum += parseInt(allAccountAvg[j].value);
+            }
+          }
+
+          const avg = { month: month[i], value: sum };
+          
+          finalAvg.push(avg);
+        }
+
+        let minBalance = finalAvg[0].value;
+
+        for (let i = 0; i < finalAvg.length; i++) {
+          if (minBalance > finalAvg[i].value) {
+            minBalance = finalAvg[i].value;
+          }
+        }
+
+        return {
+          statusCode: 200,
+          data: banks,
+          allAccountAvg,
+          minBalance
+        };
+      } else {          
+        return {
+          "statusCode": 100,
+          "message": "No Accounts Available",
+          data: []
+        };
+      }
+    } catch (error) {
+      console.log(error);
+
+      return {
+        "statusCode": 500,
+        "message": [new InternalServerErrorException(error)['response']['name']],
+        "error": "Bad Request"
+      };
     }
   }
 
