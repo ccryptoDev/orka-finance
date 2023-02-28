@@ -17,7 +17,7 @@ import { Logs } from './dto/logs.dto';
 import { LogEntity } from '../../entities/log.entity';
 import { LogRepository} from '../../repository/log.repository';
 import { LoanDetails } from './dto/loanDetails.dto';
-import { LoanService } from '../loan/loan.service';
+import { CreditReportService } from '../credit-report/credit-report.service';
 
 config();
 
@@ -31,7 +31,7 @@ export class PendingService {
     @InjectRepository(LogRepository) private readonly logRepository: LogRepository,
     @InjectRepository(LoanRepository) private readonly loanRepository:LoanRepository,
     private readonly mailService: MailService,
-    private readonly creditReportService:LoanService
+    private readonly creditReportService: CreditReportService
   ) {}
 
   async get() {
@@ -52,7 +52,7 @@ export class PendingService {
 
   }
 
-  async getdetails(id){
+  async getdetails(id: string){
     const entityManager = getManager();
 
     try{
@@ -175,11 +175,8 @@ export class PendingService {
           `,
           [id]
         );
-
-        const creditReports :any = await this.creditReportService.getReports(id);
-
-        data['equifaxReport'] = creditReports.equifaxReport;
-
+        data['equifaxReport'] = await this.creditReportService.getByLoanId(id);
+        
         return {"statusCode": 200, data:data };
       } else {
         return {
@@ -200,157 +197,140 @@ export class PendingService {
   }
 
   async setdenied(id) {
-      const entityManager = getManager();
-      try{
-          const rawData = await entityManager.query(`select count(*) as count from tblloan where delete_flag = 'N' and active_flag = 'Y' and status_flag = 'waiting' and `+"id = '"+id+"'");
-          const user_id = await entityManager.query(`select "user_id" as user_id from tblloan where delete_flag = 'N' and active_flag = 'Y' and status_flag = 'waiting' and `+"id = '"+id+"'");
-          const sendDatamail =  await entityManager.query(`select t3."legalName" as partnerName,t3."ownerFirstName" as applicantFname,t3.email from tblloan t 
-          left join tbluser t2 on t2.id =t.user_id 
-          left join tblcustomer t3 on t3."loanId" =t.id
-          where t.id='${id}'`)
-          const sendInstallerData = await entityManager.query(`select t3."legalName",
-          (select "firstName"  from tbluser where id=t.ins_user_id)
-            as salesrepFname,(select email  from tbluser where id=t.ins_user_id) as sendemail from tblloan t 
-          left join tbluser t2 on t2.id =t.user_id 
-          left join tblcustomer t3 on t3."loanId" =t.id 
-          where t.id='${id}'`)
+    const entityManager = getManager();
+    
+    try {
+      const [loanData] = await entityManager.query(
+        `
+          select
+            t2."legalName" as "customerName",
+            t2.email as "customerEmail",
+            t3."businessName" as "partnerName",
+            t4."firstName" as "salesRepFirstName",
+            t4.email as "salesRepEmail"
+          from
+            tblloan t
+          join
+            tblcustomer t2 on t.id = t2."loanId"
+          join
+            tblinstaller t3 on t.ins_user_id = t3.user_id
+          join
+            tbluser t4 on t."salesRepId" = t4.id
+          where
+            t.id = $1 and t.delete_flag = 'N' and t.active_flag = 'Y' and t.status_flag = 'waiting';
+        `,
+        [id]
+      );
 
+      if (loanData) {
+        await entityManager.query(
+          `
+            UPDATE
+              tblloan
+            SET
+              status_flag = 'canceled'::tblloan_status_flag_enum::tblloan_status_flag_enum,
+              approval_denial_date = now()
+            WHERE
+              id = $1
+          `,
+          [id]
+        );
 
-          const sendDataMainInstaller =  await entityManager.query(`select t2."mainInstallerId" as partnerId  from tblloan t 
-          left join tbluser t2 on t2.id =t.user_id 
-          where t.id='${id}'`)
+        const data = {
+          'partnerName': loanData['partneName'],
+          'partnerSalesName': loanData['salesRepFirstName'],
+          'businessName': loanData['customerName'],
+        };
 
-          if(sendDataMainInstaller[0]['partnerId']==null){
-              const Partnername =  await entityManager.query(`select t2."firstName" as partnerName from tblloan t 
-              left join tbluser t2 on t2.id =t.user_id 
-              where t.id='${id}'`)
+        this.mailService.recreditdecisiongenericEmail(loanData['salesRepEmail'], data);
+        this.mailService.creditOutcomeStandardEmail(loanData['customerEmail']);
 
-              //console.log('1---',Partnername)
-              const data={
-              'partnerName':Partnername[0]['partnername'],
-              'partnerSalesName':sendInstallerData[0]['salesrepfname'],
-              'businessName':sendInstallerData[0]['legalName'],
-              }
-
-
-              if(rawData[0]['count']>0 && user_id.length>0){
-
-              this.mailService.recreditdecisiongenericEmail(sendInstallerData[0]['sendemail'],data)
-              }
-
-          }else{
-              const Partnername =  await entityManager.query(`select t."firstName" as partnerName from tbluser
-                t where t.id ='${sendDataMainInstaller[0]['partnerId']}'`)
-                const data={
-                  'partnerName':Partnername[0]['partnername'],
-                  'partnerSalesName':sendInstallerData[0]['salesrepfname'],
-                  'businessName':sendInstallerData[0]['legalName'],
-                  }
-
-                  //console.log('1---',Partnername)
-                  if(rawData[0]['count']>0 && user_id.length>0){
-                  this.mailService.recreditdecisiongenericEmail(sendInstallerData[0]['sendemail'],data)
-                  }
-          }
-
-          if(rawData[0]['count']>0){
-              await entityManager.query(`UPDATE tblloan
-              SET status_flag='canceled'::tblloan_status_flag_enum::tblloan_status_flag_enum
-              WHERE `+"id = '"+id+"'");
-          //console.log(rawData)
-          this.mailService.creditOutcomeStandardEmail(sendDatamail[0]['email'])
-          //this.mailService.creditoutcomeInstalleremail(sendDataInstallermail[0]['installer'],'denied')
-              return {"statusCode": 200 };
-          }else{
-              return {"statusCode": 500, "message": ['This Loan Id Not Exists'], "error": "Bad Request"};
-          }
-      }catch (error) {
-          return {"statusCode": 500, "message": [new InternalServerErrorException(error)['response']['name']], "error": "Bad Request"};
+        return {"statusCode": 200 };
+      } else {
+        return {
+          "statusCode": 500,
+          "message": ['This loan does not Exist'],
+          "error": "Bad Request"
+        };
       }
+    } catch (error) {
+      return {
+        "statusCode": 500,
+        "message": [new InternalServerErrorException(error)['response']['name']],
+        "error": "Bad Request"
+      };
+    }
   }
 
   async setapproved(id) {
-      const entityManager = getManager();
-      try{
-          const rawData = await entityManager.query(`select count(*) as count from tblloan where delete_flag = 'N' and active_flag = 'Y' and status_flag = 'waiting' and `+"id = '"+id+"'");
-          const user_id = await entityManager.query(`select "user_id" as user_id from tblloan where delete_flag = 'N' and active_flag = 'Y' and status_flag = 'waiting' and `+"id = '"+id+"'");
-          const sendDatamail =  await entityManager.query(`select t3."legalName" as partnerName,t3."ownerFirstName" as applicantFname,t3.email from tblloan t 
-          left join tbluser t2 on t2.id =t.user_id 
-          left join tblcustomer t3 on t3."loanId" =t.id
-          where t.id='${id}'`)
+    const entityManager = getManager();
 
-          const sendInstallerData = await entityManager.query(`select t3."legalName",
-          (select "firstName"  from tbluser where id=t.ins_user_id)
-            as salesrepFname,(select email  from tbluser where id=t.ins_user_id) as sendemail from tblloan t 
-          left join tbluser t2 on t2.id =t.user_id 
-          left join tblcustomer t3 on t3."loanId" =t.id 
-          where t.id='${id}'`)
+    try {
+      const [loanData] = await entityManager.query(
+        `
+          select
+            t2."legalName" as "customerName",
+            t2.email as "customerEmail",
+            t2."ownerFirstName",
+            t3."businessName" as "partnerName",
+            t4."firstName" as "salesRepFirstName",
+            t4.email as "salesRepEmail"
+          from
+            tblloan t
+          join
+            tblcustomer t2 on t.id = t2."loanId"
+          join
+            tblinstaller t3 on t.ins_user_id = t3.user_id
+          join
+            tbluser t4 on t."salesRepId" = t4.id
+          where
+            t.id = $1 and t.delete_flag = 'N' and t.active_flag = 'Y' and t.status_flag = 'waiting';
+        `,
+        [id]
+      );
 
+      if (loanData) {
+        await entityManager.query(
+          `
+            UPDATE
+              tblloan
+            SET
+              status_flag = 'approved'::tblloan_status_flag_enum::tblloan_status_flag_enum,
+              phase_flag = 'Project Setup'::tblloan_phase_flag_enum::tblloan_phase_flag_enum,
+              approval_denial_date = now()
+            WHERE
+              id = $1
+          `,
+          [id]
+        );
 
-          const sendDataMainInstaller =  await entityManager.query(`select t2."mainInstallerId" as partnerId  from tblloan t 
-          left join tbluser t2 on t2.id =t.user_id 
-          where t.id='${id}'`)
+        const data = {
+          'partnerName': loanData['partnerName'],
+          'partnerSalesName': loanData['salesRepFirstName'],
+          'businessName': loanData['customerName'],
+        };
 
-            if(sendDataMainInstaller[0]['partnerId']==null){
-                const Partnername =  await entityManager.query(`SELECT t2."firstName" as partnerName, t2."businessName" FROM tblloan t 
-                    left join tbluser t2 on t2.id =t.user_id 
-                    where t.id='${id}'`
-                )
-                //console.log('1---',Partnername)
-                sendDatamail[0]['partnerBusiness'] = Partnername[0]['businessName'];
-                const data={
-                'partnerName':Partnername[0]['partnername'],
-                'partnerSalesName':sendInstallerData[0]['salesrepfname'],
-                'businessName':sendInstallerData[0]['legalName'],
-                }
+        this.mailService.recreditdecisiongenericEmail(loanData['salesRepEmail'], data);
+        this.mailService.creditOutcomeEmail(loanData['customerEmail'], loanData['partnerName'], loanData['ownerFirstName']);
 
+        return {"statusCode": 200 };
+      } else {
+        return {
+          "statusCode": 500,
+          "message": ['This loan does not Exist'],
+          "error": "Bad Request"
+        };
+      }
+    } catch (error) {
+      console.log(error);
 
-
-                if(rawData[0]['count']>0 && user_id.length>0){
-
-                this.mailService.recreditdecisiongenericEmail(sendInstallerData[0]['sendemail'],data)
-                }
-               
-            }else{
-                const Partnername =  await entityManager.query(`select t."firstName" as partnerName, t2."businessName" from tbluser
-                 t where t.id ='${sendDataMainInstaller[0]['partnerId']}'`)
-                sendDatamail[0]['partnerBusiness'] = Partnername[0]['businessName'];
-                const data={
-                    'partnerName':Partnername[0]['partnername'],
-                    'partnerSalesName':sendInstallerData[0]['salesrepfname'],
-                    'businessName':sendInstallerData[0]['legalName'],
-                    }
-
-                  //console.log('1---',Partnername)
-                  if(rawData[0]['count']>0 && user_id.length>0){
-                  this.mailService.recreditdecisiongenericEmail(sendInstallerData[0]['sendemail'],data)
-                  }
-          }
-
-
-
-          if(rawData[0]['count']>0 && user_id.length>0){
-              await entityManager.query(`UPDATE tblloan
-              SET status_flag='approved'::tblloan_status_flag_enum::tblloan_status_flag_enum,phase_flag='Project Setup'::tblloan_phase_flag_enum::tblloan_phase_flag_enum
-              WHERE `+"id = '"+id+"'");
-              await entityManager.query(`UPDATE tbluser
-              SET active_flag='Y'::tbluser_active_flag_enum::tbluser_active_flag_enum
-              WHERE id='${user_id[0]['user_id']}';`)
-
-               
-                //console.log('send data',data)
-                this.mailService.creditOutcomeEmail(sendDatamail[0]['email'],sendDatamail[0]['partnerBusiness'],sendDatamail[0]['applicantfname'])
-                //console.log(rawData)
-               
-                //this.mailService.creditoutcomeInstalleremail(sendDataInstallermail[0]['installer'],'approved')
-                return {"statusCode": 200 };
-            }else{
-                return {"statusCode": 500, "message": ['This Loan Id Not Exists'], "error": "Bad Request"};
-            }
-        }catch (error) {
-            return {"statusCode": 500, "message": [new InternalServerErrorException(error)['response']['name']], "error": "Bad Request"};
-        }
+      return {
+        "statusCode": 500,
+        "message": [new InternalServerErrorException(error)['response']['name']],
+        "error": "Bad Request"
+      };
     }
+  }
 
   async invite(id){
       let url:any = process.env.OrkaUrl
