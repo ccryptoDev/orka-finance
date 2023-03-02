@@ -8,5 +8,6 @@ export const typeOrmConfig: TypeOrmModule = {
   username: databaseConfig.username,
   password: databaseConfig.password,
   database: databaseConfig.database,
-  entities: [`${__dirname}/../../**/*.entity.{js,ts}`]
+  entities: [`${__dirname}/../../**/*.entity.{js,ts}`],
+  logging: true
 };
