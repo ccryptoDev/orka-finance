@@ -24,20 +24,17 @@ import { S3 } from 'aws-sdk';
 import { Logger } from '@nestjs/common';
 
 export const Roles = (...roles: string[]) => SetMetadata('role', roles);
-
 export const imageFileFilter = (req, file, callback) => {
   if (!file.originalname.match(/\.(jpg|jpeg|png|pdf)$/)) {
     return callback({"statusCode": 400, "message": "Only jpg,jpeg,png,pdf are allowed!","error": "Bad Request"}, false);
-    //return callback(new Error('Only jpg,jpeg,png,pdf are allowed!'), false);
   }
   callback(null, true);
 };
 
-
 @ApiTags('Uploads')
-//@ApiBearerAuth()
-//@Roles('customer')
-//@UseGuards(AuthGuard('jwt'),RolesGuard)
+@ApiBearerAuth()
+@Roles('customer')
+@UseGuards(AuthGuard('jwt'),RolesGuard)
 @Controller('uploads')
 
 export class UploadsController {
@@ -75,11 +72,6 @@ export class UploadsController {
     });
   }
 
-
-
-
-
-
   @Get('allFiles/:id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get all files of Partner' })
@@ -87,14 +79,6 @@ export class UploadsController {
     @Param('id') link_id: string) {
     return this.uploadsService.getAll(link_id)
   }
-  
-  @Get('deleteFiles/:id')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Delete Uploaded Details' })
-  async deleteFiles(@Param('id') id: string) {
-    return this.uploadsService.deleteFiles(id);
-  }
-
 
   @Post()
   @UseInterceptors(
@@ -141,18 +125,12 @@ export class UploadsController {
         resolve(data);
         });
     });
-}
+  }
 
-
-getS3() {
-  return new S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  });
-}
-
-
-
-
-  
+  getS3() {
+    return new S3({
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    });
+  }  
 }
