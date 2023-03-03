@@ -4,7 +4,7 @@ import { CreateUploadDto } from './dto/create-upload.dto';
 import { FilesRepository } from '../../repository/files.repository';
 import { FilesEntity } from '../../entities/files.entity';
 import {LoanRepository} from '../../repository/loan.repository';
-import { getManager } from 'typeorm';
+import { getManager, Like } from 'typeorm';
 import { LogEntity } from 'src/entities/log.entity';
 import { LogRepository } from 'src/repository/log.repository';
 
@@ -29,7 +29,19 @@ export class UploadsService {
     try {
       const rawData = await this.filesRepository.find({
         select:['id','services','originalname','filename','documentType','createdAt','updatedAt'],
-        where:{link_id:link_id,delete_flag:'N'}
+        where:
+        [
+          {
+            link_id:link_id,
+            delete_flag:'N',
+            services: Like('%businessVerification/%')
+          },
+          {
+            link_id:link_id,
+            delete_flag:'N',
+            services: Like('%borrower/%')
+          }
+        ]
       })
       return {
         statusCode:200,
