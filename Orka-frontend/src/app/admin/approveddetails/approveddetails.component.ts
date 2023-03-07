@@ -1,4 +1,4 @@
-import { Component, OnInit,TemplateRef,ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit,TemplateRef,ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpService } from '../../_service/http.service';
 import { first } from 'rxjs/operators';
@@ -84,8 +84,8 @@ export class ApproveddetailsComponent implements OnInit {
   creditDataRes: any = null;
   creditData: any = null;
   paynetReport: any = null;
-  equifaxReport: any = [];
-  equifaxCommercialReport: any =[];
+  equifaxConsumerReport: any;
+  equifaxCommercialReport: any;
   filetr_attributes: any = [
     {
     "identifier": "6036",
@@ -124,6 +124,7 @@ export class ApproveddetailsComponent implements OnInit {
   ofacSdnList: any = false;
   complyUrl: any;
   middeskData: any = [];
+  complyAdvantageReport: any;
   urlSafeComplyAdvantage: any;
   statedIncome: any = [];
   updateincomeVerifiedv: string;
@@ -141,7 +142,7 @@ export class ApproveddetailsComponent implements OnInit {
   kycEquifaxPassed = false;
   kycComplyAdvandagePassed = false;
   kybEquifaxPassed = false;
-  middeskReportPassed = false;
+  middeskReportPassed = true;
   requestForInformationData = {
     'Tax documents needed' : { text: 'Please provide the last two years of tax returns for your business' , status: false },
     'Confirm property ownership' : { text: 'Please provide proof that you own your property (e.g., most recent mortgage statement or other proof of ownership)' , status: false },
@@ -168,23 +169,27 @@ export class ApproveddetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let pages = sessionStorage.getItem('pages')
-    let tabs = sessionStorage.getItem('tabs')
-    if(pages){
-      pages = JSON.parse(pages)
+    let pages = sessionStorage.getItem('pages');
+    let tabs = sessionStorage.getItem('tabs');
+
+    if (pages) {
+      pages = JSON.parse(pages);
+
       for (let i = 0; i < pages.length; i++) {
-        if(pages[i]['name']=='Approved Application'){
-          if(tabs){
-            tabs = JSON.parse(tabs)
+        if (pages[i]['name'] == 'Approved Application') {
+          if (tabs) {
+            tabs = JSON.parse(tabs);
 
             for (let j = 0; j < tabs[pages[i]['id']].length; j++) {
-              this.tabs[tabs[pages[i]['id']][j]['name']]=true;
+              this.tabs[tabs[pages[i]['id']][j]['name']] = true;
             }
-            i = pages.length+1
+
+            i = pages.length + 1;
           }
         }
       }
     }
+
     this.bankAddForm = this.formBuilder.group({
       bankName: ['', Validators.required],
       holderName: ['', Validators.required],
@@ -197,7 +202,6 @@ export class ApproveddetailsComponent implements OnInit {
     this.getlogs()
     this.getbankaccounts(this.route.snapshot.paramMap.get('id'))
     this.gethistoricalbalance(this.route.snapshot.paramMap.get('id'))
-
     this.getallfiles();
     this.getComplyAdvantage(this.route.snapshot.paramMap.get('id'))
     this.getMiddesk(this.route.snapshot.paramMap.get('id'))
@@ -298,59 +302,44 @@ export class ApproveddetailsComponent implements OnInit {
     .subscribe(res=>{
       //this.addlogs("view load",id)
       if(res['statusCode']==200){
-        this.data= res['data']
+        this.data = res['data'];
 
-        this.equifaxReport = this.data.equifaxReport.filter(xx => xx.reportType == 'equifax-consumer');
-        this.equifaxCommercialReport = this.data.equifaxReport.filter(xx => xx.reportType == 'equifax-comercial-set2');
+        const consumerCreditReport = this.data.equifaxReport.find(xx => xx.reportType == 'equifax-consumer');
+        const commercialCreditReport = this.data.equifaxReport.find(xx => xx.reportType == 'equifax-comercial-set2');
 
-        this.data.commonEquifaxRules=this.commonEquifaxRules;
-        // this.rawconsumer_data=JSON.stringify(this.equifaxReport);
-        // this.rawcommercial_data=JSON.stringify(this.equifaxCommercialReport);
+        this.equifaxConsumerReport = consumerCreditReport ? JSON.parse(consumerCreditReport.report) : consumerCreditReport;
+        this.equifaxCommercialReport = commercialCreditReport ? JSON.parse(commercialCreditReport.report) : commercialCreditReport;
 
+        if (this.equifaxConsumerReport) {
+          this.kycEquifaxPassed = this.equifaxConsumerReport.Rules.every((rule) => rule.RuleStatus === 'PASS' || rule.RuleStatus === 'BYPASS');
+          this.data.filter_att = this.filetr_attributes;
 
-        if(this.equifaxCommercialReport.length > 0) {
-          const passedKyb = this.equifaxCommercialReport.length && this.equifaxCommercialReport[0].report.Rules.filter(it => it.RuleStatus.toLowerCase() === "pass" )
-         
-          this.kybEquifaxPassed = this.equifaxCommercialReport.length > 0 && passedKyb.length === this.equifaxCommercialReport[0].report.Rules.length;
-        }
-
-        if(this.equifaxReport.length > 0){
-
-          this.data.filter_att=this.filetr_attributes
-
-          if(this.equifaxReport[0].report.equaifax.consumers.equifaxUSConsumerCreditReport[0].models!=null){
-
-            this.data.model_filter=this.equifaxReport[0].report.equaifax.consumers.equifaxUSConsumerCreditReport[0].models.filter(xx => xx.modelNumber == '05453');
-            this.data.model_filter2=this.equifaxReport[0].report.equaifax.consumers.equifaxUSConsumerCreditReport[0].models.filter(xx => xx.modelNumber == '04129');
-
-            this.data.model_filter_array=this.data.model_filter.concat(this.data.model_filter2)
-          }else{
-            this.data.model_filter_array=[];
+          if (this.equifaxConsumerReport.equaifax.consumers.equifaxUSConsumerCreditReport[0].models) {
+            this.data.model_filter = this.equifaxConsumerReport.equaifax.consumers.equifaxUSConsumerCreditReport[0].models.filter(xx => xx.modelNumber == '05453');
+            this.data.model_filter2 = this.equifaxConsumerReport.equaifax.consumers.equifaxUSConsumerCreditReport[0].models.filter(xx => xx.modelNumber == '04129');
+            this.data.model_filter_array = this.data.model_filter.concat(this.data.model_filter2);
+          } else {
+            this.data.model_filter_array = [];
           }
-          
-          const passedKyc = this.equifaxReport.length > 0  && this.equifaxReport[0].report.Rules.filter(it => it.RuleStatus.toLowerCase() === "pass" )
-          this.kycEquifaxPassed = this.equifaxReport.length > 0 && passedKyc.length === this.equifaxReport[0].report.Rules.length;
-        
-        }
-        
-        if(this.equifaxCommercialReport.length > 0 && this.equifaxCommercialReport[0].report.EfxTransmit.OFACCommercialResponse!=null){
-
-          this.OFACCommercialResponse=this.equifaxCommercialReport[0].report.EfxTransmit.OFACCommercialResponse.split( "\n" )
         }
 
-        if(this.equifaxCommercialReport.length > 0 && this.equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport && !this.equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0]) {
-          this.equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport = [this.equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport];
+        if(this.equifaxCommercialReport) {
+          this.kybEquifaxPassed = this.equifaxCommercialReport.Rules.every((rule) => rule.RuleStatus === 'PASS' || rule.RuleStatus === 'BYPASS');
+
+          if (this.equifaxCommercialReport.equaifax.EfxTransmit.OFACCommercialResponse) {
+            this.OFACCommercialResponse = this.equifaxCommercialReport.equaifax.EfxTransmit.OFACCommercialResponse.split("\n");
+          }
+
+          if (this.equifaxCommercialReport.equaifax.EfxTransmit.CommercialCreditReport && !this.equifaxCommercialReport.equaifax.EfxTransmit.CommercialCreditReport[0]) {
+            this.equifaxCommercialReport.equaifax.EfxTransmit.CommercialCreditReport = [this.equifaxCommercialReport.equaifax.EfxTransmit.CommercialCreditReport];
+          }
         }
-        this.data.attributes=this.PSPS4129
 
-        if(this.equifaxCommercialReport.lenght>0){
-          this.OFACCommercialResponse=this.equifaxCommercialReport[0].report.EfxTransmit.OFACCommercialResponse.split( "\n" )
-          
-          
-        }//console.log('//////',this.OFACCommercialResponse)
+        this.data.attributes = this.PSPS4129;
 
-        this.pay()
-        this.getcomments()
+        this.pay();
+        this.getcomments();
+
         this.editNameFields['firstName'] = this.data.from_details[0]["firstname"];
         this.editNameFields['lastName'] = this.data.from_details[0]["lastname"];
         this.editStreetFields['streetAddress'] = this.data.from_details[0]["streetAddress"];
@@ -398,13 +387,18 @@ export class ApproveddetailsComponent implements OnInit {
   view(showFile: TemplateRef<any>,filename){
     filename = filename.split('/')
     filename = filename[filename.length-1]
-    // window.open(environment.adminapiurl+"files/download/"+filename, "_blank");
+    
     this.showFiles = environment.adminapiurl + "files/download/" + filename;
-    this.urlSafe= this.sanitizer.bypassSecurityTrustResourceUrl(this.showFiles);
-    let res =filename.split('.')
-    this.checkType =res[1];
-      this.modalRef = this.modalService.show(showFile)
+    this.service
+      .authgetfile(`files/download/${filename}`, 'admin')
+      .pipe(first())
+      .subscribe(async (res) => {
+        console.log(res);
 
+        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(new Blob([res], { type: 'application/pdf' })));
+        this.checkType = filename.split('.')[1];
+        this.modalRef = this.modalService.show(showFile)
+      });
   }
 
   close(): void {
@@ -805,49 +799,7 @@ export class ApproveddetailsComponent implements OnInit {
     })
   }
 
-  pullCreditReport(reportType:string):void {
-    let loan_id = this.route.snapshot.paramMap.get('id');
-    this.service.authget('loan/pull-equifax-credit-report/'+ loan_id,'admin')
-    .pipe(first())
-    .subscribe(res=>{
-      if (res['statusCode']==200) {
-        //this.toastrService.success("Equifax Credit Report")
-
-        setTimeout(() => {
-
-          this.router.navigate(['admin/pendings/'+loan_id]);
-        }, 1000);  //5s
-       /* if (reportType == 'equifax') {
-          this.equifaxReport = res['equifaxReport']
-        } else if(reportType == 'paynet') {
-          this.paynetReport = res['paynetReport'];
-          if (this.paynetReport.payNetReport) {
-            this.paynetReport.payNetReport = this._sanitizer.bypassSecurityTrustHtml(this.paynetReport.payNetReport);
-          }
-        }*/
-      } else {
-        this.message = res['message']
-        //this.modalRef = this.modalService.show(this.messagebox);
-        //console.log('------',currentUrl)
-        //this.toastrService.error(this.message)
-        this.toastrService.error(this.message)
-
-
-      }
-    }
-    ,err=>{
-      if(err['error']['message'].isArray){
-        this.message = err['error']['message']
-      }else{
-        this.message = [err['error']['message']]
-      }
-      this.modalRef = this.modalService.show(this.messagebox);
-    })
-
-  }
-
   getattvalcode(a:any,data:any){
-    //let b='--'
     for(let i= 0 ; i<data.length; i++) {
       if(a==data[i].code) {
         return data[i].value;
@@ -1053,45 +1005,55 @@ export class ApproveddetailsComponent implements OnInit {
     return false;
   };
 
-  getMiddesk(loanId) {
-    this.service.authget('loan/middeskreport/' + loanId, 'admin')
-      .subscribe(res => {
-       // console.log('chekcmid',res['data'])
-        if (res['statusCode'] == 200) {
-          if(res['data'] == null){
-            if(!this.middeskPullTried) {
-              this.middeskPullTried = true;
-              this.generateMiddeskId(loanId)
+  getMiddesk(loanId: string) {
+    this.service
+      .authget(`loans/${loanId}/middesk`, 'admin')
+      .pipe(first())
+      .subscribe(
+        (res) => {
+          const middesk: any = res;
+          const middeskReport = JSON.parse(middesk.report).middesk;
+          const tasksRuleKeysMap = new Map([
+            ['Business legal name matches what was listed in credit app', ['name']],
+            ['Business address matches what was listed in credit app', ['address_verification']],
+            ['Certificate of Good Standing is present', ['sos_match', 'sos_active', 'sos_domestic']],
+            ['Business is a US-based/owned business ', ['address_deliverability']],
+            // ['NAICS Code is among those on ORKA\'s High Risk NAICS Codes list', ['']],
+            ['Personal guarantors\' names match what was stated in credit app', ['person_verification']],
+            ['OFAC check returns a hit', ['watchlist']],
+            ['TIN is verified for the business', ['tin']]
+          ]);
+
+          for (const [rule, keys] of tasksRuleKeysMap) {
+            const correspondingTasks = middeskReport.review.tasks.filter((task) => keys.includes(task.key));
+            const taskMessages = [];
+            const taskStatuses = [];
+            const taskSubLabels = [];
+
+            correspondingTasks.forEach((task) => {
+              taskMessages.push(task.message);
+              taskStatuses.push(task.status);
+              taskSubLabels.push(task.sub_label);
+            });
+
+            this.middeskData.push({
+              label: rule,
+              message: taskMessages.join('; '),
+              status: taskStatuses.every((status) => status === 'success') ? 'success' : 'failure',
+              sub_label: taskSubLabels.join('; ')
+            });
+
+            if (this.middeskData[this.middeskData.length - 1].status !== 'success') {
+              this.middeskReportPassed = false;
             }
           }
-          else{
-            const result = JSON.parse(res['data'])
-           
-           this.middeskData = result['review']?.['tasks'] || [];
+        },
+        (err) => {
+          const errorMessage = err.status === 500 ? 'Something went wrong' : err.error.message;
 
-            //this.middeskReportPassed
-            const passedCount = this.middeskData.filter(it => it.status.toLowerCase() == 'success')
-            this.middeskReportPassed = (passedCount.length === this.middeskData.length)
-            // console.log(result,"--<midd--->", res['data'])
-          }
+          this.toastrService.error(errorMessage);
         }
-      }, err => {
-        console.log(err)
-      })
-  }
-
-  generateMiddeskId(loanId){
-    this.service.authpost("loan/middesk/" + loanId, 'admin', null)
-      .pipe(first())
-      .subscribe(res => {
-        //console.log('chekcmiddd',res)
-        if (res['statusCode'] == 200) {
-          // console.log("calles--mid--id--->")
-          this.getMiddesk(loanId)
-        }
-      }, err => {
-          console.log(err)
-        })
+      )
   }
 
   updateloanIdstatus(id, val, m){
@@ -1117,38 +1079,25 @@ export class ApproveddetailsComponent implements OnInit {
     });
   }
 
-  getComplyAdvantage(loanId) {
-    // console.log("ideee--->", loanId)
-    let result;
-    this.service.authpost("loan/complyadvantagereport/" + loanId, 'admin', null)
+  getComplyAdvantage(loanId: string) {
+    this.service.authget(`loans/${loanId}/comply-advantage`, 'admin')
       .pipe(first())
-      .subscribe(res => {
-        if (res['statusCode'] == 200) {
-          // console.log("<----comply--->", res['data']);
-          result = JSON.parse(res['data']);
-          this.complyUrl = result['content']['data']['share_url'];
-          this.urlSafeComplyAdvantage = this.sanitizer.bypassSecurityTrustResourceUrl(this.complyUrl);
-          this.complyadvantageAdverseMedia = this.keyExists(result, "complyadvantage-adverse-media")
-          this.amlTypes = this.keyExists(result, "aml_types")
-          this.ofacSdnList = this.keyExists(result, "ofac-sdn-list")
-          // console.log(result,this.complyadvantageAdverseMedia,this.amlTypes,this.ofacSdnList)
-          
+      .subscribe(
+        (res: any) => {
+          console.log(res);
 
-          this.kycComplyAdvandagePassed = !this.complyadvantageAdverseMedia && !this.amlTypes && !this.ofacSdnList
-        } else {
-          this.toastrService.error(res['message'])
-        }
-      }, err => {
-        //console.log('sendForm', err);
-        if (err['error']['message'].isArray) {
-          this.message = err['error']['message']
-        } else {
-          this.message = [err['error']['message']]
-        }
-        this.modalRef = this.modalService.show(this.messagebox);
+          this.complyAdvantageReport = JSON.parse(res.report);
+
+          console.log(this.complyAdvantageReport);
+
+          this.urlSafeComplyAdvantage = this.sanitizer.bypassSecurityTrustResourceUrl(this.complyAdvantageReport.complyAdvantage.content.data.share_url);
+          this.kycComplyAdvandagePassed = this.complyAdvantageReport.Rules.every((rule) => rule.RuleStatus === 'PASS');
+      },
+      (err) => {
+        const errorMessage = err.status === 500 ? 'Something went wrong' : err.error.message;
+
+        this.toastrService.error(errorMessage);
       });
-
-    // console.log("res-->",result)
   }
 
   changetaxDocumentsVerified(id,val,m){
