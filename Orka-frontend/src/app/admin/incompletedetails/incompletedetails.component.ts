@@ -121,8 +121,8 @@ export class IncompletedetailsComponent implements OnInit {
     this.get(this.route.snapshot.paramMap.get('id'));
     this.getlogs();
     this.getbankaccounts(this.route.snapshot.paramMap.get('id'));
-    this.gethistoricalbalance(this.route.snapshot.paramMap.get('id'));
-    this.getComplyAdvantage(this.route.snapshot.paramMap.get('id'));
+    // this.gethistoricalbalance(this.route.snapshot.paramMap.get('id'));
+    // this.getComplyAdvantage(this.route.snapshot.paramMap.get('id'));
     // this.getMiddesk(this.route.snapshot.paramMap.get('id'));
     this.getallfiles();
     this.getLoanopsReview(this.route.snapshot.paramMap.get('id'));
@@ -300,33 +300,6 @@ export class IncompletedetailsComponent implements OnInit {
         nextPaymentSchedule: this.dt(new Date(new Date(this.data['from_details'][0]['createdAt']).setMonth(new Date(this.data['from_details'][0]['createdAt']).getMonth() + 1))),
       })
     } 
-    
-
-    // var principal = Number(this.data['from_details'][0]['loanAmount']);
-    // var interest = Number(this.data['from_details'][0]['apr']) / 100 / 12;
-    // var payments = Number(this.data['from_details'][0]['loanTerm'])
-    // var x = Math.pow(1 + interest, payments);
-    // var monthly:any = (principal*x*interest)/(x-1);
-    // this.payment.push([])
-    // if (!isNaN(monthly) &&
-    //     (monthly != Number.POSITIVE_INFINITY) &&
-    //     (monthly != Number.NEGATIVE_INFINITY)) {
-    //       monthly = this.round(monthly);
-    //       for (let i = 0; i < payments; i++) {
-    //         let inter = this.round((principal*Number(this.data['from_details'][0]['apr']))/1200)
-    //         let pri = this.round(monthly - inter)
-    //         this.payment[1].push({
-    //           startPrincipal:principal,
-    //           principal:pri,
-    //           interest:inter,
-    //           fees:0,
-    //           amount:monthly,
-    //           date:this.dt(new Date(new Date(this.data['from_details'][0]['createdAt']).setMonth(new Date(this.data['from_details'][0]['createdAt']).getMonth()+(i+1))))
-    //         })
-    //         principal = this.round(principal- pri);
-    //       }
-
-    //     }
   }
 
   round(x) {
@@ -407,15 +380,19 @@ export class IncompletedetailsComponent implements OnInit {
       })
   }
 
-  view(showFile: TemplateRef<any>, filename) {
+  view(showFile: TemplateRef<any>,filename){
     filename = filename.split('/')
-    filename = filename[filename.length - 1]
-    // window.open(environment.adminapiurl+"files/download/"+filename, "_blank");
+    filename = filename[filename.length-1]
+    
     this.showFiles = environment.adminapiurl + "files/download/" + filename;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.showFiles);
-    let res = filename.split('.')
-    this.checkType = res[1];
-    this.modalRef = this.modalService.show(showFile)
+    this.service
+      .authgetfile(`files/download/${filename}`, 'admin')
+      .pipe(first())
+      .subscribe(async (res) => {
+        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(new Blob([res], { type: 'application/pdf' })));
+        this.checkType = filename.split('.')[1];
+        this.modalRef = this.modalService.show(showFile)
+      });
   }
 
   getcomments() {
@@ -625,39 +602,6 @@ export class IncompletedetailsComponent implements OnInit {
     })
   }
 
-  getComplyAdvantage(loanId) {
-    // console.log("ideee--->", loanId)
-    let result;
-    this.service.post("loan/complyadvantagereport/" + loanId, 'admin', null)
-      .pipe(first())
-      .subscribe(res => {
-        if (res && res['statusCode'] == 200) {
-          // console.log("<----comply--->", res['data']);
-          result = JSON.parse(res['data']);
-          this.complyUrl = result['content']['data']['share_url']
-          this.urlSafeComplyAdvantage = this.sanitizer.bypassSecurityTrustResourceUrl(this.complyUrl);
-          this.complyadvantageAdverseMedia = this.keyExists(result, "complyadvantage-adverse-media")
-          this.amlTypes = this.keyExists(result, "aml_types")
-          this.ofacSdnList = this.keyExists(result, "ofac-sdn-list")
-          // console.log(result,this.complyadvantageAdverseMedia,this.amlTypes,this.ofacSdnList)
-        } else {
-          this.toastrService.error('Error')
-
-          
-        }
-      }, err => {
-        //console.log('sendForm', err);
-        if (err['error']['message'].isArray) {
-          this.message = err['error']['message']
-        } else {
-          this.message = [err['error']['message']]
-        }
-        this.modalRef = this.modalService.show(this.messagebox);
-      });
-
-    // console.log("res-->",result)
-  }
-
   // to check if the key word in present in comply advantage or not
   keyExists(obj, key) {
     if (!obj || (typeof obj !== "object" && !Array.isArray(obj))) {
@@ -683,38 +627,6 @@ export class IncompletedetailsComponent implements OnInit {
       }
     }
     return false;
-  }
-
-  getMiddesk(loanId) {
-    this.service.get('loan/middeskreport/' + loanId, 'admin')
-      .subscribe(res => {
-        if (res['statusCode'] == 200) {
-          if(res['data'] == null){
-            // console.log("midseknull__>", res['data'])
-            this.generateMiddeskId(loanId)
-          }
-          else{
-            const result = JSON.parse(res['data'])
-            this.middeskData = result['review']['tasks']
-            // console.log(result,"--<midd--->", res['data'])
-          }
-        }
-      }, err => {
-        console.log(err)
-      })
-  }
-
-  generateMiddeskId(loanId){
-    this.service.post("loan/middesk/" + loanId, 'admin', null)
-      .pipe(first())
-      .subscribe(res => {
-        if (res['statusCode'] == 200) {
-          // console.log("calles--mid--id--->")
-          this.getMiddesk(loanId)
-        }
-      }, err => {
-          console.log(err)
-        })
   }
 
   updateloanIdstatus(id,val,m){
