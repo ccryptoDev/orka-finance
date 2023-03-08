@@ -99,9 +99,9 @@ export class FundedContactDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.get()
-    this.getComplyAdvantage()
-    this.getMiddesk(this.route.snapshot.paramMap.get('id'))
+    this.get();
+    // this.getComplyAdvantage()
+    // this.getMiddesk(this.route.snapshot.paramMap.get('id'))
   }
 
   get() {
@@ -157,48 +157,21 @@ export class FundedContactDetailsComponent implements OnInit {
   view(showFile: TemplateRef<any>,filename){
     filename = filename.split('/')
     filename = filename[filename.length-1]
-    // window.open(environment.adminapiurl+"files/download/"+filename, "_blank");
+    
     this.showFiles = environment.adminapiurl + "files/download/" + filename;
-    this.urlSafe= this.sanitizer.bypassSecurityTrustResourceUrl(this.showFiles);
-    let res =filename.split('.')
-    this.checkType =res[1];
-      this.modalRef = this.modalService.show(showFile)
+    this.service
+      .authgetfile(`files/download/${filename}`, 'admin')
+      .pipe(first())
+      .subscribe(async (res) => {
+        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(new Blob([res], { type: 'application/pdf' })));
+        this.checkType = filename.split('.')[1];
+        this.modalRef = this.modalService.show(showFile)
+      });
   }
+
   isObjectEmpty(obj) {
     return Object.keys(obj).length === 0;
   }
-
-  getComplyAdvantage() {
-    // console.log("ideee--->", loanId)
-    let result;
-    this.service.post("loan/complyadvantagereport/" + this.loanId, 'admin', null)
-      .pipe(first())
-      .subscribe(res => {
-        if (res['statusCode'] == 200) {
-          // console.log("<----comply--->", res['data']);
-          result = JSON.parse(res['data']);
-          this.complyUrl = result['content']['data']['share_url'];
-          this.urlSafeComplyAdvantage = this.sanitizer.bypassSecurityTrustResourceUrl(this.complyUrl);
-          this.complyadvantageAdverseMedia = this.keyExists(result, "complyadvantage-adverse-media")
-          this.amlTypes = this.keyExists(result, "aml_types")
-          this.ofacSdnList = this.keyExists(result, "ofac-sdn-list")
-          // console.log(result,this.complyadvantageAdverseMedia,this.amlTypes,this.ofacSdnList)
-        } else {
-          this.toastrService.error(res['message'])
-        }
-      }, err => {
-        //console.log('sendForm', err);
-        if (err['error']['message'].isArray) {
-          this.message = err['error']['message']
-        } else {
-          this.message = [err['error']['message']]
-        }
-        this.modalRef = this.modalService.show(this.messagebox);
-      });
-
-    // console.log("res-->",result)
-  }
-
 
   // to check if the key word in present in comply advantage or not
   keyExists(obj, key) {
@@ -226,36 +199,4 @@ export class FundedContactDetailsComponent implements OnInit {
     }
     return false;
   };
-
-  getMiddesk(loanId) {
-    this.service.get('loan/middeskreport/' + loanId, 'admin')
-      .subscribe(res => {
-        if (res['statusCode'] == 200) {
-          if(res['data'] == null){
-            // console.log("midseknull__>", res['data'])
-            this.generateMiddeskId(loanId)
-          }
-          else{
-            const result = JSON.parse(res['data'])
-            this.middeskData = result['review']['tasks']
-            // console.log(result,"--<midd--->", res['data'])
-          }
-        }
-      }, err => {
-        console.log(err)
-      })
-  }
-
-  generateMiddeskId(loanId){
-    this.service.post("loan/middesk/" + loanId, 'admin', null)
-      .pipe(first())
-      .subscribe(res => {
-        if (res['statusCode'] == 200) {
-          // console.log("calles--mid--id--->")
-          this.getMiddesk(loanId)
-        }
-      }, err => {
-          console.log(err)
-        })
-  }
 }
