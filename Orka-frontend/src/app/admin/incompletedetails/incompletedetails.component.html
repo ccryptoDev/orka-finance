@@ -1429,7 +1429,7 @@
                       <td>{{ i + 1 }}</td>
                       <td>{{ d.name }}</td>
                       <!-- <td>{{ d.documentType }}</td> -->
-                      <td (click)="view(d.filePath)" class="cursorpointer">
+                      <td (click)="view(showFile, d.filename)" class="cursorpointer">
                         <a>View Document</a>
                       </td>
                     </tr>
@@ -1514,7 +1514,7 @@
                         <td>{{ i + 1 }}</td>
                         <td>{{ d.originalname }}</td>
                         <td>{{ d.documentType }}</td>
-                        <td (click)="view(d.filename)"><a>View Document</a></td>
+                        <td (click)="view(showFile, d.filename)"><a>View Document</a></td>
                       </tr>
                     </tbody>
                   </table>
@@ -1669,7 +1669,7 @@
           </div>
         </tab>
 
-        <tab heading="Comply Advantage">
+        <!-- <tab heading="Comply Advantage">
           <div class="p10px" id="complyAdvantageTab">
             <table class="table table-bordered">
               <tr class="bold">
@@ -1710,7 +1710,7 @@
             <iframe style="margin-top: 10px;height:500px;" id="docusign" [src]="urlSafeComplyAdvantage" frameBorder="0"
               scrolling="auto" width="100%"></iframe>
           </div>
-        </tab>
+        </tab> -->
       </tabset>
     </div>
   </div>
@@ -1753,4 +1753,32 @@
       <button type="submit" class="greenbutton upperCase w200px">Save</button>
     </form>
   </div>
+</ng-template>
+
+<ng-template #showFile>
+  <div class="modal-body">
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+    <div *ngIf="checkType != 'pdf'">
+      <img [src] ="showFiles" width="800px" height="450px" />
+    </div>
+
+    <div *ngIf="checkType == 'pdf'">
+      <iframe
+        [src] ="urlSafe"
+        frameBorder="0"
+        scrolling="auto"
+        height="450px"
+        width="800px"
+      ></iframe>
+    </div>
+</div>
+
 </ng-template>
