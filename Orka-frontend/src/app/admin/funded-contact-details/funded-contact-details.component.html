@@ -283,7 +283,7 @@
 
                               <td>{{ d.originalname }}</td>
 
-                              <td (click)="view(d.filename)"><a class="cursorpointer">View Document</a></td>
+                              <td (click)="view(showFile,d.filename)"><a class="cursorpointer">View Document</a></td>
                             </tr>
                           </tbody>
                         </table>
@@ -342,7 +342,7 @@
 
                               <td>{{ d.originalname }}</td>
 
-                              <td (click)="view(d.filename)"><a class="cursorpointer">View Document</a></td>
+                              <td (click)="view(showFile,d.filename)"><a class="cursorpointer">View Document</a></td>
                             </tr>
                           </tbody>
                         </table>
@@ -802,11 +802,15 @@
                   <ng-template #equifaxReport_err>No Equifax Consumer Report Received!<br><br></ng-template>
 
 
-                  <div *ngIf="equifaxCommercialReport.length > 0 && equifaxCommercialReport!=null && equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport &&  !isObjectEmpty(equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder);else equifaxCommercialReport_err">
-                    <h3 style="padding: 10px 0px 0px 10px;font-weight: 700;"><b>Equifax Commercial Credit Report</b>
+                  <div *ngIf="equifaxCommercialReport; else equifaxCommercialReport_err">
+                    <h3 style="padding: 10px 0px 0px 10px;font-weight: 700;">
+                      <b>Equifax Commercial Credit Report</b>
                       </h3>
 
-                      <accordion class="p10">
+                      <accordion
+                        *ngIf="equifaxCommercialReport.equaifax.EfxTransmit.CommercialCreditReport && !isObjectEmpty(equifaxCommercialReport.equaifax.EfxTransmit.CommercialCreditReport[0].Folder)"
+                        class="p10"
+                      >
                           <accordion-group heading="Alert Information" >
                             <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder && equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0].Folder.Alert;else alert_arr">
 
@@ -1629,15 +1633,6 @@
                     <ng-template #Site_err> <span>No Records Found!.</span></ng-template>
                   </accordion-group>
 
-                  <accordion-group heading="OFAC Commercial Response Information" >
-                    <div *ngIf="equifaxCommercialReport[0].report.EfxTransmit.OFACCommercialResponse!=null;else OFAC_err">
-                      <div *ngFor="let ofacc of OFACCommercialResponse" style="line-height: 25px;font-weight: 600;">
-                        <span class='p-1'>{{ofacc}}</span><br>
-                      </div>
-                    </div>
-                    <ng-template #OFAC_err> <span>No OFAC Commercial Response Records Found!.</span></ng-template>
-                  </accordion-group>
-
                   <accordion-group heading="Raw Report Information">
                     <accordion class="p10">
                       <div>
@@ -1649,52 +1644,8 @@
                       </accordion>
                   </div>
                   <ng-template #equifaxCommercialReport_err>
-
-                    <span *ngIf="equifaxCommercialReport.length > 0 && equifaxCommercialReport[0].report.EfxTransmit.OFACCommercialResponse==null;else ofacc_err">
                       No Equifax Commercial Report Received!
-                    </span>
-                    <ng-template #ofacc_err>
-                      <h3 style="padding: 10px 0px 0px 10px;font-weight: 700;"><b>Equifax Commercial Credit Report</b>
-                      </h3>
-                      <accordion class="p10">
-                          <accordion-group heading="OFAC Commercial Response Information" >
-                            <div *ngIf="equifaxCommercialReport.length > 0 && equifaxCommercialReport[0].report.EfxTransmit.OFACCommercialResponse!=null;else OFAC_err">
-                              <div *ngFor="let ofacc of OFACCommercialResponse" style="line-height: 25px;font-weight: 600;">
-                                <span class='p-1'>{{ofacc}}</span><br>
-                              </div>
-                            </div>
-                            <ng-template #OFAC_err> <span>No Records Found!.</span></ng-template>
-                          </accordion-group>
-                      </accordion>
-                    </ng-template>
-
                   </ng-template>
-                    <!-- <h3 style="padding: 10px 0px 0px 10px;">Paynet Rules</h3> -->
-                    <!-- <table class="table table-bordered" width="100%">
-                      <tbody *ngIf="paynetReport.ruleResults != ''">
-                          <tr *ngFor="let rule of paynetReport.ruleResults; let i = index">
-                            <td width="100">
-                              <strong>s2_Rule_{{i+1}}</strong>
-                            </td>
-                            <td style="margin:0;padding:0;">
-                              <table width="100%">
-                                <tbody>
-                                  <tr style="border-bottom: 1px solid #eee;">
-                                    <td style="padding:8px;">
-                                      <b>{{rule.rules}}</b>
-                                      <p>{{rule.ruleMessage}}</p>
-                                      <p [ngStyle]="{'color': rule.ruleStatus == 'Rejected' ? 'red' : 'green' }">{{rule.ruleStatus}}</p>
-                                    </td>
-                                  </tr>
-
-                                </tbody>
-                              </table>
-                            </td>
-                          </tr>
-                        </tbody>
-                    </table> -->
-                    <!-- <h3 style="padding: 10px 0px 0px 10px;">Equifax</h3>
-                    <div [innerHTML]="data.creditReportRes"></div> -->
 
                 </tab>
 
