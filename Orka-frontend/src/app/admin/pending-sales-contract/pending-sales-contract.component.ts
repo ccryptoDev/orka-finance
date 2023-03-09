@@ -77,7 +77,7 @@ ngOnInit() {
       var o = Object.assign({}, el);
       o.expanded = false;
       o.ischecked = false;
-      o.fileloadurl =environment.installerapiurl+"files/download/"+o.filepath.split('/')[2];
+      o.fileloadurl = o.filepath.split('/')[2];
       return o;
     })
 
