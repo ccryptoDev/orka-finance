@@ -294,10 +294,14 @@ console.log(res,'---',this.checkarray)
   }
 
   clickfileview(i){
-    this.loadurl  = environment.installerapiurl+"files/download/"+i.split('/')[2];
+    const filename = i.split('/')[2];
 
-    this.urlSafe= this.sanitizer.bypassSecurityTrustResourceUrl(this.loadurl);
-  //this.loader
+    this.service
+      .authgetfile(`files/download/${filename}`, 'admin')
+      .pipe(first())
+      .subscribe(async (res) => {
+        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(new Blob([res], { type: 'application/pdf' })));
+      });
     this.ishowiframe = true
   }
   close(): void {
