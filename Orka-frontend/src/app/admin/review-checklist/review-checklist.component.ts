@@ -81,11 +81,14 @@ export class ReviewChecklistComponent implements OnInit {
 
     this.getPdfData = this.shared.getData();
     console.log('datares1233---',this.shared.getData());
-    
-    this.urlSafe= this.sanitizer.bypassSecurityTrustResourceUrl(this.getPdfData.fileloadurl);
-    //this.appId
 
-    this.getReviewData(this.getPdfData.loanid)
+    this.service
+      .authgetfile(`files/download/${this.getPdfData.fileloadurl}`, 'admin')
+      .pipe(first())
+      .subscribe(async (res) => {
+        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(new Blob([res], { type: 'application/pdf' })));
+        this.getReviewData(this.getPdfData.loanid);
+      });
   }
 
   getReviewData(id){
