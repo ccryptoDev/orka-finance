@@ -122,8 +122,8 @@ export class PendingsdetailsComponent implements OnInit {
   creditData: any = null
   setReport_one: any = null;
   paynetReport: any = null;
-  equifaxReport: any = [];
-  equifaxCommercialReport: any = [];
+  equifaxConsumerReport: any;
+  equifaxCommercialReport: any;
   financingTab: any = [];
   financialquestion: any = [];
   loanProducts: any = [];
@@ -134,21 +134,14 @@ export class PendingsdetailsComponent implements OnInit {
   showFiles: string;
   checkType: any;
   urlSafe: any;
-  complyadvantageAdverseMedia: any;
-  amlTypes: any;
-  ofacSdnList: any;
-  complyUrl: any;
   middeskData: any = [];
+  complyAdvantageReport: any;
   urlSafeComplyAdvantage: any;
-
-  middeskPullTried = false
-
-  /* Header indicators */
   incomeVerificationPassed = false;
   kycEquifaxPassed = false;
   kycComplyAdvandagePassed = false;
   kybEquifaxPassed = false;
-  middeskReportPassed = false;
+  middeskReportPassed = true;
 
   requestForInformationData = {
     'Tax documents needed' : { text: 'Please provide the last two years of tax returns for your business' , status: false },
@@ -175,11 +168,12 @@ export class PendingsdetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let pages = sessionStorage.getItem('pages')
-    let tabs = sessionStorage.getItem('tabs')
+    let pages = sessionStorage.getItem('pages');
+    let tabs = sessionStorage.getItem('tabs');
 
     if (pages) {
-      pages = JSON.parse(pages)
+      pages = JSON.parse(pages);
+
       for (let i = 0; i < pages.length; i++) {
         if (pages[i]['name'] == 'Pending Application') {
           if (tabs) {
@@ -193,6 +187,7 @@ export class PendingsdetailsComponent implements OnInit {
         }
       }
     }
+
     this.bankAddForm = this.formBuilder.group({
       bankName: ['', Validators.required],
       holderName: ['', Validators.required],
@@ -201,17 +196,9 @@ export class PendingsdetailsComponent implements OnInit {
       confmAccountNumber: ['', Validators.required]
     }, { validator: AccountNumberValidator });
     this.login_user_id = JSON.parse(sessionStorage.getItem('resuser')).id;
-    this.get(this.route.snapshot.paramMap.get('id'))
-    this.getlogs()
-    this.getbankaccounts(this.route.snapshot.paramMap.get('id'));
-    //this.creditreport(this.route.snapshot.paramMap.get('id'))
-    this.gethistoricalbalance(this.route.snapshot.paramMap.get('id'));
-
-
     this.form = this.formBuilder.group({
       updateincomeVerifiedvs: [],
     });
-    //Loan details edit form
     this.apForm = this.formBuilder.group({
       LoanAmount: ["", [Validators.required, Validators.pattern(readyMade.pattern.decimal)]],
       APR: ["", [Validators.required, Validators.pattern(readyMade.pattern.decimal)]],
@@ -221,8 +208,13 @@ export class PendingsdetailsComponent implements OnInit {
       RealAPR: [0]
     });
 
+    this.get(this.route.snapshot.paramMap.get('id'))
+    this.getlogs()
+    this.getbankaccounts(this.route.snapshot.paramMap.get('id'));
+    this.gethistoricalbalance(this.route.snapshot.paramMap.get('id'));
+
     this.getallfiles();
-    this.getComplyAdvantage(this.route.snapshot.paramMap.get('id'))
+    this.getComplyAdvantage(this.route.snapshot.paramMap.get('id'));
     this.getMiddesk(this.route.snapshot.paramMap.get('id'))
     this.getLoanopsReview(this.route.snapshot.paramMap.get('id'))
     //console.log('report1------',this.data['from_details'])
@@ -254,9 +246,6 @@ export class PendingsdetailsComponent implements OnInit {
         );
 
         this.taxarray = this.data_tax_res.concat(this.data_tax_res1)
-
-
-       console.log(' this.data.taxarray ', this.data.taxarray)
       },
       (err) => {
         console.log(err);
@@ -359,73 +348,6 @@ export class PendingsdetailsComponent implements OnInit {
       });
   }
 
-  pullCreditReport(reportType: string): void {
-    let loan_id = this.route.snapshot.paramMap.get('id');
-    this.service.authget('loan/pull-equifax-credit-report/' + loan_id, 'admin')
-      .pipe(first())
-      .subscribe(res => {
-        if (res['statusCode'] == 200) {
-          //this.toastrService.success("Equifax Credit Report")
-
-          setTimeout(() => {
-
-            this.router.navigate(['admin/pendings/' + loan_id]);
-          }, 1000);  //5s
-          /* if (reportType == 'equifax') {
-             this.equifaxReport = res['equifaxReport']
-           } else if(reportType == 'paynet') {
-             this.paynetReport = res['paynetReport'];
-             if (this.paynetReport.payNetReport) {
-               this.paynetReport.payNetReport = this._sanitizer.bypassSecurityTrustHtml(this.paynetReport.payNetReport);
-             }
-           }*/
-        } else {
-          this.message = res['message']
-          //this.modalRef = this.modalService.show(this.messagebox);
-          //console.log('------',currentUrl)
-          //this.toastrService.error(this.message)
-          this.toastrService.error(this.message)
-
-
-        }
-      }
-        , err => {
-          if (err['error']['message'].isArray) {
-            this.message = err['error']['message']
-          } else {
-            this.message = [err['error']['message']]
-          }
-          this.modalRef = this.modalService.show(this.messagebox);
-        })
-
-  }
-
-  creditreport() {
-    let loan_id = this.route.snapshot.paramMap.get('id');
-    this.service.authget('pending/creditreport/' + loan_id, 'admin')
-      .pipe(first())
-      .subscribe(res => {
-        if (res['statusCode'] == 200) {
-          if (res['data'].length) {
-            //console.log(JSON.parse(res['data'][0]['report']))
-            this.creditDataRes = JSON.parse(res['data'][0]['report'])
-            this.creditData = this.creditDataRes.transUnion;
-          }
-
-        } else {
-          this.message = res['message']
-          this.modalRef = this.modalService.show(this.messagebox);
-        }
-      }, err => {
-        if (err['error']['message'].isArray) {
-          this.message = err['error']['message']
-        } else {
-          this.message = [err['error']['message']]
-        }
-        this.modalRef = this.modalService.show(this.messagebox);
-      })
-  }
-
   pay() {
     let date = new Date(this.data['from_details'][0]['createdAt'])
     this.payment.push({
@@ -482,59 +404,48 @@ export class PendingsdetailsComponent implements OnInit {
   }
 
   get(id) {
-    //this.service.authget('pending/'+id+"/"+this.login_user_id,'admin')
     this.service.authget('pending/' + id, 'admin')
       .pipe(first())
       .subscribe(res => {
-        //this.addlogs("view load", id)
         if (res['statusCode'] == 200) {
+          this.data = res['data'];
 
-          this.data = res['data']
+          const consumerCreditReport = this.data.equifaxReport.find(xx => xx.reportType == 'equifax-consumer');
+          const commercialCreditReport = this.data.equifaxReport.find(xx => xx.reportType == 'equifax-comercial-set2');
 
-          this.equifaxReport = this.data.equifaxReport.filter(xx => xx.reportType == 'equifax-consumer');
-          this.equifaxCommercialReport = this.data.equifaxReport.filter(xx => xx.reportType == 'equifax-comercial-set2');
+          this.equifaxConsumerReport = consumerCreditReport ? JSON.parse(consumerCreditReport.report) : consumerCreditReport;
+          this.equifaxCommercialReport = commercialCreditReport ? JSON.parse(commercialCreditReport.report) : commercialCreditReport;
 
-          console.log('DATA equifaxReport******', this.equifaxReport)
-          console.log('DATA equifaxCommercialReport******', this.equifaxCommercialReport)
-          //console.log('----',this.equifaxReport.length)
-          //this.data.commonEquifaxRules=this.commonEquifaxRules;
-          if(this.equifaxCommercialReport.length > 0) {
-            const passedKyb = this.equifaxCommercialReport.length && this.equifaxCommercialReport[0].report.Rules.filter(it => it.RuleStatus.toLowerCase() === "pass" )
-           
-            this.kybEquifaxPassed = this.equifaxCommercialReport.length > 0 && passedKyb.length === this.equifaxCommercialReport[0].report.Rules.length;
-          }
+          if (this.equifaxConsumerReport) {
+            this.kycEquifaxPassed = this.equifaxConsumerReport.Rules.every((rule) => rule.RuleStatus === 'PASS' || rule.RuleStatus === 'BYPASS');
+            this.data.filter_att = this.filetr_attributes;
 
-          if (this.equifaxReport.length > 0) {
-
-            this.data.filter_att = this.filetr_attributes
-
-            if (this.equifaxReport[0].report.equaifax.consumers.equifaxUSConsumerCreditReport[0].models != null) {
-
-              this.data.model_filter = this.equifaxReport[0].report.equaifax.consumers.equifaxUSConsumerCreditReport[0].models.filter(xx => xx.modelNumber == '05453');
-              this.data.model_filter2 = this.equifaxReport[0].report.equaifax.consumers.equifaxUSConsumerCreditReport[0].models.filter(xx => xx.modelNumber == '04129');
-
-              this.data.model_filter_array = this.data.model_filter.concat(this.data.model_filter2)
+            if (this.equifaxConsumerReport.equaifax.consumers.equifaxUSConsumerCreditReport[0].models) {
+              this.data.model_filter = this.equifaxConsumerReport.equaifax.consumers.equifaxUSConsumerCreditReport[0].models.filter(xx => xx.modelNumber == '05453');
+              this.data.model_filter2 = this.equifaxConsumerReport.equaifax.consumers.equifaxUSConsumerCreditReport[0].models.filter(xx => xx.modelNumber == '04129');
+              this.data.model_filter_array = this.data.model_filter.concat(this.data.model_filter2);
             } else {
               this.data.model_filter_array = [];
             }
-
-            const passedKyc = this.equifaxReport.length > 0  && this.equifaxReport[0].report.Rules.filter(it => it.RuleStatus.toLowerCase() === "pass" )
-            this.kycEquifaxPassed = this.equifaxReport.length > 0 && passedKyc.length === this.equifaxReport[0].report.Rules.length;
-        
-
-          }
-          if (this.equifaxCommercialReport.length > 0 && this.equifaxCommercialReport[0].report.EfxTransmit.OFACCommercialResponse != null) {
-
-            this.OFACCommercialResponse = this.equifaxCommercialReport[0].report.EfxTransmit.OFACCommercialResponse.split("\n")
           }
 
-          if (this.equifaxCommercialReport.length > 0 && this.equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport && !this.equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport[0]) {
-            this.equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport = [this.equifaxCommercialReport[0].report.EfxTransmit.CommercialCreditReport];
+          if(this.equifaxCommercialReport) {
+            this.kybEquifaxPassed = this.equifaxCommercialReport.Rules.every((rule) => rule.RuleStatus === 'PASS' || rule.RuleStatus === 'BYPASS');
+
+            if (this.equifaxCommercialReport.equaifax.EfxTransmit.OFACCommercialResponse) {
+              this.OFACCommercialResponse = this.equifaxCommercialReport.equaifax.EfxTransmit.OFACCommercialResponse.split("\n");
+            }
+
+            if (this.equifaxCommercialReport.equaifax.EfxTransmit.CommercialCreditReport && !this.equifaxCommercialReport.equaifax.EfxTransmit.CommercialCreditReport[0]) {
+              this.equifaxCommercialReport.equaifax.EfxTransmit.CommercialCreditReport = [this.equifaxCommercialReport.equaifax.EfxTransmit.CommercialCreditReport];
+            }
           }
+
           this.data.attributes = this.PSPS4129
 
-          this.pay()
-          this.getcomments()
+          this.pay();
+          this.getcomments();
+
           this.editNameFields['firstName'] = this.data.from_details[0]["firstname"];
           this.editNameFields['lastName'] = this.data.from_details[0]["lastname"];
           this.editStreetFields['streetAddress'] = this.data.from_details[0]["businessAddress"];
@@ -615,16 +526,19 @@ export class PendingsdetailsComponent implements OnInit {
       })
   }
 
-  view(showFile: TemplateRef<any>, filename) {
+  view(showFile: TemplateRef<any>,filename){
     filename = filename.split('/')
-    filename = filename[filename.length - 1]
-    //window.open(environment.adminapiurl + "files/download/" + filename, "_blank");
+    filename = filename[filename.length-1]
+    
     this.showFiles = environment.adminapiurl + "files/download/" + filename;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.showFiles);
-    let res = filename.split('.')
-    this.checkType = res[1];
-    this.modalRef = this.modalService.show(showFile)
-
+    this.service
+      .authgetfile(`files/download/${filename}`, 'admin')
+      .pipe(first())
+      .subscribe(async (res) => {
+        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(new Blob([res], { type: 'application/pdf' })));
+        this.checkType = filename.split('.')[1];
+        this.modalRef = this.modalService.show(showFile)
+      });
   }
 
   close(): void {
@@ -881,8 +795,6 @@ export class PendingsdetailsComponent implements OnInit {
       //console.log('result',res['data'],res)
       if (res['statusCode'] == 200) {
         this.bankaccounts = res['data']
-
-        console.log('bankaccounts---', this.bankaccounts)
       } else {
         this.bankaccounts.length = 0
       }
@@ -1204,39 +1116,25 @@ export class PendingsdetailsComponent implements OnInit {
     return Object.keys(obj).length === 0;
   }
 
-  getComplyAdvantage(loanId) {
-    // console.log("ideee--->", loanId)
-    let result;
-    this.service.authpost("loan/complyadvantagereport/" + loanId, 'admin', null)
+  getComplyAdvantage(loanId: string) {
+    this.service.authget(`loans/${loanId}/comply-advantage`, 'admin')
       .pipe(first())
-      .subscribe(res => {
-        if (res['statusCode'] == 200) {
-          // console.log("<----comply--->", res['data']);
-          result = JSON.parse(res['data']);
-          this.complyUrl = result['content']['data']['share_url'];
-          this.urlSafeComplyAdvantage = this.sanitizer.bypassSecurityTrustResourceUrl(this.complyUrl);
+      .subscribe(
+        (res: any) => {
+          console.log(res);
 
-          console.log('urlSafeComplyAdvantage',this.urlSafeComplyAdvantage)
-          this.complyadvantageAdverseMedia = this.keyExists(result, "complyadvantage-adverse-media")
-          this.amlTypes = this.keyExists(result, "aml_types")
-          this.ofacSdnList = this.keyExists(result, "ofac-sdn-list")
-          // console.log(result,this.complyadvantageAdverseMedia,this.amlTypes,this.ofacSdnList)
+          this.complyAdvantageReport = JSON.parse(res.report);
 
-          this.kycComplyAdvandagePassed = !this.complyadvantageAdverseMedia && !this.amlTypes && !this.ofacSdnList
-        } else {
-          this.toastrService.error(res['message'])
-        }
-      }, err => {
-        //console.log('sendForm', err);
-        if (err['error']['message'].isArray) {
-          this.message = err['error']['message']
-        } else {
-          this.message = [err['error']['message']]
-        }
-        this.modalRef = this.modalService.show(this.messagebox);
+          console.log(this.complyAdvantageReport);
+
+          this.urlSafeComplyAdvantage = this.sanitizer.bypassSecurityTrustResourceUrl(this.complyAdvantageReport.complyAdvantage.content.data.share_url);
+          this.kycComplyAdvandagePassed = this.complyAdvantageReport.Rules.every((rule) => rule.RuleStatus === 'PASS');
+      },
+      (err) => {
+        const errorMessage = err.status === 500 ? 'Something went wrong' : err.error.message;
+
+        this.toastrService.error(errorMessage);
       });
-
-    // console.log("res-->",result)
   }
 
   // to check if the key word in present in comply advantage or not
@@ -1266,46 +1164,55 @@ export class PendingsdetailsComponent implements OnInit {
     return false;
   }
 
-  getMiddesk(loanId) {
-    this.service.authget('loan/middeskreport/' + loanId, 'admin')
-      .subscribe(res => {
-       // console.log('chekcmid',res['data'])
-        if (res['statusCode'] == 200) {
-          if(res['data'] == null){
-            console.log("midseknull__>", res['data'])
-            if(!this.middeskPullTried) {
-              this.middeskPullTried = true;
-              this.generateMiddeskId(loanId)
+  getMiddesk(loanId: string) {
+    this.service
+      .authget(`loans/${loanId}/middesk`, 'admin')
+      .pipe(first())
+      .subscribe(
+        (res) => {
+          const middesk: any = res;
+          const middeskReport = JSON.parse(middesk.report).middesk;
+          const tasksRuleKeysMap = new Map([
+            ['Business legal name matches what was listed in credit app', ['name']],
+            ['Business address matches what was listed in credit app', ['address_verification']],
+            ['Certificate of Good Standing is present', ['sos_match', 'sos_active', 'sos_domestic']],
+            ['Business is a US-based/owned business ', ['address_deliverability']],
+            // ['NAICS Code is among those on ORKA\'s High Risk NAICS Codes list', ['']],
+            ['Personal guarantors\' names match what was stated in credit app', ['person_verification']],
+            ['OFAC check returns a hit', ['watchlist']],
+            ['TIN is verified for the business', ['tin']]
+          ]);
+
+          for (const [rule, keys] of tasksRuleKeysMap) {
+            const correspondingTasks = middeskReport.review.tasks.filter((task) => keys.includes(task.key));
+            const taskMessages = [];
+            const taskStatuses = [];
+            const taskSubLabels = [];
+
+            correspondingTasks.forEach((task) => {
+              taskMessages.push(task.message);
+              taskStatuses.push(task.status);
+              taskSubLabels.push(task.sub_label);
+            });
+
+            this.middeskData.push({
+              label: rule,
+              message: taskMessages.join('; '),
+              status: taskStatuses.every((status) => status === 'success') ? 'success' : 'failure',
+              sub_label: taskSubLabels.join('; ')
+            });
+
+            if (this.middeskData[this.middeskData.length - 1].status !== 'success') {
+              this.middeskReportPassed = false;
             }
           }
-          else{
-            const result = JSON.parse(res['data'])
-           console.log('chekcmid',result)
-           this.middeskData = result['review']?.['tasks'] || [];
+        },
+        (err) => {
+          const errorMessage = err.status === 500 ? 'Something went wrong' : err.error.message;
 
-            const passedCount = this.middeskData.filter(it => it.status.toLowerCase() == 'success')
-            this.middeskReportPassed = (passedCount.length === this.middeskData.length)
-            
-            // console.log(result,"--<midd--->", res['data'])
-          }
+          this.toastrService.error(errorMessage);
         }
-      }, err => {
-        console.log(err)
-      })
-  }
-
-  generateMiddeskId(loanId){
-    this.service.authpost("loan/middesk/" + loanId, 'admin', null)
-      .pipe(first())
-      .subscribe(res => {
-        //console.log('chekcmiddd',res)
-        if (res['statusCode'] == 200) {
-          // console.log("calles--mid--id--->")
-          this.getMiddesk(loanId)
-        }
-      }, err => {
-          console.log(err)
-        })
+      )
   }
 
   updateloanIdstatus(id, val, m){
@@ -1385,55 +1292,51 @@ export class PendingsdetailsComponent implements OnInit {
     })
   }
 
-
-
   updateRequestInformationText(key, text){
     this.requestForInformationData[key]['text'] = text;
-}
-
-updateRequestInformationFlag(key, event){
-  this.requestForInformationData[key]['status'] = event.target.checked;
-
-  if(!event.target.checked && key.includes('Other')) {
-    this.requestForInformationData[key]['text'] = "";
   }
-}
 
-submitSendEmail(){
+  updateRequestInformationFlag(key, event){
+    this.requestForInformationData[key]['status'] = event.target.checked;
 
-  const newStatus = {
-    loanID: this.loanId,
-    status: JSON.stringify(this.requestForInformationData),
-    moduleName: "requestedInformations"
+    if(!event.target.checked && key.includes('Other')) {
+      this.requestForInformationData[key]['text'] = "";
+    }
   }
-  this.service.authpost('decision-service/loanops/setstatus','admin',newStatus) .pipe(first()).subscribe(res=>{
 
-    if(res['statusCode'] == 200){
-      this.toastrService.success('Successfully updated');
-      
+  submitSendEmail(){
 
-      this.service.authpost('decision-service/loanops/sendRequestInfomationEmail/'+this.loanId,'admin',{}) .pipe(first()).subscribe(res=>{
-
-        if(res['statusCode'] == 200){
-          this.toastrService.success('Mail sent');
-        }
-  
-      },err=>{
-        if(err['status']!=200)
-        {
-          this.toastrService.error(err['message'])
-        }
-      })
-
+    const newStatus = {
+      loanID: this.loanId,
+      status: JSON.stringify(this.requestForInformationData),
+      moduleName: "requestedInformations"
     }
+    this.service.authpost('decision-service/loanops/setstatus','admin',newStatus) .pipe(first()).subscribe(res=>{
 
-  },err=>{
-    if(err['status']!=200)
-    {
-      this.toastrService.error(err['message'])
-    }
-  })
-}
+      if(res['statusCode'] == 200){
+        this.toastrService.success('Successfully updated');
+        
 
- 
+        this.service.authpost('decision-service/loanops/sendRequestInfomationEmail/'+this.loanId,'admin',{}) .pipe(first()).subscribe(res=>{
+
+          if(res['statusCode'] == 200){
+            this.toastrService.success('Mail sent');
+          }
+    
+        },err=>{
+          if(err['status']!=200)
+          {
+            this.toastrService.error(err['message'])
+          }
+        })
+
+      }
+
+    },err=>{
+      if(err['status']!=200)
+      {
+        this.toastrService.error(err['message'])
+      }
+    })
+  }
 }
