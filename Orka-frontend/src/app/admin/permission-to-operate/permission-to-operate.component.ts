@@ -66,6 +66,12 @@ export class PermissionToOperateComponent implements OnInit {
   view(filename:any){
     filename = filename.split('/')
     filename = filename[filename.length-1]
-    window.open(environment.installerapiurl+"files/download/"+filename, "_blank");
+
+    this.service
+      .authgetfile(`files/download/${filename}`, 'admin')
+      .pipe(first())
+      .subscribe(async (res) => {
+        window.open(URL.createObjectURL(new Blob([res], { type: 'application/pdf' })), "_blank");
+      });
   }
 }
