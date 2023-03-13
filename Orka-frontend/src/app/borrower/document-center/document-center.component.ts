@@ -1,15 +1,14 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { HttpService } from '../../_service/http.service';
 import { first } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
-import { environment } from '../../../environments/environment';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
+
+import { HttpService } from '../../_service/http.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-document-center',
@@ -17,9 +16,9 @@ import { Subject } from 'rxjs';
   styleUrls: ['./document-center.component.scss']
 })
 export class DocumentCenterComponent implements OnInit {
-
-
-  installer_id = sessionStorage.getItem('InsID');
+  @ViewChild('messagebox', { read: TemplateRef }) messagebox:TemplateRef<any>;
+  @ViewChild('uploadDocumentForm', { read: TemplateRef }) uploadDocumentForm:TemplateRef<any>;
+  @ViewChild(DataTableDirective) installer_id = sessionStorage.getItem('InsID');
   loanRef = sessionStorage.getItem('LoanRefNo');
   loanId = sessionStorage.getItem('LoanID');
   data: any = [];
@@ -31,21 +30,14 @@ export class DocumentCenterComponent implements OnInit {
   isShowtablevalues:boolean=false;
   noOrder:any={};
   preFilesItems: any = [];
-  @ViewChild('messagebox', { read: TemplateRef }) messagebox:TemplateRef<any>;
-  @ViewChild('uploadDocumentForm', { read: TemplateRef }) uploadDocumentForm:TemplateRef<any>;
-  @ViewChild(DataTableDirective)
   dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
-
   data_res: any = {
     files: [],
   };
-  
- 
-
-  public files: NgxFileDropEntry[] = [];
-  public listfiles: any = [];
+  files: NgxFileDropEntry[] = [];
+  listfiles: any = [];
   fileitems: any = [];
   doctype: any;
   downloadUrl: string;
@@ -55,13 +47,8 @@ export class DocumentCenterComponent implements OnInit {
     private service: HttpService,
     private toastrService: ToastrService,
     private modalService: BsModalService,
-    public router: Router,
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-  ) {
-
-    
-  }
+    public router: Router
+  ) {}
 
   ngOnInit(): void {
     this.noOrder={
@@ -74,6 +61,7 @@ export class DocumentCenterComponent implements OnInit {
     this.getallfiles();
     this.getdocusigndocument()
   }
+
   getdocusigndocument(){  
     console.log('res12344567');
 
@@ -181,6 +169,7 @@ if(this.isShowtablevalues==false){
   /*********************************FINANCING CONTRACT PDF*******************************/  
     }
   }
+
   getallfiles() {
     let id = sessionStorage.getItem('LoanID');
 
@@ -213,11 +202,14 @@ this.hidden_otherdoc=true
   view(filename: any) {
     filename = filename.split('/');
     filename = filename[filename.length - 1];
-    
-    window.open(
-      environment.borrowerapiurl + 'uploads/download/' + filename,
-      '_blank'
-    );
+
+    this.service
+      .authgetfile(`uploads/download/${filename}`, 'borrower')
+      .pipe(first())
+      .subscribe(async (res) => {
+        window.open(URL.createObjectURL(new Blob([res], { type: 'application/pdf' })));
+
+      });
   }
 
   addlogs(module, id) {
@@ -360,6 +352,7 @@ this.hidden_otherdoc=true
       '_blank' // <- This is what makes it open in a new window.
     );
   }
+
   termscondition() {
     window.open(
       'terms-and-conditions',
@@ -367,6 +360,7 @@ this.hidden_otherdoc=true
     );
     //this.router.navigate(['terms-and-conditions']);
   }
+
   securitypolicy() {
     window.open(
       'security-policy',
@@ -374,18 +368,8 @@ this.hidden_otherdoc=true
     );
     //this.router.navigate(['security-policy']);
   }
+
   popupform(){
     this.modalRef = this.modalService.show(this.uploadDocumentForm);
   }
-  deletePreFileSelected(id) {
-    this.service.authget("uploads/deleteFiles/" + id, 'borrower')
-      .pipe(first())
-      .subscribe((res: any) => {
-        if (res.statusCode == 200) {
-          this.toastrService.success('File Deleted Successfully!');
-          this.getallfiles();
-        }
-      })
-  }
-
 }
