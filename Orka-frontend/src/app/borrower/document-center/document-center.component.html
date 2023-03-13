@@ -131,7 +131,6 @@
                 <th scope="col">Last Updated</th>
                 <th scope="col">Completed By</th>
                 <th scope="col">View</th>
-                <th scope="col">Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -143,18 +142,6 @@
                 <td>--</td>
                 <td (click)="view(c.filename)">
                   <a style="cursor: pointer">View</a>
-                  <!-- <a [href]="downloadUrl/c.filename" [download]="c.filename">
-                  <i class="fa fa-download" aria-hidden="true"></i>
-                </a> -->
-                </td>
-
-                <td>
-                  <span class="tomatoColor">
-                    <i
-                      class="fas fa-trash cur-poi"
-                      (click)="deletePreFileSelected(c.id)"
-                    ></i
-                  ></span>
                 </td>
               </tr>
             </tbody>
