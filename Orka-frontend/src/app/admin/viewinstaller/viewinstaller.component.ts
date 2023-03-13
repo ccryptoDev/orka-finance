@@ -383,7 +383,13 @@ export class ViewinstallerComponent implements OnInit {
   view(filename: any) {
     filename = filename.split('/')
     filename = filename[filename.length-1]
-    window.open(environment.installerapiurl+"files/download/"+filename, "_blank");
+    
+    this.service
+      .authgetfile(`files/download/${filename}`, 'admin')
+      .pipe(first())
+      .subscribe(async (res) => {
+        window.open(URL.createObjectURL(new Blob([res], { type: 'application/pdf' })), "_blank");
+      });
   }
 
   addlogs(module, id) {
@@ -468,7 +474,7 @@ export class ViewinstallerComponent implements OnInit {
 
       }
 
-      this.service.files("files/uploads","partner",formData)
+      this.service.authfiles("files/uploads","partner",formData)
         .pipe(first())
         .subscribe(res=>{
 
