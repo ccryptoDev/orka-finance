@@ -553,7 +553,7 @@
           <div class="row1" *ngIf="underwriting_status == 'approved'" style="padding-right: 20px">
             <div class="backgroundsubtext">Credit Approved</div>
             <div class="selectedicon" style="margin-left: 10px; margin-right: 10px"></div>
-            <div class="backgroundsubtext">Expiration date: 3/15/2022</div>
+            <div class="backgroundsubtext">Expiration date: {{ approvalExpirationDate | date:'MM/dd/YYYY' }}</div>
             <div class="ml10px" >
               <img src="../../../assets/info_icon.svg" class="cursorpointer changedirection" (click)="switchShowUnderwritingTool($event)" />
               <div class="tooltipblock"  *ngIf="showUnderwritingTool" style="width: 450px;" >
@@ -645,7 +645,13 @@
         </div>
         <div style="margin-bottom: 15px">
           <div class="row1 mb15">
-            <div class="radioText ml0">${{result_sitedetails.financingRequested}} | {{result_sitedetails.financingTermRequested}} months | {{result_sitedetails.apr}}% APR | {{selectedProduct?.prepayment}}% prepay | ${{((selectedProduct.financingApproved * selectedProduct.mpfCheckWItcPrepay) / 100).toFixed(2)}}/month</div>
+            <div class="radioText ml0">
+              ${{result_sitedetails.financingRequested}} | 
+              {{result_sitedetails.financingTermRequested}} months | 
+              {{result_sitedetails.interestRate}}% APR | 
+              {{selectedProduct?.prepayment}}% prepay | 
+              ${{((selectedProduct.financingApproved * selectedProduct.mpfCheckWItcPrepay) / 100).toFixed(2)}}/month
+            </div>
         </div>
         </div>
       </div>
