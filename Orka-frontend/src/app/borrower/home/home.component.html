@@ -75,7 +75,9 @@
       <div class="displayFlex AlignItemCenter pb24">
         <div class="w300 infomainTitle">EST. Monthly Payment ($):</div>
         <div class="infomainsubTitle displayFlex AlignItemCenter">
-          <div>--</div>
+          <div>
+            {{ estimatedMonthlyPayment ? ('$' + estimatedMonthlyPayment) : '--' }}
+          </div>
           <div class="ml10px mtm10">
             <img src="../../../assets/info_icon.svg" class="cursorpointer changedirection" (mouseover)="showtool1 = true" (mouseleave)="showtool1 = false"/>
             <div class="tooltipblock" *ngIf="showtool1">
@@ -89,11 +91,15 @@
         <div class="w300 infomainTitle">
           Expected Prepayment by Month 18 ($):
         </div>
-        <div class="infomainsubTitle">--</div>
+        <div class="infomainsubTitle">
+          {{ expectedPrepayment ? ('$' + expectedPrepayment) : '--' }}
+        </div>
       </div>
       <div class="displayFlex AlignItemCenter pb24">
         <div class="w300 infomainTitle">Autopay by ACH Enabled ?:</div>
-        <div class="infomainsubTitle">--</div>
+        <div class="infomainsubTitle">
+          {{ loanInfo?.selected_bank_account_id ? 'Yes' : 'No' }}
+        </div>
       </div>
     </div>
   </div>
