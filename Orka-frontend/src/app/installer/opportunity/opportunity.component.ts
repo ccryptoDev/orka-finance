@@ -98,7 +98,6 @@ export class OpportunityComponent implements OnInit {
   eqipmentPermit_items: any = [];
   construct_items: any = [];
   fileNames: any = [];
-  resend_data: any = {};
   loanProductdata: any = [];
   filetype_val: string;
   filetype_val_res: string;
@@ -136,8 +135,8 @@ export class OpportunityComponent implements OnInit {
   condition1:boolean = false;
   condition2:boolean = false;
   selectedProduct: any;
-
   showUnderwritingTool:boolean =false;
+  approvalExpirationDate: Date;
 
   constructor(
     private service: HttpService,
@@ -151,7 +150,9 @@ export class OpportunityComponent implements OnInit {
     const href = this.router.url;
 
     this.loanId = href.split('/')[3];
-    this.installer_id =  sessionStorage.getItem('MainInstallerId') !== "null" ? sessionStorage.getItem('MainInstallerId') : sessionStorage.getItem('InstallerUserId');  // Change when fixing the relation installer-partner in the database
+    this.installer_id =  sessionStorage.getItem('MainInstallerId') !== "null" ?
+      sessionStorage.getItem('MainInstallerId') :
+      sessionStorage.getItem('InstallerUserId');  // Change when fixing the relation installer-partner in the database
 
     this.getOpportunityList();
 
@@ -557,7 +558,7 @@ export class OpportunityComponent implements OnInit {
     }
 
     this.service
-      .files('files/uploads', 'partner', formData)
+      .authfiles('files/uploads', 'partner', formData)
       .pipe(first())
       .subscribe(
         (res) => {
@@ -631,7 +632,7 @@ export class OpportunityComponent implements OnInit {
 
     if (this.data_replace_res.length == 0) {
       this.service
-        .files('files/uploads', 'partner', formData)
+        .authfiles('files/uploads', 'partner', formData)
         .pipe(first())
         .subscribe(
           (res) => {
@@ -870,6 +871,8 @@ export class OpportunityComponent implements OnInit {
           this.data.mountType = this.siteProjectDetails.mountType;
           this.data.nonSolarEquipmentWork = this.siteProjectDetails.nonSolarEquipmentWork;
           this.data.nonSolarProjectCost = this.siteProjectDetails.nonSolarProjectCost;
+
+          this.setLoanApprovalExpirationDate();
         },
         (err) => {
           console.log(err);
@@ -1070,20 +1073,8 @@ export class OpportunityComponent implements OnInit {
         }
       }
 
-      this.resend_data.loanId = this.loanId;
-      this.resend_data.businessEmail = this.result_sitedetails.email;
-      this.resend_data.businessLegalName = this.result_sitedetails.legalName;
-      this.resend_data.applicantLegalName = this.result_sitedetails.ownerFirstName;
-      this.resend_data.businessPhone = this.result_sitedetails.businessPhone;
-      this.resend_data.businessAddress = this.result_sitedetails.businessAddress;
-      this.resend_data.businessCity = this.result_sitedetails.city;
-      this.resend_data.businessState = this.result_sitedetails.state;
-      this.resend_data.businessZip = this.result_sitedetails.zipCode;
-      this.resend_data.installerId = this.installer_id;
-      this.resend_data.installerName = this.installerBusinessName;
-
       this.service
-        .authput('create-opportunity/resend', 'sales', this.resend_data)
+        .authput(`create-opportunity/${this.loanId}/send-welcome-email`, 'sales', null)
         .pipe(first())
         .subscribe(
           (res) => {
@@ -1121,10 +1112,14 @@ export class OpportunityComponent implements OnInit {
   view(filename: any) {
     filename = filename.split('/');
     filename = filename[filename.length - 1];
-    window.open(
-      environment.installerapiurl + 'files/download/' + filename,
-      '_blank'
-    );
+    
+    this.service
+      .authgetfile(`files/download/${filename}`, 'admin')
+      .pipe(first())
+      .subscribe(async (res) => {
+        window.open(URL.createObjectURL(new Blob([res], { type: 'application/pdf' })));
+
+      });
   }
 
   keyPressNumbers(event) {
@@ -1284,5 +1279,11 @@ export class OpportunityComponent implements OnInit {
   switchShowUnderwritingTool(event){
     event.stopPropagation();
     this.showUnderwritingTool = ! this.showUnderwritingTool
+  }
+
+  setLoanApprovalExpirationDate() {
+    const approvalDate = new Date(this.result_sitedetails['approval_denial_date']);
+
+    this.approvalExpirationDate = new Date(approvalDate.setUTCMonth(approvalDate.getUTCMonth() + 2));
   }
 }
