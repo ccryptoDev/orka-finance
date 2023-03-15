@@ -1,10 +1,11 @@
-import { HttpService } from './../../_service/http.service';
-import { Router } from '@angular/router';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { ToastrService } from "ngx-toastr";
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+
+import { HttpService } from './../../_service/http.service';
+import { DecisionService } from '../../_service/decision.service';
 
 @Component({
   selector: 'app-building-information',
@@ -12,9 +13,8 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
   styleUrls: ['./building-information.component.scss']
 })
 export class BuildingInformationComponent implements OnInit {
-
+  @ViewChild('messagebox', { read: TemplateRef }) messagebox: TemplateRef<any>;
   data: any = {};
-  // id:any=sessionStorage.getItem('userId');
   message: any;
   OsName: string;
   initialKnockOutMessage: any;
@@ -23,11 +23,16 @@ export class BuildingInformationComponent implements OnInit {
     componentRestrictions: {
       country: ['US']
     }
-  }
-  @ViewChild('messagebox', { read: TemplateRef }) messagebox: TemplateRef<any>;
+  };
   ownerShipType: boolean;
 
-  constructor(private router: Router, private service: HttpService, private toastrService: ToastrService, private modalService: BsModalService,) { }
+  constructor(
+    private router: Router,
+    private service: HttpService,
+    private toastrService: ToastrService,
+    private modalService: BsModalService,
+    private decisionService: DecisionService
+  ) {}
 
   ngOnInit(): void {
     this.data.loanId = sessionStorage.getItem('loanId');
@@ -73,7 +78,6 @@ export class BuildingInformationComponent implements OnInit {
       })
   }
 
-  //google maps API
   public handleAddressChange(address: any) {
     this.data.businessInstallAddress = address.formatted_address;
     console.log("gadd", address.geometry.location.lat(), address.geometry.location.lng());
@@ -89,11 +93,6 @@ export class BuildingInformationComponent implements OnInit {
           break;
         }
 
-        // case "postal_code_suffix": {
-        //   this.data.businessInstallZipCode = `${this.data.ownerZipCode}-${component.long_name}`;
-        //   break;
-        // }
-
         case "locality":
           this.data.businessInstallCity = component.long_name;
           break;
@@ -107,8 +106,6 @@ export class BuildingInformationComponent implements OnInit {
   }
 
   namedata(data) {
-    //   data.target.value = data.target.value.replace(/[^A-Za-z.]/g, '');
-    //  return data.target.value ? data.target.value.charAt(0).toUpperCase() +data.target.value.substr(1).toLowerCase() : '';
     return data.target.value;
   }
 
@@ -128,9 +125,6 @@ export class BuildingInformationComponent implements OnInit {
     if (this.data.businessAddressFlag && this.data.businessInstallAddress && this.data.businessInstallCity && this.data.businessInstallState && this.data.businessInstallZipCode && this.data.estimatedPropertyValue && this.data.yearsPropertyOwned && this.data.ownershipType) {
 
       this.ownerShipType = this.getOwnershipType(this.data.ownershipType);
-      // this.ownerShipType === false ? this.message.push(`You've indicated that your business is currently 
-      // leasing the property where the solar project will be installed . Is this correct?`) : null;
-
       this.ownerShipType === false ? this.message.push(`You've indicated that your business is currently leasing
        the property where the solar project will be installed . Is this correct?`) : null;
 
@@ -148,42 +142,8 @@ export class BuildingInformationComponent implements OnInit {
       }
 
       this.submitApi();
-
-      //Get the PLAID Asset data
-      // this.service.get('plaid/get-assets/' + this.data.loanId, 'admin')
-      //   .pipe(first())
-      //   .subscribe((res: any) => {
-      //     console.log(res)
-      //   })
-
-      // //Save the Building Info form
-      // this.service.post("building-information", 'sales', this.data)
-      //   .pipe(first())
-      //   .subscribe((res: any) => {
-      //     console.log("re", res)
-      //     if (res.statusCode == 200) {
-      //       //Equifax Credit pull
-      //       //Consumer Credit Report
-      //       this.service.get('loan/pull-equifax-credit-report/' + this.data.loanId, 'admin')
-      //         .pipe(first())
-      //         .subscribe((res: any) => {
-      //           console.log('Consumer credit report', res)
-      //         })
-      //       //Comercial Credit Report Set 2
-      //       this.service.get('loan/equifax-set2-report/' + this.data.loanId, 'admin')
-      //         .pipe(first())
-      //         .subscribe((res: any) => {
-      //           console.log('Comercial Set 2 credit report', res)
-      //         })
-      //       this.router.navigate(['sales/thankyou'])
-      //     }
-      //     else {
-      //       console.log(res.message)
-      //     }
-      //   })
     }
     else {
-      //commit changes for Frontend Credit Application Form: Validation and Toast Messages
       this.toastrService.error('Fill all the details!')
     }
   }
@@ -193,49 +153,19 @@ export class BuildingInformationComponent implements OnInit {
       this.modalRef.hide();
     }
 
-    //Get the PLAID Asset data
-    // this.service.get('plaid/get-assets/' + this.data.loanId, 'admin')
-    //   .pipe(first())
-    //   .subscribe((res: any) => {
-    //     console.log(res)
-    //   })
-
-    //Save the Building Info form
-
     try {
-      const buildingRes: any = await this.service.post("building-information", 'sales', this.data).toPromise();
-      if(buildingRes.statusCode == 200) {
-        await this.service.get('plaid/get-assets/' + this.data.loanId, 'admin').toPromise();
-        await this.service.get('loan/pull-equifax-credit-report/' + this.data.loanId, 'admin').toPromise();
-        await this.service.get('loan/equifax-set2-report/' + this.data.loanId, 'admin').toPromise();
-        await this.service.post(
-          `decision-service/set-lending-limit-personal-guarantor/${this.data.loanId}`,
-          'admin',
-          null
-        ).toPromise();
- 
-        this.router.navigate(['sales/thankyou'])
-           
-  
-      } else if (buildingRes['statusCode'] == 201) {
-        let count = 0;
-        buildingRes['message'].map((msg, indx) => {
-          sessionStorage.setItem(`sorryMessage${indx}`, msg);
-          count++;
-        })
-        sessionStorage.setItem('messageCount', String(count));
-        this.router.navigate(['sales/sorry']);
-      }
-      else {
-        console.log(buildingRes.message)
-      }
-    } catch(error) {
-      console.log(error.message);
-      this.router.navigate(['sales/sorry']);
+      await this.service.post('building-information', 'sales', this.data).toPromise();
+
+      const decision: any = await this.service.post(`loan/${this.data.loanId}/decision`, 'admin', null).toPromise();
+
+      this.decisionService.setDecision(decision.situation);
+
+      this.router.navigate(['sales/thankyou']);
+    } catch (err) {
+      const errorMessage = err.status === 500 ? 'Something went wrong. Please try again later' : err.error.message;
+
+      this.toastrService.error(errorMessage);
     }
-
-    
-
   }
 
   close(): void {
@@ -246,5 +176,4 @@ export class BuildingInformationComponent implements OnInit {
   getOwnershipType(ownershipType) {
     return ownershipType == 'Leased' ? false : true;
   }
-
 }
