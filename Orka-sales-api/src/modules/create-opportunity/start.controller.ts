@@ -54,10 +54,10 @@ export class StartController {
     return this.startService.putClientData(startApplicationFormDto, ip);
   }
 
-  @Put('/resend')
+  @Put('/:id/send-welcome-email')
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Resend Email' })
-  async resendMail(@Body() startApplicationFormDto: StartApplicationFormDto) {
-    return this.startService.resendMail(startApplicationFormDto);
+  @ApiOperation({ summary: 'Send Welcome Email to Borrower' })
+  async resendMail(@Param('id') loanId: string) {
+    return this.startService.resendMail(loanId);
   }
 }
