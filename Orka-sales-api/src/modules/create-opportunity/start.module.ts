@@ -1,13 +1,15 @@
-import { LoanRepository } from 'src/repository/loan.repository';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { StartService } from './start.service';
 import { StartController } from './start.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomerRepository } from '../../repository/customer.repository';
 import { UserRepository } from '../../repository/users.repository';
 import { MailService } from '../../mail/mail.service';
-import { LogRepository } from 'src/repository/log.repository';
-import { LogsService } from 'src/common/logs/logs.service';
+import { LoanRepository } from '../../repository/loan.repository';
+import { LogRepository } from '../../repository/log.repository';
+import { LogsService } from '../../common/logs/logs.service';
+import { Installer } from '../../entities/installer.entity';
 
 @Module({
   imports: [
@@ -16,6 +18,7 @@ import { LogsService } from 'src/common/logs/logs.service';
       UserRepository,
       LoanRepository,
       LogRepository,
+      Installer
     ]),
   ],
   controllers: [StartController],
