@@ -15,8 +15,9 @@ import { CustomerRepository } from '../../repository/customer.repository';
 import { UserRepository } from '../../repository/users.repository';
 import { LoanRepository } from '../../repository/loan.repository';
 import { LogRepository } from 'src/repository/log.repository';
-import { getManager } from 'typeorm';
+import { getManager, Repository } from 'typeorm';
 import { idText } from 'typescript';
+import { Installer } from '../../entities/installer.entity';
 @Injectable()
 export class StartService {
   constructor(
@@ -26,8 +27,8 @@ export class StartService {
     private readonly customerRepository: CustomerRepository,
     @InjectRepository(LoanRepository)
     private readonly loanRepository: LoanRepository,
-    @InjectRepository(LogRepository)
-    private readonly logRepository: LogRepository,
+    @InjectRepository(Installer)
+    private readonly installerRepository: Repository<Installer>,
     private readonly mailService: MailService,
     private readonly logService: LogsService,
   ) {}
@@ -230,24 +231,31 @@ export class StartService {
     }
   }
 
-  async resendMail(startApplicationFormDto: StartApplicationFormDto) {
-    const id = startApplicationFormDto.loanId;
-    const email = startApplicationFormDto.businessEmail;
-    const name = startApplicationFormDto.businessLegalName;
-    const installerName = startApplicationFormDto.installerName;
+  async resendMail(loanId: string) {
+    const loan = await this.loanRepository.findOne({ id: loanId });
+    const customer = await this.customerRepository.findOne({ loanId });
+    const installer = await this.installerRepository.findOne({ user_id: loan.insUserId });
+
     try {
-      const url = `${process.env.OrkaUrl}/sales/welcome?id=${id}`;
-      await this.mailService.opportunityEmail(email, name, installerName, url);
+      const url = `${process.env.OrkaUrl}/sales/welcome?id=${loanId}`;
+      await this.mailService.opportunityEmail(
+        customer.email,
+        customer.legalName,
+        installer.businessName,
+        url
+      );
+
       return {
-        id: id,
+        id: loanId,
         statusCode: 200,
         mesage: [`Client Opportunity Mail sent`],
       };
     } catch (error) {
       let resp = new InternalServerErrorException(error).getResponse();
-      if (Object.keys(resp).includes('name'))
+
+      if (Object.keys(resp).includes('name')) {
         resp = Object.values(resp)[Object.keys(resp).indexOf('name')];
-      console.log(error);
+      }
 
       return {
         statusCode: 500,
